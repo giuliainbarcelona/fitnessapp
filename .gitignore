@@ -5,3 +5,4 @@
 /dist
 .env
 /client/node_modules
+package-lock.json
