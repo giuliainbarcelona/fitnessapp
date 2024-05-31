@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../model/helper");
+const fetch = require("node-fetch");
 
 //creates the instance of the workout and connects the user with it.
 router.get("/workout", async function (req, res, next) {
@@ -25,7 +26,17 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-//
+// router.get("/fetchworkout", async function (req, res, next) {
+//   const { muscle, difficulty, type } = req.query;
+//   console.log(req.query);
+//   // try {
+//   // //   const submitWorkout = `SELECT * FROM workouts WHERE id = ${user_id}`;
+//   // //   res.status(200).send(submitWorkout.data);
+//   // // } catch (err) {
+//   // //   res.status(500).send(err);
+
+//   // }
+// });
 
 module.exports = router;
 //
