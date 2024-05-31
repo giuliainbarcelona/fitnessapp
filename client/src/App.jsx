@@ -14,7 +14,6 @@ import "./App.css";
 function App() {
   return (
     <>
-      <div>Hello</div>
       <Routes>
         <Route path="/Homepage" element={<Homepage />} />
         <Route path="/Buildyourworkout" element={<Buildyourworkout />} />
@@ -30,3 +29,17 @@ function App() {
 }
 
 export default App;
+
+// function for the find recipes submit button
+const getRecipes = () => {
+  fetch(
+    `${apiUrl}?apiKey=${apiKey}&ingredients=${addedIngredients.join(",")}`
+  ).then((response) => {
+    // this is if there is something wrong with the database
+    if (!response.ok) {
+      throw new Error("Please try again later");
+    }
+    return response.json();
+  });
+  // placed an error for cases where the response could not be read or does not match the expected
+};
