@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import Workout from "../pages/Workout";
+import { useNavigate } from "react-router-dom";
+
 const apiurl = "https://api.api-ninjas.com/v1/exercises";
 
 export default function BuildYourWorkout() {
@@ -9,7 +10,8 @@ export default function BuildYourWorkout() {
     type: "",
     difficulty: "",
   });
-  const [workouts, setWorkouts] = useState([]);
+  const navigate = useNavigate();
+
   const muscles = [
     "abdominals",
     "abductors",
@@ -53,27 +55,10 @@ export default function BuildYourWorkout() {
     setInputCriteria({ ...inputCriteria, type: e.target.value });
   };
 
-  async function getWorkout() {
-    try {
-      const response = await fetch(
-        `${apiurl}?muscle=${inputCriteria.muscle}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`,
-        {
-          headers: {
-            "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
-          },
-        }
-      );
-
-      const exerciseList = await response.json();
-      setWorkouts(exerciseList);
-    } catch (err) {
-      console.log("Error message here", err);
-    }
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    getWorkout();
+    const params = new URLSearchParams(inputCriteria).toString();
+    navigate(`/Workout?${params}`);
   };
 
   return (
@@ -121,8 +106,6 @@ export default function BuildYourWorkout() {
         <br />
         <button type="submit">Submit</button>
       </form>
-
-      <Workout workouts={workouts} />
     </>
   );
 }
