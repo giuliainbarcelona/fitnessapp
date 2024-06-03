@@ -1,8 +1,9 @@
 import React from "react";
-import { useState, useEffect } from "react";
-const apiurl = "https://api-ninjas.com/api/exercises";
+import { useState } from "react";
+import Workout from "../pages/Workout";
+const apiurl = "https://api.api-ninjas.com/v1/exercises";
 
-export default function buildyourowkworkout() {
+export default function BuildYourWorkout() {
   const [inputCriteria, setInputCriteria] = useState({
     muscle: "",
     type: "",
@@ -28,7 +29,15 @@ export default function buildyourowkworkout() {
     "triceps",
   ];
 
+  const handleMuscleChange = (e) => {
+    setInputCriteria({ ...inputCriteria, muscle: e.target.value });
+  };
+
   const difficulty = ["beginner", "intermediate", "expert"];
+
+  const handleDifficultyChange = (e) => {
+    setInputCriteria({ ...inputCriteria, difficulty: e.target.value });
+  };
 
   const type = [
     "cardio",
@@ -40,57 +49,80 @@ export default function buildyourowkworkout() {
     "strongman",
   ];
 
+  const handleTypeChange = (e) => {
+    setInputCriteria({ ...inputCriteria, type: e.target.value });
+  };
+
   async function getWorkout() {
     try {
-      const options = await fetch(
-        `https://api.api-ninjas.com/v1/exercises?muscle=${inputCriteria.muscle}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`,
+      const response = await fetch(
+        `${apiurl}?muscle=${inputCriteria.muscle}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`,
         {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
+          headers: {
+            "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
+          },
         }
       );
-      if (!response.ok) {
-        throw new Error("Network response not ok");
-      }
-      const exerciseList = await options.json();
+
+      const exerciseList = await response.json();
       setWorkouts(exerciseList);
     } catch (err) {
-      res.status(500).send(err);
       console.log("Error message here", err);
     }
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    getWorkout();
+  };
+
   return (
     <>
-      <select name="muscle" value={inputCriteria.muscle}>
-        {muscles.map((muscle, idx) => (
-          <option key={idx} value={muscle}>
-            {muscle}
-          </option>
-        ))}
-      </select>
-      {/* <select name="type" value={workout.type}>
-        {workouts.map((workout) => (
-          <option key={workout.id} value={workout.id}>
-            {type}
-          </option>
-        ))}
-      </select> */}
-      {/* <select name="difficulty" value={workout.difficulty}>
-        <option></option>
-      </select> */}
-      <div>workout builder let's see</div>
+      <h2>🏋🏻‍♀️ I am your workout builder 🏋🏼</h2>
+      <h4>Make your selection and I will render your workout</h4>
+      <form onSubmit={handleSubmit}>
+        <select
+          name="muscle"
+          value={inputCriteria.muscle}
+          onChange={handleMuscleChange}
+        >
+          <option value="default">Choose muscle group</option>
+          {muscles.map((muscle, idx) => (
+            <option key={idx} value={muscle}>
+              {muscle}
+            </option>
+          ))}
+        </select>
+        <select
+          name="difficulty"
+          value={inputCriteria.difficulty}
+          onChange={handleDifficultyChange}
+        >
+          <option value="default">Choose difficulty</option>
+          {difficulty.map((difficulty, idx) => (
+            <option key={idx} value={difficulty}>
+              {difficulty}
+            </option>
+          ))}
+        </select>
+        <select
+          name="type"
+          value={inputCriteria.type}
+          onChange={handleTypeChange}
+        >
+          <option value="default">Choose workout type</option>
+          {type.map((type, idx) => (
+            <option key={idx} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+        <br />
+        <br />
+        <button type="submit">Submit</button>
+      </form>
+
+      <Workout workouts={workouts} />
     </>
   );
-}
-
-{
-  /* <select name="Next_1" value={step.Next_1}>
-  {allSteps.map((step) => (
-    <option key={step.id} value={step.id}>
-      {step.Description}
-    </option>
-  ))}
-</select>; */
 }
