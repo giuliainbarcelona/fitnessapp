@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import Workout from "../pages/Workout";
-const apiurl = "https://api-ninjas.com/api/exercises";
+const apiurl = "https://api.api-ninjas.com/v1/exercises";
 
 export default function BuildYourWorkout() {
   const [inputCriteria, setInputCriteria] = useState({
@@ -53,34 +53,17 @@ export default function BuildYourWorkout() {
     setInputCriteria({ ...inputCriteria, type: e.target.value });
   };
 
-  // async function getWorkout() {
-  //   try {
-  //     const response = await fetch(
-  //       `/api/workout/fetchworkout?muscle=${inputCriteria.muscle}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`
-  //     );
-  //     if (!response.ok) {
-  //       throw new Error("Network response not ok");
-  //     }
-  //     // const exerciseList = await response.json();
-  //     // setWorkouts(exerciseList);
-  //   } catch (err) {
-  //     console.log("Error message here", err);
-  //   }
-  // }
-
   async function getWorkout() {
     try {
-      const response = await ajax({
-        url: `${apiurl}?muscle=${inputCriteria.muscle}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`,
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Network response not ok");
-      }
+      const response = await fetch(
+        `${apiurl}?muscle=${inputCriteria.muscle}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`,
+        {
+          headers: {
+            "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
+          },
+        }
+      );
+
       const exerciseList = await response.json();
       setWorkouts(exerciseList);
     } catch (err) {
@@ -138,19 +121,8 @@ export default function BuildYourWorkout() {
         <br />
         <button type="submit">Submit</button>
       </form>
-      <div>
-        <h3>Workout Results</h3>
-        {workouts.length > 0 ? (
-          <ul>
-            {workouts.map((workout, index) => (
-              <li key={index}>{workout.name}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No workouts found. Please adjust your criteria and try again.</p>
-        )}
-        <Workout />
-      </div>
+
+      <Workout workouts={workouts} />
     </>
   );
 }
