@@ -1,18 +1,47 @@
 import React from "react";
+import { link } from "react-router-dom";
+
 import { Routes, Route, Link } from "react-router-dom";
 
 export default function navbar() {
   return (
     <>
-      <div>navbar</div>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            Navbar
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+              <Link to="/Profile" class="nav-link">Profile</Link>
+              </li>
+              <li class="nav-item">
+              <Link to="/Login" class="nav-link">Login</Link>
+              </li>
+              <li class="nav-item">
+              <Link to="/Register" class="nav-link">Register</Link>
+              </li>
+              <li class="nav-item">
+              <Link to="/Homepage" class="nav-link">Homepage</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
 
-      <Link to="/Profile">Profile</Link>
-
-      <Link to="/Login">Login</Link>
-
-      <Link to="/Register">Register</Link>
-
-      <Link to="/Homepage">Homepage</Link>
+    
     </>
   );
 }
