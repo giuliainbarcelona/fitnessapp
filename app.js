@@ -4,10 +4,9 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 var authRouter = require("./routes/auth");
-
-// var indexRouter = require("./routes/index");
-// var usersRouter = require("./routes/users");
-
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+var workoutRouter = require("./routes/workouts");
 
 var app = express();
 
@@ -21,6 +20,8 @@ app.use(cookieParser());
 
 // app.use("/", indexRouter);
 // app.use("/users", usersRouter);
+
 app.use("/api/auth", authRouter);
+app.use("/api/workout", workoutRouter);
 
 module.exports = app;
