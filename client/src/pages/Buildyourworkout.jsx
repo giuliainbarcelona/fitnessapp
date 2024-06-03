@@ -2,8 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const apiurl = "https://api.api-ninjas.com/v1/exercises";
-
 export default function BuildYourWorkout() {
   const [inputCriteria, setInputCriteria] = useState({
     muscle: "",
