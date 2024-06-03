@@ -43,7 +43,7 @@ export default function buildyourowkworkout() {
   async function getWorkout() {
     try {
       const options = await fetch(
-        `https://api.api-ninjas.com/v1/exercises?muscle=${inputCriteria.muscle}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`,
+        `https://api.api-ninjas.com/v1/exercises?muscle=${inputCriteria.muscles}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -63,7 +63,7 @@ export default function buildyourowkworkout() {
 
   return (
     <>
-      <select name="muscle" value={inputCriteria.muscle}>
+      <select name="muscle" value={workouts.muscle}>
         {muscles.map((muscle, idx) => (
           <option key={idx} value={muscle}>
             {muscle}
