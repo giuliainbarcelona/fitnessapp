@@ -57,6 +57,7 @@ export default function BuildYourWorkout() {
     try {
       const response = await fetch(
         `${apiurl}?muscle=${inputCriteria.muscle}&difficulty=${inputCriteria.difficulty}&type=${inputCriteria.type}`,
+
         {
           headers: {
             "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
@@ -78,6 +79,7 @@ export default function BuildYourWorkout() {
 
   return (
     <>
+
       <h2>🏋🏻‍♀️ I am your workout builder 🏋🏼</h2>
       <h4>Make your selection and I will render your workout</h4>
       <form onSubmit={handleSubmit}>
@@ -123,6 +125,7 @@ export default function BuildYourWorkout() {
       </form>
 
       <Workout workouts={workouts} />
+
     </>
   );
 }
