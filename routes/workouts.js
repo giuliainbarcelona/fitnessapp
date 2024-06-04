@@ -3,6 +3,7 @@ var router = express.Router();
 const db = require("../model/helper");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 
+
 // This code snippet creates a new workout for a logged-in user in a database.
 // It first stores the workout data (date) and retrieves the newly generated workout ID.
 // Then, it iterates through a list of exercises and inserts them into the database linked to that workout ID.
@@ -30,5 +31,6 @@ router.post("/", userShouldBeLoggedIn, async function (req, res, next) {
       .send({ message: "An error occurred. Please try again later." });
   }
 });
+
 
 module.exports = router;

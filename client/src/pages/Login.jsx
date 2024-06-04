@@ -37,7 +37,7 @@ export default function login() {
         localStorage.setItem("token", responseJson.token);
         auth.signIn(responseJson);
         navigate("/buildyourworkout", { state: { token: responseJson.token } });
-        signIn();
+        // signIn();
       } else {
         console.error("Login error:", responseJson.message);
       }

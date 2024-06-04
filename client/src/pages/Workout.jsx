@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -16,6 +16,8 @@ export default function Workout() {
   const [workouts, setWorkouts] = useState([]);
   const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
   const navigate = useNavigate();
+
+
 
   useEffect(() => {
     async function getWorkout() {
@@ -61,7 +63,8 @@ export default function Workout() {
 
   const handleExercise = (e) => {
     e.preventDefault();
-    navigate(`/Exercises`); // navigate(`/Workout?${params}`); with date values
+    
+    navigate(`/Exercises/${workoutId}`); // navigate(`/Workout?${params}`); with date values
   };
 
   return (
