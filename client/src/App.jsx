@@ -9,21 +9,31 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./contexts/authContext";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/Homepage" element={<Homepage />} />
-        <Route path="/Buildyourworkout" element={<Buildyourworkout />} />
-        <Route path="/Calendar" element={<Calendar />} />
-        <Route path="/Exercises" element={<Exercises />} />
-        <Route path="/Workout" element={<Workout />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="/Register" element={<Register />} />
-      </Routes>
+      <AuthProvider>
+        <div>
+          <Navbar />
+        </div>
+        <div>
+          <Routes>
+            <Route path="/Homepage" element={<Homepage />} />
+            <Route path="/Buildyourworkout" element={<Buildyourworkout />} />
+            <Route path="/Calendar" element={<Calendar />} />
+            <Route path="/Exercises" element={<Exercises />} />
+            <Route path="/Workout" element={<Workout />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Profile" element={<Profile />} />
+            <Route path="/Register" element={<Register />} />
+          </Routes>
+        </div>
+      </AuthProvider>
     </>
   );
 }
