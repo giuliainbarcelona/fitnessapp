@@ -52,7 +52,7 @@ export default function Workout() {
     // Handle save logic here, for example, navigate to another page or save the date range to state
     e.preventDefault();
     navigate(`/Calendar`); // navigate(`/Workout?${params}`); with date values
-    console.log("Selected Date Range:", selectedDate.$D);
+    console.log("Selected Date:", selectedDate);
   };
 
   const handleExercise = (e) => {
