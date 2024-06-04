@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Workout from "../pages/Workout";
 const apiurl = "https://api.api-ninjas.com/v1/exercises";
+import { useLocation } from "react-router-dom";
 
 export default function BuildYourWorkout() {
   const [inputCriteria, setInputCriteria] = useState({
@@ -79,7 +80,6 @@ export default function BuildYourWorkout() {
 
   return (
     <>
-
       <h2>🏋🏻‍♀️ I am your workout builder 🏋🏼</h2>
       <h4>Make your selection and I will render your workout</h4>
       <form onSubmit={handleSubmit}>
@@ -125,7 +125,6 @@ export default function BuildYourWorkout() {
       </form>
 
       <Workout workouts={workouts} />
-
     </>
   );
 }
