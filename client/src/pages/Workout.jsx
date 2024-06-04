@@ -51,9 +51,13 @@ export default function Workout() {
   };
 
   const handleSave = (e) => {
-    // Handle save logic here, for example, navigate to another page or save the date range to state
+    // Handle save logic here: saving the selected date to state to pass it to the calendar
     e.preventDefault();
-    navigate(`/Calendar`); // navigate(`/Workout?${params}`); with date values
+    // format the date
+    const formattedDate = `${selectedDate.$y}-0${selectedDate.$M}-${selectedDate.$D}`;
+    // send in the post
+    navigate(`/Calendar`); // navigate(`/Calendar?${params}`); with date values
+    console.log("Selected Date:", formattedDate);
     console.log("Selected Date:", selectedDate);
   };
 

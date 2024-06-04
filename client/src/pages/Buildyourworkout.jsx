@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Workout from "../pages/Workout";
-const apiurl = "https://api.api-ninjas.com/v1/exercises";
 import { useLocation } from "react-router-dom";
 
 export default function BuildYourWorkout() {
