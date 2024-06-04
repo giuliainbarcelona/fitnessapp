@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../contexts/authContext";
 
 export default function login() {
+  const auth = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -33,7 +35,9 @@ export default function login() {
       ) {
         console.log("You did it!");
         localStorage.setItem("token", responseJson.token);
+        auth.signIn(responseJson);
         navigate("/buildyourworkout", { state: { token: responseJson.token } });
+        signIn();
       } else {
         console.error("Login error:", responseJson.message);
       }

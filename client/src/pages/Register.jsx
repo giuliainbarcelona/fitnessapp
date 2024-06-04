@@ -52,8 +52,6 @@ export default function register() {
       });
       const responseJson = await response.json();
       if (responseJson.message === "Yay! Successful Registration.") {
-      } else {
-        console.log("Error message");
       }
     } catch (err) {
       console.error("Registration error:", err);
@@ -90,7 +88,7 @@ export default function register() {
           onChange={handlePasswordChange}
         />
         {errors.password && <span className="error">{errors.password}</span>}
-        <br/>
+        <br />
         <button type="Submit">Register</button>
       </form>
     </div>

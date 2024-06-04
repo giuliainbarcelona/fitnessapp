@@ -1,18 +1,27 @@
 import React from "react";
-import { link } from "react-router-dom";
-
-import { Routes, Route, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
 
 export default function navbar() {
+  const auth = useAuth();
+  console.log(auth);
+  const navigate = useNavigate();
+  const { signOut } = auth;
+
+  const handleSignOut = () => {
+    signOut();
+    navigate("/");
+  };
+
   return (
     <>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
             Navbar
           </a>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
@@ -20,28 +29,49 @@ export default function navbar() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-              <Link to="/Profile" class="nav-link">Profile</Link>
-              </li>
-              <li class="nav-item">
-              <Link to="/Login" class="nav-link">Login</Link>
-              </li>
-              <li class="nav-item">
-              <Link to="/Register" class="nav-link">Register</Link>
-              </li>
-              <li class="nav-item">
-              <Link to="/Homepage" class="nav-link">Homepage</Link>
-              </li>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              {!auth.isLoggedIn && (
+                <li className="nav-item">
+                  <Link to="/Login" className="nav-link">
+                    Login
+                  </Link>
+                </li>
+              )}
+              {!auth.isLoggedIn && (
+                <li className="nav-item">
+                  <Link to="/Register" className="nav-link">
+                    Register
+                  </Link>
+                </li>
+              )}
+              {auth.isLoggedIn && (
+                <li className="nav-item">
+                  <Link to="/Profile" className="nav-link">
+                    Profile
+                  </Link>
+                </li>
+              )}
+              {auth.isLoggedIn && (
+                <li className="nav-item">
+                  <button
+                    onClick={handleSignOut}
+                    className="nav-link"
+                    style={{
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Logout
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         </div>
       </nav>
-
-    
     </>
   );
 }
