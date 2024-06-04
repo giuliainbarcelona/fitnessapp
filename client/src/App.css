@@ -50,8 +50,11 @@
   float: none;
 }
 
-
 .navbar.navbar-expand-lg.bg-body-tertiary .navbar-nav li {
-  margin: 0; 
+  margin: 0;
 }
 
+.workout-call-to-action {
+  display: flex;
+  align-items: center;
+}

@@ -6,7 +6,6 @@ require("dotenv").config();
 var bcrypt = require("bcrypt");
 const saltRounds = 10;
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
-
 const supersecret = process.env.SUPER_SECRET;
 
 router.post("/register", async (req, res) => {
@@ -51,11 +50,20 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//Middleware to verify token and get user_id
+
 //only for demo purposes (NOT NECESSARY FOR CODE)
-router.get("/profile", userShouldBeLoggedIn, function (req, res, next) {
-  res.send({
-    message: "Here is the PROTECTED data for user " + req.user_id,
-  });
+router.get("/profile", userShouldBeLoggedIn, async (req, res) => {
+  try {
+    const results = await db(
+      `SELECT username, email FROM users WHERE id=${req.user_id}`
+    );
+    const user = results.data[0];
+    if (!user) throw new Error("User not found");
+    res.send({ user });
+  } catch (err) {
+    res.status(400).send({ message: err.message });
+  }
 });
 
 module.exports = router;
