@@ -82,3 +82,11 @@ button:focus-visible {
   /* Remove default margin */
   margin: 0;
 }
+
+.popoverStyle {
+  z-index: 99999 !important;
+}
+
+a {
+  color: #646cff;
+}
