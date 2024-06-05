@@ -4,7 +4,7 @@ const db = require("../model/helper");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 
 // Get all workouts for the logged-in user
-router.get("/", userShouldBeLoggedIn, async function (req, res, necxt) {
+router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
   try {
     const user_id = req.user_id; // comes from the guard
     const calendarSelection = `SELECT * FROM workouts WHERE user_id = ${user_id}`; // Gets all the WO linked to the logged user.
@@ -12,6 +12,18 @@ router.get("/", userShouldBeLoggedIn, async function (req, res, necxt) {
     res.status(200).send(result.data);
   } catch (err) {
     console.error("Error in the calendar:", err);
+    res.status(500).send({ message: err.message });
+  }
+});
+
+router.get("/:workout_id", async function (req, res, next) {
+  try {
+    const workout_id = req.params.workout_id;
+    const exercisesByWorkout = `SELECT exercises.* FROM workouts LEFT JOIN exercises ON workouts.id = exercises.workout_id WHERE workouts.id = ${workout_id}`;
+    const result = await db(exercisesByWorkout);
+    res.status(200).send(result.data);
+  } catch (err) {
+    console.error("Error:", err);
     res.status(500).send({ message: err.message });
   }
 });
