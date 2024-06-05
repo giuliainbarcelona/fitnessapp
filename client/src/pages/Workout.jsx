@@ -34,6 +34,7 @@ export default function Workout() {
         );
 
         const workouts = await response.json();
+        console.log("Workouts:", workouts);
         setWorkouts(workouts.slice(0, 3)); // Limits the amout of WOs that will render
         console.log(workouts); // This is an array of objects!
         console.log(workouts.length); // Gets you back the number of workouts
@@ -61,7 +62,7 @@ export default function Workout() {
 
     const data = {
       date: formattedDate,
-      exerciseList: workouts,
+      exercises: workouts,
     };
 
     try {
@@ -88,14 +89,14 @@ export default function Workout() {
   const handleExercise = (e) => {
     e.preventDefault();
 
+    console.log("Handle exercise function being called");
     if (workouts.length > 0) {
       const firstWorkout = workouts[0];
-      navigate(`/exercises/1`);
+      if (firstWorkout.exercises.length > 0) {
+        const firstExercise = firstWorkout.exercises[0];
+        navigate(`/exercises/${firstExercise.id}`);
+      }
     }
-
-
-//     navigate(`/Exercises/${workout_id}`); // navigate(`/Workout?${params}`); with date values
-
   };
 
   return (
