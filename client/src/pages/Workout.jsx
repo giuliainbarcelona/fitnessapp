@@ -13,7 +13,7 @@ const apiurl = "https://api.api-ninjas.com/v1/exercises";
 
 export default function Workout() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [workouts, setWorkouts] = useState([]);
+  const [exercises, setExercises] = useState([]);
   const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
   const navigate = useNavigate();
 
@@ -33,10 +33,10 @@ export default function Workout() {
           }
         );
 
-        const workouts = await response.json();
-        setWorkouts(workouts.slice(0, 3)); // Limits the amout of WOs that will render
-        console.log(workouts); // This is an array of objects!
-        console.log(workouts.length); // Gets you back the number of workouts
+        const exercises = await response.json();
+        setExercises(exercises.slice(0, 3)); // Limits the amout of WOs that will render
+        console.log(exercises); // This is an array of objects!
+        console.log(exercises.length); // Gets you back the number of workouts
       } catch (err) {
         console.log("Error message here", err);
       }
@@ -61,7 +61,7 @@ export default function Workout() {
 
     const data = {
       date: formattedDate,
-      exerciseList: workouts,
+      exercises: exercises,
     };
 
     try {
@@ -87,16 +87,17 @@ export default function Workout() {
 
   const handleExercise = (e) => {
     e.preventDefault();
-
-    if (workouts.length > 0) {
-      const firstWorkout = workouts[0];
-      navigate(`/exercises/1`);
+    console.log("Handle exercise function being called");
+    if (exercises.length > 0) {
+      const firstWorkout = exercises[0];
+      if (firstWorkout.exercises.length > 0) {
+        const firstExercise = firstWorkout.exercises[0];
+        navigate(`/exercises/${firstExercise.id}`);
+      }
     }
-
-
-//     navigate(`/Exercises/${workout_id}`); // navigate(`/Workout?${params}`); with date values
-
   };
+
+  //     navigate(`/Exercises/${workout_id}`); // navigate(`/Workout?${params}`); with date values
 
   return (
     <div className="container">
@@ -108,7 +109,7 @@ export default function Workout() {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Workout Names</h5>
-              {workouts.map((workout, index) => (
+              {exercises.map((workout, index) => (
                 <p key={index} className="card-text">
                   {workout.name}
                 </p>
@@ -120,7 +121,7 @@ export default function Workout() {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title"> Equipments Needed</h5>
-              {workouts.map((workout, index) => (
+              {exercises.map((workout, index) => (
                 <p key={index} className="card-text">
                   {workout.equipment}
                 </p>
