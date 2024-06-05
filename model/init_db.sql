@@ -26,7 +26,7 @@ CREATE TABLE `exercises`(
     `muscle` VARCHAR(255) NOT NULL,
     `equipment` VARCHAR(255) NOT NULL,
     `difficulty` VARCHAR(255) NOT NULL,
-    `instructions` VARCHAR(255) NOT NULL,
+    `instructions` TEXT NOT NULL,
     FOREIGN KEY(`workout_id`) REFERENCES `workouts`(`id`)
 );
 
