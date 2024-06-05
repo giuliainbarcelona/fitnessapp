@@ -5,8 +5,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 var authRouter = require("./routes/auth");
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+// var indexRouter = require("./routes/index");
+// var usersRouter = require("./routes/users");
 var workoutRouter = require("./routes/workouts");
 var exerciseRouter = require("./routes/exercises")
 
@@ -24,8 +24,8 @@ app.use(cookieParser());
 // app.use("/users", usersRouter);
 
 app.use("/api/auth", authRouter);
-app.use("/api/workout", workoutRouter);
 app.use("/api/exercises", exerciseRouter);
+app.use("/api/workouts", workoutRouter);
 
 
 module.exports = app;

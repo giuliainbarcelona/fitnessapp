@@ -48,23 +48,54 @@ export default function Workout() {
     setSelectedDate(newValue);
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     // Handle save logic here: saving the selected date to state to pass it to the calendar
     e.preventDefault();
-    // format the date
-    const formattedDate = `${selectedDate.$y}-0${selectedDate.$M}-${selectedDate.$D}`;
-    // send in the post
-    navigate(`/Calendar`); // navigate(`/Calendar?${params}`); with date values
-    console.log("Selected Date:", formattedDate);
-    console.log("Selected Date:", selectedDate);
+    if (!selectedDate) {
+      alert("Please select a date.");
+      return;
+    }
+    const formattedDate = `${selectedDate.$y}-${String(
+      selectedDate.$M + 1
+    ).padStart(2, "0")}-${String(selectedDate.$D).padStart(2, "0")}`;
+
+    const data = {
+      date: formattedDate,
+      exerciseList: workouts,
+    };
+
+    try {
+      const response = await fetch("/api/workouts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      console.log("Success;", result);
+      navigate(`/Calendar`);
+    } catch (error) {
+      console.error("Error saving workout:", error);
+    }
   };
 
   const handleExercise = (e) => {
     e.preventDefault();
+
     if (workouts.length > 0) {
       const firstWorkout = workouts[0];
       navigate(`/exercises/1`);
     }
+
+
+//     navigate(`/Exercises/${workout_id}`); // navigate(`/Workout?${params}`); with date values
+
   };
 
   return (
