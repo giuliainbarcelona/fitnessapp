@@ -15,6 +15,7 @@ export default function Workout() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [exercises, setExercises] = useState([]);
   const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,19 +86,44 @@ export default function Workout() {
     }
   };
 
-  const handleExercise = (e) => {
+  const handleExercise = async (e) => {
     e.preventDefault();
-    console.log("Handle exercise function being called");
-    if (exercises.length > 0) {
-      const firstWorkout = exercises[0];
-      if (firstWorkout.exercises.length > 0) {
-        const firstExercise = firstWorkout.exercises[0];
-        navigate(`/exercises/${firstExercise.id}`);
+
+    const data = {
+      date: "2024-06-06",
+      exercises: exercises,
+    };
+
+    try {
+      const response = await fetch("/api/workouts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+      const result = await response.json();
+      console.log("Success;", result);
+      const id = result.exercises[0].id;
+      navigate(`/Exercises/${id}`);
+    } catch (error) {
+      console.error("Error saving workout:", error);
     }
   };
 
-  //     navigate(`/Exercises/${workout_id}`); // navigate(`/Workout?${params}`); with date values
+  const handleNextExercise = () => {
+    if (currentExerciseIndex < exercises.length -1) {
+      setCurrentExerciseIndex(currentExerciseIndex + 1);
+    } else {
+      console.log("You're done!")
+    }
+  };
+
 
   return (
     <div className="container">

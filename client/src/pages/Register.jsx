@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
 
-export default function register() {
+export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -9,6 +11,9 @@ export default function register() {
     email: "",
     password: "",
   });
+  const auth = useAuth();
+  const [isRegistered, setIsRegistered] = useState(false);
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -37,8 +42,38 @@ export default function register() {
     }
   };
 
-  const onSubmit = async (e) => {
+  const handleLogin = async (e) => {
+    const data = { username, password };
+    try {
+      const response = await fetch("api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const responseJson = await response.json();
+      console.log(responseJson);
+
+      if (
+        responseJson &&
+        responseJson.message &&
+        responseJson.message.includes("successful")
+      ) {
+        console.log("You did it!");
+        localStorage.setItem("token", responseJson.token);
+        auth.signIn(responseJson);
+        navigate("/buildyourworkout", { state: { token: responseJson.token } });
+        // signIn();
+      } else {
+        console.error("Login error:", responseJson.message);
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+    }
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
+
     console.log("Submit form clicked!");
     if (errors.username || errors.email || errors.password) {
       return;
@@ -51,7 +86,9 @@ export default function register() {
         body: JSON.stringify({ username, email, password }),
       });
       const responseJson = await response.json();
-      if (responseJson.message === "Yay! Successful Registration.") {
+      console.log("Response JSON:", responseJson);
+      if (responseJson.message === "Register successful") {
+        handleLogin();
       }
     } catch (err) {
       console.error("Registration error:", err);
@@ -61,7 +98,7 @@ export default function register() {
   return (
     <div>
       <h1>register</h1>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleRegister}>
         <label htmlFor="username">Username:</label>
         <input
           type="text"
@@ -89,7 +126,7 @@ export default function register() {
         />
         {errors.password && <span className="error">{errors.password}</span>}
         <br />
-        <button type="Submit">Register</button>
+        <button type="submit">Register</button>
       </form>
     </div>
   );
