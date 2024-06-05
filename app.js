@@ -8,6 +8,7 @@ var authRouter = require("./routes/auth");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var workoutRouter = require("./routes/workouts");
+var exerciseRouter = require("./routes/exercises")
 
 var app = express();
 
@@ -24,5 +25,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/workout", workoutRouter);
+app.use("/api/exercises", exerciseRouter);
+
 
 module.exports = app;

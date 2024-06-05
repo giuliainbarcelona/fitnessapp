@@ -17,8 +17,6 @@ export default function Workout() {
   const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
   const navigate = useNavigate();
 
-
-
   useEffect(() => {
     async function getWorkout() {
       try {
@@ -63,8 +61,10 @@ export default function Workout() {
 
   const handleExercise = (e) => {
     e.preventDefault();
-    
-    navigate(`/Exercises/${workoutId}`); // navigate(`/Workout?${params}`); with date values
+    if (workouts.length > 0) {
+      const firstWorkout = workouts[0];
+      navigate(`/exercises/1`);
+    }
   };
 
   return (
