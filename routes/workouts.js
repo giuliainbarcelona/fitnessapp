@@ -3,6 +3,19 @@ var router = express.Router();
 const db = require("../model/helper");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 
+// Get all workouts for the logged-in user
+router.get("/", userShouldBeLoggedIn, async function (req, res, necxt) {
+  try {
+    const user_id = req.user_id; // comes from the guard
+    const calendarSelection = `SELECT * FROM workouts WHERE user_id = ${user_id}`; // Gets all the WO linked to the logged user.
+    const result = await db(calendarSelection);
+    res.status(200).send(result.data);
+  } catch (err) {
+    console.error("Error in the calendar:", err);
+    res.status(500).send({ message: err.message });
+  }
+});
+
 // This code snippet creates a new workout for a logged-in user in a database.
 // It first stores the workout data (date) and retrieves the newly generated workout ID.
 // Then, it iterates through a list of exercises and inserts them into the database linked to that workout ID.
