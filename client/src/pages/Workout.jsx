@@ -15,7 +15,7 @@ export default function Workout() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [exercises, setExercises] = useState([]);
   const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function Workout() {
         );
 
         const exercises = await response.json();
-        setExercises(exercises.slice(0, 3)); // Limits the amout of WOs that will render
+        setExercises(exercises.slice(0, 5)); // Limits the amout of WOs that will render
         console.log(exercises); // This is an array of objects!
         console.log(exercises.length); // Gets you back the number of workouts
       } catch (err) {
@@ -110,20 +110,13 @@ export default function Workout() {
       const result = await response.json();
       console.log("Success;", result);
       const id = result.exercises[0].id;
-      navigate(`/Exercises/${id}`);
+      navigate(`/Exercises/${result.exercises[0].id}`, {
+        state: { workout: result },
+      });
     } catch (error) {
       console.error("Error saving workout:", error);
     }
   };
-
-  const handleNextExercise = () => {
-    if (currentExerciseIndex < exercises.length -1) {
-      setCurrentExerciseIndex(currentExerciseIndex + 1);
-    } else {
-      console.log("You're done!")
-    }
-  };
-
 
   return (
     <div className="container">
