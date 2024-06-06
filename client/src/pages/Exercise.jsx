@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../index.css";
 
 const Exercise = () => {
   const { id } = useParams();
-  const [exercise, setExercise] = useState(null);
-  const [currentExercise, setCurrentExercise] = useState(1);
-  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-
-  
+  const [exercise, setExercise] = useState({});
+  const navigate = useNavigate();
+  const today = new Date().toLocaleDateString();
+  const totalExercises = exercise.exercises?.length;
 
   useEffect(() => {
-    const fetchExercises = async () => {
+    const fetchExercise = async () => {
       try {
         const response = await fetch(`/api/exercises/${id}`, {
           headers: {
@@ -22,45 +23,89 @@ const Exercise = () => {
         }
         const result = await response.json();
         setExercise(result);
+        console.log("Exercise:", result);
       } catch (err) {
         console.error("Error fetching exercise:", err);
       }
     };
-    fetchExercises();
+    fetchExercise();
   }, [id]);
 
-  if (!exercise) {
+  if (!exercise.current) {
     return <div>Loading...</div>;
   }
 
-  const totalExercises = 3;
-  const today = new Date().toLocaleDateString();
+  const currentExerciseIndex = exercise.exercises?.findIndex((e) => {
+    return e.id === exercise.current.id;
+  });
+  const nextExerciseId = exercise.exercises?.[currentExerciseIndex + 1]?.id;
+  const previousExerciseId = exercise.exercises?.[currentExerciseIndex - 1]?.id;
+
+  const progress =
+    totalExercises > 0
+      ? ((currentExerciseIndex + 1) / totalExercises) * 100
+      : 0;
 
   const handleNextExercise = () => {
-    if (currentExercise < totalExercises) {
-      setCurrentExercise(currentExercise + 1);
-      setStepCount(stepCount + 1);
-      history.pushState(`/exercise/${currentExercise + 1}`);
+    if (nextExerciseId) {
+      navigate(`/Exercises/${nextExerciseId}`, {
+        state: { workout: exercise },
+      });
     } else {
-      console.log("error");
+      navigate(`/Profile`);
+    }
+  };
+
+  const handlePreviousExercise = () => {
+    if (previousExerciseId) {
+      navigate(`/Exercises/${previousExerciseId}`, {
+        state: { workout: exercise },
+      });
     }
   };
 
   return (
-    <div>
+    <div className="container">
+      {/* Exercise details */}
+      next exercise id: {nextExerciseId}
       <div className="exercise-details">
         <h1>Here is your exercise!</h1>
         <h3>Today's Date: {today}</h3>
-        <p>
-          You are on exercise {currentExercise} of {totalExercises}
-        </p>
-        <p>Name:{exercise.name}</p>
-        <p>Type:{exercise.type}</p>
-        <p>Muscle:{exercise.muscle}</p>
-        <p>Instructions:{exercise.instructions}</p>
+
+        <h2 class="text-start">Name: {exercise.current?.name}</h2>
+        <h4 class="text-start">Type: {exercise.current?.type}</h4>
+        <h4 class="text-start">Muscle: {exercise.current?.muscle}</h4>
+        <h4 class="text-start">Equipment: {exercise.current?.equipment}</h4>
+        <div className="border p-3 bg-faded-blue text-dark-grey">
+          <p>Instructions: {exercise.current?.instructions}</p>
+        </div>
         <br />
-        <p>Equipment:{exercise.equipment}</p>
-        <button onClick={handleNextExercise}>Next Exercise</button>
+
+        <p>
+          You are on exercise {currentExerciseIndex + 1} of {totalExercises}
+        </p>
+        <div className="progress">
+          <div
+            className="progress-bar progress-bar-striped bg-info"
+            style={{ width: `${progress}%` }}
+            aria-valuenow={progress}
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+        {currentExerciseIndex > 0 && (
+          <button
+            className="btn btn-secondary"
+            onClick={handlePreviousExercise}
+          >
+            Previous Exercise
+          </button>
+        )}
+        <button className="btn btn-primary" onClick={handleNextExercise}>
+          {currentExerciseIndex === totalExercises - 1
+            ? "Done! Go to Profile."
+            : "Next Exercise"}
+        </button>
       </div>
     </div>
   );

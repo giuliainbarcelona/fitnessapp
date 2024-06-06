@@ -59,3 +59,18 @@
   display: flex;
   align-items: center;
 }
+
+.bg-faded-blue {
+  background-color: rgba(0, 123, 255, 0.3); /* Adjust the opacity as needed */
+}
+
+.border {
+  padding: 10px;
+  background-color: #cce5ff; /* Light blue background color */
+  border-radius: 5px;
+  text-align: justify; /* Justify text alignment */
+}
+
+.text-dark-grey {
+  color: #343a40; /* Dark grey text color */
+}

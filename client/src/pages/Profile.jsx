@@ -45,11 +45,11 @@ export default function profile() {
           <Route path="/Calendar" element={<Calendar />} />
         </Routes>
         <Calendar />
-        <div className = "workout-call-to-action">
-        <p>Actually, I want to</p>
-        <Link to="/Exercises" className="workout-now-button">
-          ..WORKOUT NOW
-        </Link>
+        <div className="workout-call-to-action">
+          <p>Actually, I want to</p>
+          <Link to="/Buildyourworkout" className="workout-now-button">
+            ..WORKOUT NOW
+          </Link>
         </div>
       </div>
     </>

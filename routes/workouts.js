@@ -116,4 +116,37 @@ router.post("/", userShouldBeLoggedIn, async function (req, res, next) {
   }
 });
 
+//STEP 1
+// get all exercises that match a specific workoutid 
+//pass the workout id from the frontend 
+
+//STEP 2
+//duplicate the collection of exercises from step 1
+
+router.post(
+  "/duplicate",
+  userShouldBeLoggedIn,
+  async function (req, res, next) {
+    try {
+      const userId = req.user.id; //comes from the guard
+      const allWorkouts = await db(
+
+        `SELECT * FROM exercises WHERE workout_id = ${workoutId}`
+      );
+      if (allWorkouts.data.length === 0) {
+        res.status(404).json({ error: "Error message" });
+        return;
+      }
+      //extract workout from user id
+      const workout = allWorkouts.data;
+      const workoutToSend = await db(
+        `SELECT * from workouts where workout_id = ${userId.workout}`
+      );
+    } catch (err) {
+      console.error("Error creating workout:", err);
+      res.status(500).send({ message: err.message });
+    }
+  }
+);
+
 module.exports = router;
