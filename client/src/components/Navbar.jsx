@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/authContext";
 
 export default function navbar() {
   const auth = useAuth();
-  console.log(auth);
+  // console.log(auth);
   const navigate = useNavigate();
   const { signOut } = auth;
 

@@ -15,7 +15,7 @@ export default function Workout() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [exercises, setExercises] = useState([]);
   const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,6 +64,7 @@ export default function Workout() {
       date: formattedDate,
       exercises: exercises,
     };
+    console.log("This is your formatted date from the WO page", formattedDate);
 
     try {
       const response = await fetch("/api/workouts", {
@@ -117,13 +118,12 @@ export default function Workout() {
   };
 
   const handleNextExercise = () => {
-    if (currentExerciseIndex < exercises.length -1) {
+    if (currentExerciseIndex < exercises.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
     } else {
-      console.log("You're done!")
+      console.log("You're done!");
     }
   };
-
 
   return (
     <div className="container">

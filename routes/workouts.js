@@ -2,6 +2,11 @@ var express = require("express");
 var router = express.Router();
 const db = require("../model/helper");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
+let group;
+(async () => {
+  const d3 = await import("d3");
+  group = d3.group;
+})();
 
 // Get all workouts for the logged-in user
 router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
@@ -19,14 +24,65 @@ router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
 router.get("/:workout_id", async function (req, res, next) {
   try {
     const workout_id = req.params.workout_id;
-    const exercisesByWorkout = `SELECT exercises.* FROM workouts LEFT JOIN exercises ON workouts.id = exercises.workout_id WHERE workouts.id = ${workout_id}`;
+    exercisesByWorkout = `SELECT exercises.*, workouts.date FROM workouts LEFT JOIN exercises ON workouts.id = exercises.workout_id WHERE workouts.id = ${workout_id}`;
     const result = await db(exercisesByWorkout);
-    res.status(200).send(result.data);
+
+    // This does the grouping by wo_id
+    const groupedData = group(result.data, (d) => d.workout_id);
+    console.log(result.data);
+    const formattedData = Array.from(groupedData, ([key, values]) => {
+      return {
+        id: key,
+        date: values[0].date,
+        exercises: values.map((exercise) => ({
+          muscle: exercise.muscle,
+          exercise_id: exercise.exercise_id,
+        })),
+      };
+    });
+    res.status(200).send(formattedData);
   } catch (err) {
     console.error("Error:", err);
     res.status(500).send({ message: err.message });
   }
 });
+
+router.put(
+  "/:workout_id",
+  userShouldBeLoggedIn,
+  async function (req, res, next) {
+    try {
+      const workout_id = req.params.workout_id; // same as above
+      const { date } = req.body; // Extract the updated date from the request body
+      const exercisesByWorkoutUpdate = `UPDATE workouts SET date = '${date}' WHERE id = ${workout_id}`;
+      await db(exercisesByWorkoutUpdate); // Update the workout date in the database
+      res.status(200).send({ message: "Workout updated successfully" });
+    } catch (err) {
+      console.error("Error updating workout:", err);
+      res.status(500).send({ message: err.message });
+    }
+  }
+);
+
+router.delete(
+  "/:workout_id",
+  userShouldBeLoggedIn,
+  async function (req, res, next) {
+    try {
+      const workout_id = req.params.workout_id;
+      const user_id = req.user_id;
+      await db(`DELETE FROM exercises WHERE workout_id = ${workout_id}`);
+      await db(`
+        DELETE FROM workouts WHERE id = ${workout_id} AND user_id = ${user_id}
+      `);
+      console.log(`Workout ${workout_id} deleted successfully`);
+      res.status(200).send({ message: "Workout deleted successfully" });
+    } catch (err) {
+      console.error("Error deleting workout:", err);
+      res.status(500).send({ message: "Error deleting workout" });
+    }
+  }
+);
 
 // This code snippet creates a new workout for a logged-in user in a database.
 // It first stores the workout data (date) and retrieves the newly generated workout ID.
