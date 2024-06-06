@@ -90,3 +90,34 @@ button:focus-visible {
 a {
   color: #646cff;
 }
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.event-info {
+  margin-left: 10px;
+}
+
+.delete-btn {
+  border: red solid 1px;
+}
+
+.delete-btn:hover {
+  border: black solid 1px;
+}
+
+.exercise-btn {
+  border: blue solid 1px;
+}
+
+.exercise-btn:hover {
+  border: green solid 1px;
+}
