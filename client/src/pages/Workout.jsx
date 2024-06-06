@@ -64,6 +64,7 @@ export default function Workout() {
       date: formattedDate,
       exercises: exercises,
     };
+    console.log("This is your formatted date from the WO page", formattedDate);
 
     try {
       const response = await fetch("/api/workouts", {
@@ -117,6 +118,16 @@ export default function Workout() {
       console.error("Error saving workout:", error);
     }
   };
+
+
+  const handleNextExercise = () => {
+    if (currentExerciseIndex < exercises.length - 1) {
+      setCurrentExerciseIndex(currentExerciseIndex + 1);
+    } else {
+      console.log("You're done!");
+    }
+  };
+
 
   return (
     <div className="container">
