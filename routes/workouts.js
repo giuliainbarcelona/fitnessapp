@@ -141,6 +141,7 @@ router.post(
 
       const workoutQuery = `SELECT * FROM workouts WHERE id = ${workout_id}`;
       const workoutResult = await db(workoutQuery);
+      console.log("something");
       console.log("Workout Query Result:", workoutResult);
       if (workoutResult.length === 0) {
         return res.status(404).send({ message: "workout does not exist" });
