@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const db = require("../model/helper");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
+const userShouldBeAssociatedWithWorkout = require("../guards/userShouldBeLoggedIn");
 let group;
 (async () => {
   const d3 = await import("d3");
@@ -66,7 +67,8 @@ router.put(
 
 router.delete(
   "/:workout_id",
-  userShouldBeLoggedIn,
+ [ userShouldBeLoggedIn,
+  userShouldBeAssociatedWithWorkout],
   async function (req, res, next) {
     try {
       const workout_id = req.params.workout_id;
@@ -136,28 +138,26 @@ router.post(
         "for user:",
         target_user_id
       );
-
       //fetching workout details
-
       const workoutQuery = `SELECT * FROM workouts WHERE id = ${workout_id}`;
       const workoutResult = await db(workoutQuery);
-      console.log("something");
       console.log("Workout Query Result:", workoutResult);
       if (workoutResult.length === 0) {
         return res.status(404).send({ message: "workout does not exist" });
       }
       const workout = workoutResult.data[0];
       //making sure the workout exists
-      if (!workout) {
-        return res.status(404).send({ message: "Workout does not exist" });
-      }
+      const workoutDate = new Date(workout.date);
+      const year = workoutDate.getFullYear();
+      const month = String(workoutDate.getMonth() + 1).padStart(2, "0");
+      const day = String(workoutDate.getDate()).padStart(2, "0");
+      const formattedDate = `${year}-${month}-${day}`;
+
       //create new workout for target user(to be sent)
-      // const workoutDate = workout.date;
-      // const newWorkoutQuery = `INSERT INTO workouts (user_id, date) VALUES (${target_user_id}, '${workout.date}')`;
-      const workoutDate = workout.date.toISOString().split("T")[0];
-      const newWorkoutQuery = `INSERT INTO workouts (user_id, date) VALUES (${target_user_id}, '${workoutDate}')`;
+      const newWorkoutQuery = `INSERT INTO workouts (user_id, date) VALUES (${target_user_id}, '${formattedDate}'); SELECT LAST_INSERT_ID();`;
       const newWorkoutResult = await db(newWorkoutQuery);
-      const newWorkoutId = newWorkoutResult.insertId;
+      console.log(newWorkoutResult);
+      const newWorkoutId = newWorkoutResult.data[0].insertId;
       //fetch exercises associated with the specific workout
       const exercisesQuery = `SELECT * FROM exercises WHERE workout_id = ${workout_id}`;
       const exercisesResult = await db(exercisesQuery);
