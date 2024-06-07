@@ -166,6 +166,7 @@ export default function Calendar() {
 }
 
 function Sidebar({ events }) {
+  // function handleDeleteClick() {}
   return (
     <div className="sidebar">
       <br />
@@ -179,7 +180,12 @@ function Sidebar({ events }) {
                   {formatDate(event.start, { month: "short", day: "numeric" })}
                 </h5>
                 <p className="card-text">{event.muscle}</p>
-                <button className="delete-btn">❌</button>
+                <button
+                  className="delete-btn"
+                  // onClick={() => handleDeleteClick(event.id)}
+                >
+                  ❌
+                </button>
                 <br />
                 <br />
 

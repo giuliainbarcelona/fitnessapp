@@ -3,6 +3,8 @@ var router = express.Router();
 const db = require("../model/helper");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 const userShouldBeAssociatedWithWorkout = require("../guards/userShouldBeLoggedIn");
+const workoutShouldExist = require("../guards/workoutShouldExist");
+
 let group;
 (async () => {
   const d3 = await import("d3");
@@ -67,15 +69,17 @@ router.put(
 
 router.delete(
   "/:workout_id",
- [ userShouldBeLoggedIn,
+
+ [ userShouldBeLoggedIn,workoutShouldExist,
   userShouldBeAssociatedWithWorkout],
+
   async function (req, res, next) {
     try {
       const workout_id = req.params.workout_id;
       const user_id = req.user_id;
       await db(`DELETE FROM exercises WHERE workout_id = ${workout_id}`);
       await db(`
-        DELETE FROM workouts WHERE id = ${workout_id} AND user_id = ${user_id}
+        DELETE FROM workouts WHERE id = ${workout_id}
       `);
       console.log(`Workout ${workout_id} deleted successfully`);
       res.status(200).send({ message: "Workout deleted successfully" });
