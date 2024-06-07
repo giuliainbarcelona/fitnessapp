@@ -2,7 +2,9 @@ var express = require("express");
 var router = express.Router();
 const db = require("../model/helper");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
+const userShouldBeAssociatedWithWorkout = require("../guards/userShouldBeLoggedIn");
 const workoutShouldExist = require("../guards/workoutShouldExist");
+
 let group;
 (async () => {
   const d3 = await import("d3");
@@ -67,7 +69,10 @@ router.put(
 
 router.delete(
   "/:workout_id",
-  [userShouldBeLoggedIn, workoutShouldExist],
+
+ [ userShouldBeLoggedIn,workoutShouldExist,
+  userShouldBeAssociatedWithWorkout],
+
   async function (req, res, next) {
     try {
       const workout_id = req.params.workout_id;
@@ -118,8 +123,8 @@ router.post("/", userShouldBeLoggedIn, async function (req, res, next) {
 });
 
 //STEP 1
-// get all exercises that match a specific workoutid 
-//pass the workout id from the frontend 
+// get all exercises that match a specific workoutid
+//pass the workout id from the frontend
 
 //STEP 2
 //duplicate the collection of exercises from step 1
@@ -129,22 +134,46 @@ router.post(
   userShouldBeLoggedIn,
   async function (req, res, next) {
     try {
-      const userId = req.user.id; //comes from the guard
-      const allWorkouts = await db(
-
-        `SELECT * FROM exercises WHERE workout_id = ${workoutId}`
+      const user_id = req.user_id;
+      const { workout_id, target_user_id } = req.body;
+      console.log(
+        "Received request to duplicate workout:",
+        workout_id,
+        "for user:",
+        target_user_id
       );
-      if (allWorkouts.data.length === 0) {
-        res.status(404).json({ error: "Error message" });
-        return;
+      //fetching workout details
+      const workoutQuery = `SELECT * FROM workouts WHERE id = ${workout_id}`;
+      const workoutResult = await db(workoutQuery);
+      console.log("Workout Query Result:", workoutResult);
+      if (workoutResult.length === 0) {
+        return res.status(404).send({ message: "workout does not exist" });
       }
-      //extract workout from user id
-      const workout = allWorkouts.data;
-      const workoutToSend = await db(
-        `SELECT * from workouts where workout_id = ${userId.workout}`
-      );
+      const workout = workoutResult.data[0];
+      //making sure the workout exists
+      const workoutDate = new Date(workout.date);
+      const year = workoutDate.getFullYear();
+      const month = String(workoutDate.getMonth() + 1).padStart(2, "0");
+      const day = String(workoutDate.getDate()).padStart(2, "0");
+      const formattedDate = `${year}-${month}-${day}`;
+
+      //create new workout for target user(to be sent)
+      const newWorkoutQuery = `INSERT INTO workouts (user_id, date) VALUES (${target_user_id}, '${formattedDate}'); SELECT LAST_INSERT_ID();`;
+      const newWorkoutResult = await db(newWorkoutQuery);
+      console.log(newWorkoutResult);
+      const newWorkoutId = newWorkoutResult.data[0].insertId;
+      //fetch exercises associated with the specific workout
+      const exercisesQuery = `SELECT * FROM exercises WHERE workout_id = ${workout_id}`;
+      const exercisesResult = await db(exercisesQuery);
+      const exercises = exercisesResult.data;
+      //actual duplication of each exercises to be put into new workout
+      for (let exercise of exercises) {
+        const duplicateExerciseQuery = `INSERT INTO exercises (workout_id, isDone, name, type, muscle, equipment, difficulty, instructions) VALUES (${newWorkoutId}, 0, '${exercise.name}', '${exercise.type}', '${exercise.muscle}', '${exercise.equipment}', '${exercise.difficulty}', '${exercise.instructions}')`;
+        await db(duplicateExerciseQuery);
+      }
+      res.status(200).send({ message: "Workout duplicated successfully, yay" });
     } catch (err) {
-      console.error("Error creating workout:", err);
+      console.error("Error with duplication process:", err);
       res.status(500).send({ message: err.message });
     }
   }
