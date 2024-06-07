@@ -4,26 +4,29 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { formatDate } from "@fullcalendar/core";
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 
 export default function Calendar() {
-  const [events, setEvents] = useState([]);
-  const [curYear, setCurYear] = useState(null);
-  const [curMonth, setCurMonth] = useState(null);
+  const [workouts, setWorkouts] = useState([]); // Stores all workouts data
+  const [calendarEvents, setCalendarEvents] = useState([]); // Stores formatted event data
+  const [curYear, setCurYear] = useState(null); // Year for filtering events
+  const [curMonth, setCurMonth] = useState(null); // Month for filtering events
 
   const monthEvents = useMemo(() => {
-    return events.filter((event) => {
+    return calendarEvents.filter((event) => {
       return (
         new Date(event.start).getFullYear() === curYear &&
         new Date(event.start).getMonth() === curMonth
       );
     });
-  }, [events, curMonth, curYear]);
+  }, [calendarEvents, curMonth, curYear]);
+  // console.log("These is my events", calendarEvents);
 
   useEffect(() => {
-    async function fetchWorkout() {
+    async function fetchAllWorkouts() {
       try {
         const response = await fetch("/api/workouts", {
           method: "GET",
@@ -35,44 +38,57 @@ export default function Calendar() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Fetched workout:", data);
-
-          const workoutEvents = [];
-          for (const workout of data) {
-            const exerciseResponse = await fetch(`/api/workouts/${workout.id}`);
-            const exerciseData = await exerciseResponse.json();
-            // Gives you back the exercise array - exercises with exercise nested loop
-            // console.log("This is the exercise data:", exerciseData);
-
-            const muscles = [];
-            for (const workout of exerciseData) {
-              for (const exercise of workout.exercises) {
-                muscles.push(exercise.muscle);
-              }
-            }
-            const firstMuscle = muscles[0]; // Accessing the first muscle in the array
-
-            workoutEvents.push({
-              id: workout.id,
-              title: "Workout",
-              start: new Date(new Date(workout.date).setHours(9, 0, 0, 0)), // Set time to 9 AM
-              end: new Date(new Date(workout.date).setHours(9, 0, 0, 0)), // Set time to 9 AM
-              muscle: firstMuscle,
-            });
-          }
-          // Gives you back ALL the workoutsin the calendar
-          console.log("This the workout events:", workoutEvents);
-          setEvents(workoutEvents);
+          console.log("Fetched all workouts:", data);
+          setWorkouts(data);
         } else {
-          console.error("Failed to fetch workout event:", response.statusText);
+          console.error("Failed to fetch workouts:", response.statusText);
         }
       } catch (err) {
         console.error("Error fetching workouts:", err);
       }
     }
 
-    fetchWorkout();
+    fetchAllWorkouts();
   }, []);
+
+  // Fetch workout details by ID
+  useEffect(() => {
+    async function fetchWorkoutDetails() {
+      if (workouts.length === 0) return; // Skip if no workouts
+
+      const workoutEvents = [];
+      for (const workout of workouts) {
+        try {
+          const response = await fetch(`/api/workouts/${workout.id}`);
+          if (response.ok) {
+            const exerciseData = await response.json();
+            const firstMuscle = exerciseData[0].exercises[0].muscle;
+            const exerciseId = exerciseData[0].exercises[0].exercise_id; // This is my exercise id that I need
+
+            workoutEvents.push({
+              id: workout.id,
+              title: "Workout",
+              start: new Date(new Date(workout.date).setHours(9, 0, 0, 0)),
+              end: new Date(new Date(workout.date).setHours(9, 0, 0, 0)),
+              muscle: firstMuscle,
+              exerciseId: exerciseId, // Add exerciseId to the event object
+            });
+          } else {
+            console.error(
+              "Failed to fetch workout details:",
+              response.statusText
+            );
+          }
+        } catch (err) {
+          console.error("Error fetching workout details:", err);
+        }
+      }
+      setCalendarEvents(workoutEvents);
+      console.log("All workout events set:", workoutEvents); // muscle is still undefined.
+    }
+
+    fetchWorkoutDetails();
+  }, [workouts]);
 
   // Filter events for the current month.
   // Gives you back an array of the events that are planned for the month!
@@ -122,7 +138,7 @@ export default function Calendar() {
       start: start.toISOString(),
     };
     updateEvent(updatedEvent);
-    setEvents((prevEvents) =>
+    setCalendarEvents((prevEvents) =>
       prevEvents.map((event) =>
         event.id === updatedEvent.id ? updatedEvent : event
       )
@@ -143,14 +159,14 @@ export default function Calendar() {
               end: "dayGridMonth,timeGridWeek,timeGridDay",
             }}
             height={"80vh"}
-            events={events}
+            events={calendarEvents}
             eventDidMount={(info) => {
+              console.log("Event did mount:", info.event.extendedProps);
               return new bootstrap.Popover(info.el, {
-                title: `Your ${info.event.extendedProps.muscle} workout`,
+                title: `Your ${info.event.extendedProps.muscle} workout`, // Access extendedProps for muscle, need to work here!!
                 placement: "auto",
                 trigger: "hover",
                 customClass: "popoverStyle",
-                // content: `Muscle : ${info.event.extendedProps.muscle}`,
               });
             }}
             eventChange={handleEventChange}
@@ -158,15 +174,37 @@ export default function Calendar() {
           />
         </div>
         <div className="col-md-3">
-          <Sidebar events={monthEvents} />
+          <Sidebar events={monthEvents} setCalendarEvents={setCalendarEvents} />
         </div>
       </div>
     </div>
   );
 }
 
-function Sidebar({ events }) {
-  // function handleDeleteClick() {}
+function Sidebar({ events, setCalendarEvents }) {
+  function handleDelete(eventId) {
+    fetch(`/api/workouts/${eventId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Workout deleted successfully!");
+          setCalendarEvents((prevEvents) =>
+            prevEvents.filter((event) => event.id !== eventId)
+          );
+        } else {
+          console.error("Failed to delete workout:", response.statusText);
+        }
+      })
+      .catch((err) => {
+        console.error("Error deleting workout:", err);
+      });
+  }
+
   return (
     <div className="sidebar">
       <br />
@@ -182,14 +220,15 @@ function Sidebar({ events }) {
                 <p className="card-text">{event.muscle}</p>
                 <button
                   className="delete-btn"
-                  // onClick={() => handleDeleteClick(event.id)}
+                  onClick={() => handleDelete(event.id)}
                 >
                   ❌
                 </button>
                 <br />
                 <br />
-
-                <button className="exercise-btn">🏋🏼‍♀️</button>
+                <button className="exercise-btn">
+                  <Link to={`/Exercises/${event.exerciseId}`}>🏋🏼‍♀️</Link>
+                </button>
               </div>
             </div>
           </div>

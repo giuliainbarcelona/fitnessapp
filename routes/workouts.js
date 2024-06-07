@@ -32,14 +32,14 @@ router.get("/:workout_id", async function (req, res, next) {
 
     // This does the grouping by wo_id
     const groupedData = group(result.data, (d) => d.workout_id);
-    console.log(result.data);
+    // console.log(result.data);
     const formattedData = Array.from(groupedData, ([key, values]) => {
       return {
         id: key,
         date: values[0].date,
         exercises: values.map((exercise) => ({
           muscle: exercise.muscle,
-          exercise_id: exercise.exercise_id,
+          exercise_id: exercise.id,
         })),
       };
     });
@@ -70,8 +70,7 @@ router.put(
 router.delete(
   "/:workout_id",
 
- [ userShouldBeLoggedIn,workoutShouldExist,
-  userShouldBeAssociatedWithWorkout],
+  [userShouldBeLoggedIn, workoutShouldExist, userShouldBeAssociatedWithWorkout],
 
   async function (req, res, next) {
     try {
