@@ -1,0 +1,21 @@
+const db = require("../model/helper");
+
+async function userShouldExist(req, res, next) {
+  try {
+    const userId = req.params.user_id;
+    const sql = `SELECT * FROM users WHERE id = ${userId}`;
+    const result = await db(sql);
+
+    if (result.data.length) {
+      req.user = result.data[0];
+      next();
+    } else {
+      res.status(404).send({ message: "User does not exist" });
+    }
+  } catch (err) {
+    console.error("Error checking user existence:", err);
+    res.status(500).send({ message: "Error checking user existence" });
+  }
+}
+
+module.exports = userShouldExist;
