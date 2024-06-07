@@ -106,6 +106,10 @@ const Exercise = () => {
             ? "Done! Go to Profile."
             : "Next Exercise"}
         </button>
+        <h5>Want to send this workout to a friend?</h5>
+        <input type="text" placeholder="type username here"></input>
+        <br/>
+        <button className="btn btn-info">Send</button>
       </div>
     </div>
   );
