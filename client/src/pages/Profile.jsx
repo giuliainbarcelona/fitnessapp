@@ -52,6 +52,7 @@ export default function profile() {
           </Link>
         </div>
       </div>
+      <h3 className="text-start">Workouts sent by friends:</h3>
     </>
   );
 }

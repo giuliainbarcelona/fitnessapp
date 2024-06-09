@@ -43,4 +43,20 @@ router.get("/:user_id", userShouldExist, async function (req, res, next) {
   }
 });
 
+router.get(
+  "/:user_id/sentWorkouts",
+  userShouldBeLoggedIn,
+  async function (req, res, next) {
+    try {
+      const userId = req.params.user_id;
+      const sentWorkoutsQuery = `SELECT w.*, u.username AS sender FROM workouts w JOIN users u ON w.sent_by_user_id = u.id WHERE w.sent_by_user_id = ${userId}`;
+      const sentWorkoutsResult = await db(sentWorkoutsQuery);
+      res.status(200).send(sentWorkoutsResult);
+    } catch (err) {
+      console.error("Error", err);
+      res.status(500).send({ message: err.message });
+    }
+  }
+);
+
 module.exports = router;
