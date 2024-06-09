@@ -74,3 +74,24 @@
 .text-dark-grey {
   color: #343a40; /* Dark grey text color */
 }
+
+.dropdown {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 1000;
+  background-color: white;
+  width: 200px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.dropdown li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background-color: #f0f0f0;
+}

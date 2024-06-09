@@ -9,7 +9,7 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
-//unfinished, working on it
+//searches usernames based on letters
 router.get("/search", async function (req, res, next) {
   try {
     const { q } = req.query;
