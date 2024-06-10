@@ -9,8 +9,9 @@ import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 
-export default function Calendar() {
-  const [workouts, setWorkouts] = useState([]); // Stores all workouts data
+export default function Calendar({ userWorkouts }) {
+  // const [userWorkouts, setUserWorkouts] = useState([]);
+  const [sentWorkouts, setSentWorkouts] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]); // Stores formatted event data
   const [curYear, setCurYear] = useState(null); // Year for filtering events
   const [curMonth, setCurMonth] = useState(null); // Month for filtering events
@@ -25,39 +26,40 @@ export default function Calendar() {
   }, [calendarEvents, curMonth, curYear]);
   // console.log("These is my events", calendarEvents);
 
-  useEffect(() => {
-    async function fetchAllWorkouts() {
-      try {
-        const response = await fetch("/api/workouts", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
+  // useEffect(() => {
+  //   async function fetchAllWorkouts() {
+  //     try {
+  //       const response = await fetch("/api/workouts", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           authorization: "Bearer " + localStorage.getItem("token"),
+  //         },
+  //       });
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Fetched all workouts:", data);
-          setWorkouts(data);
-        } else {
-          console.error("Failed to fetch workouts:", response.statusText);
-        }
-      } catch (err) {
-        console.error("Error fetching workouts:", err);
-      }
-    }
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         console.log("Fetched all workouts:", data);
+  //         setUserWorkouts(data.userWorkouts);
+  //         setSentWorkouts(data.sentWorkouts);
+  //       } else {
+  //         console.error("Failed to fetch workouts:", response.statusText);
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching workouts:", err);
+  //     }
+  //   }
 
-    fetchAllWorkouts();
-  }, []);
+  //   fetchAllWorkouts();
+  // }, []);
 
   // Fetch workout details by ID
   useEffect(() => {
     async function fetchWorkoutDetails() {
-      if (workouts.length === 0) return; // Skip if no workouts
+      if (userWorkouts.length === 0) return; // Skip if no workouts
 
       const workoutEvents = [];
-      for (const workout of workouts) {
+      for (const workout of userWorkouts) {
         try {
           const response = await fetch(`/api/workouts/${workout.id}`);
           if (response.ok) {
@@ -88,7 +90,7 @@ export default function Calendar() {
     }
 
     fetchWorkoutDetails();
-  }, [workouts]);
+  }, [userWorkouts]);
 
   // Filter events for the current month.
   // Gives you back an array of the events that are planned for the month!

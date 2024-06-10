@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 
 export default function profile() {
   const [userData, setUserData] = useState(null);
+  const [userWorkouts, setUserWorkouts] = useState([]);
+  const [sentWorkouts, setSentWorkouts] = useState([]);
 
   //fetching userdata from backend
   const fetchUserData = async () => {
@@ -23,7 +25,57 @@ export default function profile() {
   };
 
   useEffect(() => {
+    async function fetchAllWorkouts() {
+      try {
+        const response = await fetch("/api/workouts", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched all workouts:", data);
+          setUserWorkouts(data.userWorkouts);
+          setSentWorkouts(data.sentWorkouts);
+        } else {
+          console.error("Failed to fetch workouts:", response.statusText);
+        }
+      } catch (err) {
+        console.error("Error fetching workouts:", err);
+      }
+    }
+
+    fetchAllWorkouts();
+  }, []);
+
+  //fetch workouts sent by users to backend
+  // const fetchSentWorkouts = async () => {
+  //   try {
+  //     //fetch to collect workouts sent to a user
+  //     const response = await fetch("/api/workouts", {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch sent workouts");
+  //     }
+  //     const data = await response.json();
+  //     return data.sentWorkouts;
+  //   } catch (err) {
+  //     console.error("Error fetching sent workouts:", err);
+  //     return [];
+  //   }
+  // };
+
+  useEffect(() => {
+    //fetch user data and sent workouts when the component mounts
     fetchUserData();
+    // fetchSentWorkouts();
   }, []);
 
   return (
@@ -44,7 +96,7 @@ export default function profile() {
         <Routes>
           <Route path="/Calendar" element={<Calendar />} />
         </Routes>
-        <Calendar />
+        <Calendar userWorkouts={userWorkouts} />
         <div className="workout-call-to-action">
           <p>Actually, I want to</p>
           <Link to="/Buildyourworkout" className="workout-now-button">
@@ -52,7 +104,14 @@ export default function profile() {
           </Link>
         </div>
       </div>
-      <h3 className="text-start">Workouts sent by friends:</h3>
+      <h3 className="text-start">Workouts sent to you by friends:</h3>
+      <ul>
+        {sentWorkouts.map((workout) => (
+          <li key={workout.id}>
+            {workout.sender_id} has sent you a workout, check it out!
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

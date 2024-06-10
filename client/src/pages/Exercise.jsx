@@ -103,10 +103,10 @@ const Exercise = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authorization: "Bearer" + localStorage.getItem("token"),
+          authorization: "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify({
-          workout_id: exercise.current.id,
+          workout_id: exercise.current.workout_id,
           target_user_id: selectedUser.id,
         }),
       });
@@ -161,7 +161,7 @@ const Exercise = () => {
         )}
         <button
           className="btn btn-primary"
-          onClick={() => handleNextExercise(user)}
+          onClick={() => handleNextExercise()}
         >
           {currentExerciseIndex === totalExercises - 1
             ? "Done! Go to Profile."

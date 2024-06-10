@@ -81,7 +81,7 @@ export default function Workout() {
       }
       const result = await response.json();
       console.log("Success;", result);
-      navigate(`/Calendar`);
+      navigate(`/Profile`);
     } catch (error) {
       console.error("Error saving workout:", error);
     }
@@ -119,7 +119,6 @@ export default function Workout() {
     }
   };
 
-
   const handleNextExercise = () => {
     if (currentExerciseIndex < exercises.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
@@ -127,7 +126,6 @@ export default function Workout() {
       console.log("You're done!");
     }
   };
-
 
   return (
     <div className="container">
