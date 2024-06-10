@@ -34,10 +34,6 @@
   }
 }
 
-.card {
-  padding: 2em;
-}
-
 .read-the-docs {
   color: #888;
 }
@@ -73,4 +69,20 @@
 
 .text-dark-grey {
   color: #343a40; /* Dark grey text color */
+}
+
+.card {
+  padding: 2em;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.datepicker {
+  padding: 0;
+  margin: 0;
 }

@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
+import Sidebar from "./pages/Sidebar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/authContext";
 import "./App.css";
@@ -39,4 +40,3 @@ function App() {
 }
 
 export default App;
-
