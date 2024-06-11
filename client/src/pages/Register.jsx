@@ -126,7 +126,7 @@ export default function Register() {
         />
         {errors.password && <span className="error">{errors.password}</span>}
         <br />
-        <button type="submit">Register</button>
+        <button  type="submit">Register</button>
       </form>
     </div>
   );

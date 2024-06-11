@@ -8,8 +8,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import Sidebar from "../pages/Sidebar";
 
-export default function Calendar() {
-  const [workouts, setWorkouts] = useState([]); // Stores all workouts data
+export default function Calendar({ userWorkouts }) {
+  // const [userWorkouts, setUserWorkouts] = useState([]);
+  const [sentWorkouts, setSentWorkouts] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]); // Stores formatted event data
   const [curYear, setCurYear] = useState(null); // Year for filtering events
   const [curMonth, setCurMonth] = useState(null); // Month for filtering events
@@ -23,6 +24,7 @@ export default function Calendar() {
     });
   }, [calendarEvents, curMonth, curYear]);
   // console.log("These is my events", calendarEvents);
+
 
   // Fetches all workouts data from the backend on component mount.
   useEffect(() => {
@@ -51,14 +53,15 @@ export default function Calendar() {
     fetchAllWorkouts();
   }, []);
 
+
   // Fetch workout details by ID
   // Fetches detailed workout data when the workouts state updates.
   useEffect(() => {
     async function fetchWorkoutDetails() {
-      if (workouts.length === 0) return; // Skip if no workouts
+      if (userWorkouts.length === 0) return; // Skip if no workouts
 
       const workoutEvents = [];
-      for (const workout of workouts) {
+      for (const workout of userWorkouts) {
         try {
           const response = await fetch(`/api/workouts/${workout.id}`);
           if (response.ok) {
@@ -89,7 +92,7 @@ export default function Calendar() {
     }
 
     fetchWorkoutDetails();
-  }, [workouts]);
+  }, [userWorkouts]);
 
   // Filter events for the current month.
   // Gives you back an array of the events that are planned for the month!

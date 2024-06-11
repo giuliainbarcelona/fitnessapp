@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
@@ -9,6 +9,9 @@ const Exercise = () => {
   const navigate = useNavigate();
   const today = new Date().toLocaleDateString();
   const totalExercises = exercise.exercises?.length;
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     const fetchExercise = async () => {
@@ -64,6 +67,61 @@ const Exercise = () => {
     }
   };
 
+  const handleSearchChange = async (e) => {
+    setSearchQuery(e.target.value);
+    if (e.target.value) {
+      await performSearch(e.target.value);
+    } else {
+      setSearchResults([]);
+    }
+  };
+
+  const performSearch = async (query) => {
+    try {
+      const response = await fetch(`/api/users/search?q=${query}`);
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (err) {
+      console.error("Error fetching search results", err);
+    }
+  };
+
+  const handleUserSelect = async (user) => {
+    console.log("User selected:", user);
+    setSelectedUser(user);
+    setSearchQuery(user.username);
+    setSearchResults([]);
+  };
+
+  const handleSendWorkout = async () => {
+    if (!selectedUser) {
+      alert("Please select user to send workout to");
+      return;
+    }
+    try {
+      const response = await fetch("/api/workouts/duplicate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          workout_id: exercise.current.workout_id,
+          target_user_id: selectedUser.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error response");
+      }
+      const result = await response.json();
+      alert("Workout sent successfully!");
+    } catch (err) {
+      console.error("Error sending workout");
+      alert("failed to send workout");
+    }
+  };
+
   return (
     <div className="container">
       {/* Exercise details */}
@@ -72,10 +130,10 @@ const Exercise = () => {
         <h1>Here is your exercise!</h1>
         <h3>Today's Date: {today}</h3>
 
-        <h2 class="text-start">Name: {exercise.current?.name}</h2>
-        <h4 class="text-start">Type: {exercise.current?.type}</h4>
-        <h4 class="text-start">Muscle: {exercise.current?.muscle}</h4>
-        <h4 class="text-start">Equipment: {exercise.current?.equipment}</h4>
+        <h2 className="text-start">Name: {exercise.current?.name}</h2>
+        <h4 className="text-start">Type: {exercise.current?.type}</h4>
+        <h4 className="text-start">Muscle: {exercise.current?.muscle}</h4>
+        <h4 className="text-start">Equipment: {exercise.current?.equipment}</h4>
         <div className="border p-3 bg-faded-blue text-dark-grey">
           <p>Instructions: {exercise.current?.instructions}</p>
         </div>
@@ -101,15 +159,43 @@ const Exercise = () => {
             Previous Exercise
           </button>
         )}
-        <button className="btn btn-primary" onClick={handleNextExercise}>
+        <button
+          className="btn btn-primary"
+          onClick={() => handleNextExercise()}
+        >
           {currentExerciseIndex === totalExercises - 1
             ? "Done! Go to Profile."
             : "Next Exercise"}
         </button>
-        <h5>Want to send this workout to a friend?</h5>
-        <input type="text" placeholder="type username here"></input>
-        <br/>
-        <button className="btn btn-info">Send</button>
+        <br />
+        <br />
+        <h5 className="text-start">Want to send this workout to a friend?</h5>
+        <div className="position-relative">
+          <input
+            className="text-start form-control"
+            style={{ width: "200px" }}
+            type="text"
+            placeholder="type username here"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          {searchResults.length > 0 && (
+            <ul className="dropdown">
+              {searchResults.map((user) => (
+                <li key={user.id} onClick={() => handleUserSelect(user)}>
+                  {user.username}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <br />
+        </div>
+        <div className="text-start">
+          <button className="btn btn-info" onClick={handleSendWorkout}>
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
