@@ -11,9 +11,67 @@ let group;
   group = d3.group;
 })();
 
+router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
+  try {
+    const user_id = req.user_id; // comes from the guard
+    console.log("User ID:", user_id);
 
+    // Combined SQL query to get workout and exercise details
+    const combinedQuery = `
+      SELECT 
+        workouts.id AS workout_id, 
+        workouts.user_id,
+        workouts.date, 
+        workouts.sender_id,
+        users.username,
+        exercises.id AS exercise_id,
+        exercises.muscle
+      FROM workouts
+      LEFT JOIN users ON users.id = workouts.sender_id
+      LEFT JOIN exercises ON workouts.id = exercises.workout_id
+      WHERE workouts.user_id = ${user_id}
+    `;
 
+    const result = await db(combinedQuery);
 
+    // Grouping by workout_id and formatting the data
+    const workouts = {};
+    result.data.forEach((row) => {
+      const workout_id = row.workout_id;
+      if (!workouts[workout_id]) {
+        workouts[workout_id] = {
+          user_id: row.user_id,
+          id: row.workout_id,
+          date: row.date,
+          sender_id: row.sender_id,
+          username: row.username,
+          exercises: [],
+        };
+      }
+      if (row.exercise_id) {
+        workouts[workout_id].exercises.push({
+          exercise_id: row.exercise_id,
+          muscle: row.muscle,
+        });
+      }
+    });
+
+    // Converting workouts object to an array
+    const formattedData = Object.values(workouts);
+
+    res.status(200).send({
+      userWorkouts: formattedData.filter(
+        (workout) => workout.sender_id === null
+      ),
+      sentWorkouts: formattedData.filter(
+        (workout) => workout.sender_id !== null
+      ),
+    });
+  } catch (err) {
+    console.error("Error fetching workouts:", err);
+    res.status(500).send({ message: err.message });
+  }
+});
 
 router.get("/:workout_id", async function (req, res, next) {
   try {

@@ -21,31 +21,84 @@ export default function Workout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function getSavedWorkout() {
-      try {
-        const muscle = searchParams.get("muscle");
-        const difficulty = searchParams.get("difficulty");
-        const type = searchParams.get("type");
+    async function fetchWorkouts() {
+      const muscle = searchParams.get("muscle");
+      const difficulty = searchParams.get("difficulty");
+      const type = searchParams.get("type");
 
-        const response = await fetch(
-          `${apiurl}?muscle=${muscle}&difficulty=${difficulty}&type=${type}`,
-          {
+      if (muscle && difficulty && type) {
+        // Fetch saved workouts
+        try {
+          const response = await fetch(
+            `${apiurl}?muscle=${muscle}&difficulty=${difficulty}&type=${type}`,
+            {
+              headers: {
+                "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
+              },
+            }
+          );
+
+          const exercisesData = await response.json();
+          setExercises(exercisesData.slice(0, 5)); // Limits the amount of workouts that will render
+          console.log(exercisesData); // This is an array of objects!
+        } catch (err) {
+          console.error("Error fetching saved workouts:", err);
+        }
+      } else {
+        // Fetch sent workouts
+        try {
+          const response = await fetch("/api/workouts", {
+            method: "GET",
             headers: {
-              "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
+              "Content-Type": "application/json",
+              authorization: "Bearer " + localStorage.getItem("token"),
             },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Fetched SENT workouts:", data);
+            setSentWorkouts(data.sentWorkouts);
+          } else {
+            console.error(
+              "Failed to fetch any sent workouts:",
+              response.statusText
+            );
           }
-        );
-
-        const exercises = await response.json();
-        setExercises(exercises.slice(0, 5)); // Limits the amout of WOs that will render
-        console.log(exercises); // This is an array of objects!
-        console.log(exercises.length); // Gets you back the number of workouts
-      } catch (err) {
-        console.log("Error message here", err);
+        } catch (err) {
+          console.error("Error fetching sent workouts:", err);
+        }
       }
     }
-    getSavedWorkout();
+
+    fetchWorkouts();
   }, [searchParams]);
+
+  // useEffect(() => {
+  //   async function getSavedWorkout() {
+  //     try {
+  //       const muscle = searchParams.get("muscle");
+  //       const difficulty = searchParams.get("difficulty");
+  //       const type = searchParams.get("type");
+
+  //       const response = await fetch(
+  //         `${apiurl}?muscle=${muscle}&difficulty=${difficulty}&type=${type}`,
+  //         {
+  //           headers: {
+  //             "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
+  //           },
+  //         }
+  //       );
+
+  //       const exercises = await response.json();
+  //       setExercises(exercises.slice(0, 5)); // Limits the amout of WOs that will render
+  //       console.log(exercises); // This is an array of objects!
+  //       console.log(exercises.length); // Gets you back the number of workouts
+  //     } catch (err) {
+  //       console.log("Error message here", err);
+  //     }
+  //   }
+  //   getSavedWorkout();
+  // }, [searchParams]);
 
   //CHAR IS MAKING THIS TO CONDITIONALLY BE RENDERED IF THE WORKOUT WAS SENT BY ANOTHER USER LOL GOOD LUCK
   // useEffect(() => {
@@ -64,7 +117,7 @@ export default function Workout() {
   //         setSentWorkouts(data.sentWorkouts);
   //       } else {
   //         console.error(
-  //           "Failed to getch any sent workouts:",
+  //           "Failed to fetch any sent workouts:",
   //           response.statusText
   //         );
   //       }
