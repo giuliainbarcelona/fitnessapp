@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import Sidebar from "./pages/Sidebar";
+import SentWorkouts from "./pages/SentWorkouts";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/authContext";
 import "./App.css";
@@ -32,6 +33,7 @@ function App() {
             <Route path="/Login" element={<Login />} />
             <Route path="/Profile" element={<Profile />} />
             <Route path="/Register" element={<Register />} />
+            <Route path="/SentWorkouts" element={<SentWorkouts />} />
           </Routes>
         </div>
       </AuthProvider>

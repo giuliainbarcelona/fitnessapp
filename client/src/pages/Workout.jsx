@@ -16,11 +16,12 @@ export default function Workout() {
   const [exercises, setExercises] = useState([]);
   const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
   const [workoutSaved, setWorkoutSaved] = useState(false); // New state to render the WO
+  const [sentWorkouts, setSentWorkouts] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function getWorkout() {
+    async function getSavedWorkout() {
       try {
         const muscle = searchParams.get("muscle");
         const difficulty = searchParams.get("difficulty");
@@ -43,8 +44,36 @@ export default function Workout() {
         console.log("Error message here", err);
       }
     }
-    getWorkout();
+    getSavedWorkout();
   }, [searchParams]);
+
+  //CHAR IS MAKING THIS TO CONDITIONALLY BE RENDERED IF THE WORKOUT WAS SENT BY ANOTHER USER LOL GOOD LUCK
+  // useEffect(() => {
+  //   async function fetchSentWorkouts() {
+  //     try {
+  //       const response = await fetch("/api/workouts", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           authorization: "Bearer " + localStorage.getItem("token"),
+  //         },
+  //       });
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         console.log("Fetched SENT workouts:", data);
+  //         setSentWorkouts(data.sentWorkouts);
+  //       } else {
+  //         console.error(
+  //           "Failed to getch any sent workouts:",
+  //           response.statusText
+  //         );
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching sent workouts", err);
+  //     }
+  //   }
+  //   fetchSentWorkouts();
+  // }, []);
 
   const handleDateSelection = (newValue) => {
     setSelectedDate(newValue);
