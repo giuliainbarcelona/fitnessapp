@@ -125,7 +125,7 @@ const Exercise = () => {
   return (
     <div className="container">
       {/* Exercise details */}
-      next exercise id: {nextExerciseId}
+      {/* next exercise id: {nextExerciseId} */}
       <div className="exercise-details">
         <h1>Here is your exercise!</h1>
         <h3>Today's Date: {today}</h3>

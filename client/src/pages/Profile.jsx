@@ -51,7 +51,6 @@ export default function Profile() {
     fetchAllWorkouts();
   }, []);
 
-
   useEffect(() => {
     //fetch user data and sent workouts when the component mounts
     fetchUserData();
@@ -126,12 +125,6 @@ export default function Profile() {
           <Route path="/Calendar" element={<Calendar />} />
         </Routes>
         <Calendar userWorkouts={userWorkouts} />
-        <div className="workout-call-to-action">
-          <p>Actually, I want to</p>
-          <Link to="/Buildyourworkout" className="workout-now-button">
-            ..WORKOUT NOW
-          </Link>
-        </div>
       </div>
       <h3 className="text-start">Workouts sent to you by friends:</h3>
       <ul>
