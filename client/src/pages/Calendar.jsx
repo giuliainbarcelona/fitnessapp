@@ -25,7 +25,6 @@ export default function Calendar({ userWorkouts }) {
   }, [calendarEvents, curMonth, curYear]);
   // console.log("These is my events", calendarEvents);
 
-
   // Fetches all workouts data from the backend on component mount.
   useEffect(() => {
     async function fetchAllWorkouts() {
@@ -52,7 +51,6 @@ export default function Calendar({ userWorkouts }) {
 
     fetchAllWorkouts();
   }, []);
-
 
   // Fetch workout details by ID
   // Fetches detailed workout data when the workouts state updates.
