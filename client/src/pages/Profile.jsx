@@ -107,8 +107,9 @@ export default function profile() {
       <h3 className="text-start">Workouts sent to you by friends:</h3>
       <ul>
         {sentWorkouts.map((workout) => (
-          <li key={workout.id}>
-            {workout.sender_id} has sent you a workout, check it out!
+          <li key={workout.id} className="text-start">
+            <em>The user:**{workout.sender_id}**</em> has sent you a workout,
+            check it out!
           </li>
         ))}
       </ul>
