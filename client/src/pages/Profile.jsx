@@ -23,7 +23,6 @@ export default function Profile() {
       console.error("Error fetching user data:", err);
     }
   };
-
   useEffect(() => {
     async function fetchAllWorkouts() {
       try {
@@ -34,7 +33,6 @@ export default function Profile() {
             authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
-
         if (response.ok) {
           const data = await response.json();
           console.log("Fetched all workouts:", data);
@@ -47,16 +45,13 @@ export default function Profile() {
         console.error("Error fetching workouts:", err);
       }
     }
-
     fetchAllWorkouts();
   }, []);
-
   useEffect(() => {
     //fetch user data and sent workouts when the component mounts
     fetchUserData();
     // fetchSentWorkouts();
   }, []);
-
   const renderProfileModal = () => {
     return (
       <div
@@ -94,7 +89,6 @@ export default function Profile() {
       </div>
     );
   };
-
   return (
     <>
       {renderProfileModal()}
@@ -117,26 +111,20 @@ export default function Profile() {
           to="/Buildyourworkout"
           className="btn btn-primary exercise-btn-profile"
         >
-          Exercise now 💪🏽
+          Exercise now 💪
         </Link>
       </div>
       <div>
         <Routes>
           <Route path="/Calendar" element={<Calendar />} />
         </Routes>
-        <Calendar userWorkouts={userWorkouts} sentWorkouts={sentWorkouts} />
-        <div className="workout-call-to-action">
-          <p>Actually, I want to</p>
-          <Link to="/Buildyourworkout" className="workout-now-button">
-            ..WORKOUT NOW
-          </Link>
-        </div>
+        <Calendar userWorkouts={userWorkouts} />
       </div>
       <h3 className="text-start">Workouts sent to you by friends:</h3>
       <ul>
         {sentWorkouts.map((workout) => (
           <li key={workout.id} className="text-start">
-            <em>The user:**{workout.username}**</em> has sent you a workout,
+            <em>The user:**{workout.sender_id}**</em> has sent you a workout,
             check it out!
           </li>
         ))}

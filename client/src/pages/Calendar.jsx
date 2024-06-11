@@ -7,14 +7,12 @@ import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import Sidebar from "../pages/Sidebar";
-
-export default function Calendar({ userWorkouts, sentWorkouts }) {
+export default function Calendar({ userWorkouts }) {
   // const [userWorkouts, setUserWorkouts] = useState([]);
-
+  const [sentWorkouts, setSentWorkouts] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]); // Stores formatted event data
   const [curYear, setCurYear] = useState(null); // Year for filtering events
   const [curMonth, setCurMonth] = useState(null); // Month for filtering events
-
   const monthEvents = useMemo(() => {
     return calendarEvents.filter((event) => {
       return (
@@ -24,32 +22,35 @@ export default function Calendar({ userWorkouts, sentWorkouts }) {
     });
   }, [calendarEvents, curMonth, curYear]);
   // console.log("These is my events", calendarEvents);
-
-  // const calendarEvents = useMemo(() => {
-  //   return workoutEvents.filter((event) => {
-  //     return (
-  //       new Date(new Date(workout.date).setHours(9, 0, 0, 0)),
-  //       new Date(new Date(workout.date).setHours(9, 0, 0, 0))
-  //     );
-  //   });
-  // }, [workoutEvents]);
-
-  // const monthEvents = useMemo(() => {
-  //   return calendarEvents.filter((event) => {
-  //     return (
-  //       new Date(event.start).getFullYear() === curYear &&
-  //       new Date(event.start).getMonth() === curMonth
-  //     );
-  //   });
-  // }, [calendarEvents, curMonth, curYear]);
-  // // console.log("These is my events", calendarEvents);
-
+  // Fetches all workouts data from the backend on component mount.
+  useEffect(() => {
+    async function fetchAllWorkouts() {
+      try {
+        const response = await fetch("/api/workouts", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          // console.log("Fetched all workouts:", data);
+          setWorkouts(data);
+        } else {
+          console.error("Failed to fetch workouts:", response.statusText);
+        }
+      } catch (err) {
+        console.error("Error fetching workouts:", err);
+      }
+    }
+    fetchAllWorkouts();
+  }, []);
   // Fetch workout details by ID
   // Fetches detailed workout data when the workouts state updates.
   useEffect(() => {
     async function fetchWorkoutDetails() {
       if (userWorkouts.length === 0) return; // Skip if no workouts
-
       const workoutEvents = [];
       for (const workout of userWorkouts) {
         try {
@@ -58,7 +59,6 @@ export default function Calendar({ userWorkouts, sentWorkouts }) {
             const exerciseData = await response.json();
             const firstMuscle = exerciseData[0].exercises[0].muscle;
             const exerciseId = exerciseData[0].exercises[0].exercise_id; // This is my exercise id that I need
-
             workoutEvents.push({
               id: workout.id,
               title: "Workout",
@@ -80,17 +80,14 @@ export default function Calendar({ userWorkouts, sentWorkouts }) {
       setCalendarEvents(workoutEvents);
       // console.log("All workout events set:", workoutEvents); // muscle is still undefined.
     }
-
     fetchWorkoutDetails();
   }, [userWorkouts]);
-
   // Filter events for the current month.
   // Gives you back an array of the events that are planned for the month!
   const handleMonthChange = (viewInfo) => {
     setCurYear(viewInfo.view.currentStart.getFullYear());
     setCurMonth(viewInfo.view.currentStart.getMonth());
   };
-
   const updateEvent = async (updatedEvent) => {
     const formattedDate = new Date(updatedEvent.start)
       .toISOString()
@@ -115,17 +112,14 @@ export default function Calendar({ userWorkouts, sentWorkouts }) {
       console.error("Error updating event:", err);
     }
   };
-
   // Handles the event change (drag and drop) and updates the state and serve
   const handleEventChange = (changeInfo) => {
     const start = new Date(changeInfo.event.start);
     start.setHours(9, 0, 0, 0);
-
     const end = changeInfo.event.end ? new Date(changeInfo.event.end) : null;
     if (end) {
       end.setHours(9, 0, 0, 0);
     }
-
     const updatedEvent = {
       ...changeInfo.event.extendedProps,
       id: changeInfo.event.id,
@@ -139,7 +133,6 @@ export default function Calendar({ userWorkouts, sentWorkouts }) {
       )
     );
   };
-
   return (
     <div className="container-fluid">
       <br />
@@ -170,7 +163,6 @@ export default function Calendar({ userWorkouts, sentWorkouts }) {
             datesSet={handleMonthChange}
           />
         </div>
-
         <div className="row justify-content-center">
           <div className="col-md-10 mt-4">
             <Sidebar
