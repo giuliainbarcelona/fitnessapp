@@ -51,7 +51,6 @@ export default function Profile() {
     fetchAllWorkouts();
   }, []);
 
-
   useEffect(() => {
     //fetch user data and sent workouts when the component mounts
     fetchUserData();
@@ -125,7 +124,7 @@ export default function Profile() {
         <Routes>
           <Route path="/Calendar" element={<Calendar />} />
         </Routes>
-        <Calendar userWorkouts={userWorkouts} />
+        <Calendar userWorkouts={userWorkouts} sentWorkouts={sentWorkouts} />
         <div className="workout-call-to-action">
           <p>Actually, I want to</p>
           <Link to="/Buildyourworkout" className="workout-now-button">
@@ -137,7 +136,7 @@ export default function Profile() {
       <ul>
         {sentWorkouts.map((workout) => (
           <li key={workout.id} className="text-start">
-            <em>The user:**{workout.sender_id}**</em> has sent you a workout,
+            <em>The user:**{workout.username}**</em> has sent you a workout,
             check it out!
           </li>
         ))}

@@ -8,9 +8,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import Sidebar from "../pages/Sidebar";
 
-export default function Calendar({ userWorkouts }) {
+export default function Calendar({ userWorkouts, sentWorkouts }) {
   // const [userWorkouts, setUserWorkouts] = useState([]);
-  const [sentWorkouts, setSentWorkouts] = useState([]);
+
   const [calendarEvents, setCalendarEvents] = useState([]); // Stores formatted event data
   const [curYear, setCurYear] = useState(null); // Year for filtering events
   const [curMonth, setCurMonth] = useState(null); // Month for filtering events
@@ -25,34 +25,24 @@ export default function Calendar({ userWorkouts }) {
   }, [calendarEvents, curMonth, curYear]);
   // console.log("These is my events", calendarEvents);
 
+  // const calendarEvents = useMemo(() => {
+  //   return workoutEvents.filter((event) => {
+  //     return (
+  //       new Date(new Date(workout.date).setHours(9, 0, 0, 0)),
+  //       new Date(new Date(workout.date).setHours(9, 0, 0, 0))
+  //     );
+  //   });
+  // }, [workoutEvents]);
 
-  // Fetches all workouts data from the backend on component mount.
-  useEffect(() => {
-    async function fetchAllWorkouts() {
-      try {
-        const response = await fetch("/api/workouts", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          // console.log("Fetched all workouts:", data);
-          setWorkouts(data);
-        } else {
-          console.error("Failed to fetch workouts:", response.statusText);
-        }
-      } catch (err) {
-        console.error("Error fetching workouts:", err);
-      }
-    }
-
-    fetchAllWorkouts();
-  }, []);
-
+  // const monthEvents = useMemo(() => {
+  //   return calendarEvents.filter((event) => {
+  //     return (
+  //       new Date(event.start).getFullYear() === curYear &&
+  //       new Date(event.start).getMonth() === curMonth
+  //     );
+  //   });
+  // }, [calendarEvents, curMonth, curYear]);
+  // // console.log("These is my events", calendarEvents);
 
   // Fetch workout details by ID
   // Fetches detailed workout data when the workouts state updates.
