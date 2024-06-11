@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Calendar from "../pages/Calendar";
 import { Link } from "react-router-dom";
 
-export default function profile() {
+export default function Profile() {
   const [userData, setUserData] = useState(null);
   const [userWorkouts, setUserWorkouts] = useState([]);
   const [sentWorkouts, setSentWorkouts] = useState([]);
 
-  //fetching userdata from backend
+  // Fetching user data from the backend
   const fetchUserData = async () => {
     try {
       const response = await fetch("/api/auth/profile", {
@@ -51,26 +51,6 @@ export default function profile() {
     fetchAllWorkouts();
   }, []);
 
-  //fetch workouts sent by users to backend
-  // const fetchSentWorkouts = async () => {
-  //   try {
-  //     //fetch to collect workouts sent to a user
-  //     const response = await fetch("/api/workouts", {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch sent workouts");
-  //     }
-  //     const data = await response.json();
-  //     return data.sentWorkouts;
-  //   } catch (err) {
-  //     console.error("Error fetching sent workouts:", err);
-  //     return [];
-  //   }
-  // };
 
   useEffect(() => {
     //fetch user data and sent workouts when the component mounts
@@ -78,21 +58,70 @@ export default function profile() {
     // fetchSentWorkouts();
   }, []);
 
+  const renderProfileModal = () => {
+    return (
+      <div
+        className="modal fade"
+        id="profileModal"
+        tabIndex="-1"
+        aria-labelledby="profileModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="profileModalLabel">
+                Your Profile
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              {userData ? (
+                <div>
+                  <p>Username: {userData.username}</p>
+                  <p>Email: {userData.email}</p>
+                </div>
+              ) : (
+                <p>Loading user data...</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
+      {renderProfileModal()}
       <div>
-        <h1>Hi, welcome to your beautiful profile</h1>
-        {userData ? (
-          <div>
-            <p>Username: {userData.username}</p>
-            <p>Email: {userData.email}</p>
-          </div>
-        ) : (
-          <p>Loading user data...</p>
-        )}
+        <br />
+        <h1>
+          Hi {userData ? userData.username : ""}, welcome to your beautiful
+          profile
+        </h1>
+        <br />
+        <button
+          type="button"
+          className="btn btn-primary profile-btn-profile"
+          data-bs-toggle="modal"
+          data-bs-target="#profileModal"
+        >
+          View Profile Details
+        </button>
+        <Link
+          to="/Buildyourworkout"
+          className="btn btn-primary exercise-btn-profile"
+        >
+          Exercise now 💪🏽
+        </Link>
       </div>
       <div>
-        <p>Access your calendar here:</p>
         <Routes>
           <Route path="/Calendar" element={<Calendar />} />
         </Routes>

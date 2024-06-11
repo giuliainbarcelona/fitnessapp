@@ -15,6 +15,7 @@ export default function Workout() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [exercises, setExercises] = useState([]);
   const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
+  const [workoutSaved, setWorkoutSaved] = useState(false); // New state to render the WO
 
   const navigate = useNavigate();
 
@@ -81,7 +82,9 @@ export default function Workout() {
       }
       const result = await response.json();
       console.log("Success;", result);
-      navigate(`/Profile`);
+      // alert("Your workout has been saved");
+      setWorkoutSaved(true);
+      // navigate(`/Calendar`);
     } catch (error) {
       console.error("Error saving workout:", error);
     }
@@ -163,19 +166,35 @@ export default function Workout() {
           <br />
           <div className="card">
             <div className="card-body">
-              <p>Choose your workout day</p>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DatePicker"]}>
-                  <DatePicker
-                    label="Basic date picker"
-                    onChange={(newValue) => handleDateSelection(newValue)}
-                  />
-                </DemoContainer>
-              </LocalizationProvider>
-              <br />
-              <Button variant="contained" color="primary" onClick={handleSave}>
-                Save
-              </Button>
+              {!workoutSaved ? (
+                <>
+                  <p>Choose your workout day</p>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        label="Basic date picker"
+                        className="datepicker"
+                        onChange={handleDateSelection}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                  <br />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <p>Your workout has been saved.</p>
+                  <p>
+                    You can see your full calendar <a href="/Calendar">here</a>.
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>

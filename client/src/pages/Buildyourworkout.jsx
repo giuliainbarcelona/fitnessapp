@@ -1,8 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Workout from "../pages/Workout";
-import { useLocation } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 export default function BuildYourWorkout() {
   const [inputCriteria, setInputCriteria] = useState({
@@ -104,7 +103,9 @@ export default function BuildYourWorkout() {
         </select>
         <br />
         <br />
-        <button type="submit">Submit</button>
+        <Button type="submit" variant="contained" color="primary">
+          Submit
+        </Button>
       </form>
     </>
   );

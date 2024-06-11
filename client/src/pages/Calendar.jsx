@@ -2,12 +2,11 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { formatDate } from "@fullcalendar/core";
 import { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
+import Sidebar from "../pages/Sidebar";
 
 export default function Calendar({ userWorkouts }) {
   // const [userWorkouts, setUserWorkouts] = useState([]);
@@ -26,34 +25,37 @@ export default function Calendar({ userWorkouts }) {
   }, [calendarEvents, curMonth, curYear]);
   // console.log("These is my events", calendarEvents);
 
-  // useEffect(() => {
-  //   async function fetchAllWorkouts() {
-  //     try {
-  //       const response = await fetch("/api/workouts", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           authorization: "Bearer " + localStorage.getItem("token"),
-  //         },
-  //       });
 
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         console.log("Fetched all workouts:", data);
-  //         setUserWorkouts(data.userWorkouts);
-  //         setSentWorkouts(data.sentWorkouts);
-  //       } else {
-  //         console.error("Failed to fetch workouts:", response.statusText);
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching workouts:", err);
-  //     }
-  //   }
+  // Fetches all workouts data from the backend on component mount.
+  useEffect(() => {
+    async function fetchAllWorkouts() {
+      try {
+        const response = await fetch("/api/workouts", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
 
-  //   fetchAllWorkouts();
-  // }, []);
+        if (response.ok) {
+          const data = await response.json();
+          // console.log("Fetched all workouts:", data);
+          setWorkouts(data);
+        } else {
+          console.error("Failed to fetch workouts:", response.statusText);
+        }
+      } catch (err) {
+        console.error("Error fetching workouts:", err);
+      }
+    }
+
+    fetchAllWorkouts();
+  }, []);
+
 
   // Fetch workout details by ID
+  // Fetches detailed workout data when the workouts state updates.
   useEffect(() => {
     async function fetchWorkoutDetails() {
       if (userWorkouts.length === 0) return; // Skip if no workouts
@@ -86,7 +88,7 @@ export default function Calendar({ userWorkouts }) {
         }
       }
       setCalendarEvents(workoutEvents);
-      console.log("All workout events set:", workoutEvents); // muscle is still undefined.
+      // console.log("All workout events set:", workoutEvents); // muscle is still undefined.
     }
 
     fetchWorkoutDetails();
@@ -113,9 +115,9 @@ export default function Calendar({ userWorkouts }) {
         body: JSON.stringify({ date: formattedDate }),
       });
       // Gives you back an array with the event
-      console.log("This is my updatedEvent", updatedEvent);
+      // console.log("This is my updatedEvent", updatedEvent);
       if (response.ok) {
-        console.log("Event updated successfully");
+        // console.log("Event updated successfully");
       } else {
         console.error("Failed to update event:", response.statusText);
       }
@@ -124,6 +126,7 @@ export default function Calendar({ userWorkouts }) {
     }
   };
 
+  // Handles the event change (drag and drop) and updates the state and serve
   const handleEventChange = (changeInfo) => {
     const start = new Date(changeInfo.event.start);
     start.setHours(9, 0, 0, 0);
@@ -149,8 +152,10 @@ export default function Calendar({ userWorkouts }) {
 
   return (
     <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-9">
+      <br />
+      <br />
+      <div className="row justify-content-center">
+        <div className="col-md-10">
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView={"dayGridMonth"}
@@ -160,10 +165,10 @@ export default function Calendar({ userWorkouts }) {
               center: "title",
               end: "dayGridMonth,timeGridWeek,timeGridDay",
             }}
-            height={"80vh"}
+            height={"70vh"}
             events={calendarEvents}
             eventDidMount={(info) => {
-              console.log("Event did mount:", info.event.extendedProps);
+              // console.log("Event did mount:", info.event.extendedProps);
               return new bootstrap.Popover(info.el, {
                 title: `Your ${info.event.extendedProps.muscle} workout`, // Access extendedProps for muscle, need to work here!!
                 placement: "auto",
@@ -175,66 +180,15 @@ export default function Calendar({ userWorkouts }) {
             datesSet={handleMonthChange}
           />
         </div>
-        <div className="col-md-3">
-          <Sidebar events={monthEvents} setCalendarEvents={setCalendarEvents} />
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function Sidebar({ events, setCalendarEvents }) {
-  function handleDelete(eventId) {
-    fetch(`/api/workouts/${eventId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Workout deleted successfully!");
-          setCalendarEvents((prevEvents) =>
-            prevEvents.filter((event) => event.id !== eventId)
-          );
-        } else {
-          console.error("Failed to delete workout:", response.statusText);
-        }
-      })
-      .catch((err) => {
-        console.error("Error deleting workout:", err);
-      });
-  }
-
-  return (
-    <div className="sidebar">
-      <br />
-      <h3>Summary for Current Month</h3>
-      <div className="row">
-        {events.map((event) => (
-          <div key={event.id} className="col-sm-6 mb-3">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">
-                  {formatDate(event.start, { month: "short", day: "numeric" })}
-                </h5>
-                <p className="card-text">{event.muscle}</p>
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDelete(event.id)}
-                >
-                  ❌
-                </button>
-                <br />
-                <br />
-                <button className="exercise-btn">
-                  <Link to={`/Exercises/${event.exerciseId}`}>🏋🏼‍♀️</Link>
-                </button>
-              </div>
-            </div>
+        <div className="row justify-content-center">
+          <div className="col-md-10 mt-4">
+            <Sidebar
+              events={monthEvents}
+              setCalendarEvents={setCalendarEvents}
+            />
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
