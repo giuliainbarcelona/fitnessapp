@@ -7,12 +7,29 @@ import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import Sidebar from "../pages/Sidebar";
-export default function Calendar({ userWorkouts }) {
+export default function Calendar({ userWorkouts, onDelete }) {
   // const [userWorkouts, setUserWorkouts] = useState([]);
   const [sentWorkouts, setSentWorkouts] = useState([]);
-  const [calendarEvents, setCalendarEvents] = useState([]); // Stores formatted event data
+  // const [calendarEvents, setCalendarEvents] = useState([]); // Stores formatted event data
   const [curYear, setCurYear] = useState(null); // Year for filtering events
   const [curMonth, setCurMonth] = useState(null); // Month for filtering events
+
+  const calendarEvents = useMemo(() => {
+    if (!userWorkouts || userWorkouts.length === 0) return [];
+    const workoutEvents = [];
+    for (const workout of userWorkouts) {
+      const start = new Date(workout.date);
+      const end = new Date(workout.date);
+      workoutEvents.push({
+        id: workout.id,
+        title: "Workout",
+        start: start,
+        end: end,
+      });
+    }
+    return workoutEvents;
+  }, [userWorkouts]);
+
   const monthEvents = useMemo(() => {
     return calendarEvents.filter((event) => {
       return (
@@ -24,66 +41,43 @@ export default function Calendar({ userWorkouts }) {
   // console.log("These is my events", calendarEvents);
 
   // Fetches all workouts data from the backend on component mount.
-  useEffect(() => {
-    async function fetchAllWorkouts() {
-      try {
-        const response = await fetch("/api/workouts", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          // console.log("Fetched all workouts:", data);
-          setWorkouts(data);
-        } else {
-          console.error("Failed to fetch workouts:", response.statusText);
-        }
-      } catch (err) {
-        console.error("Error fetching workouts:", err);
-      }
-    }
-    fetchAllWorkouts();
-  }, []);
 
   // Fetch workout details by ID
   // Fetches detailed workout data when the workouts state updates.
-  useEffect(() => {
-    async function fetchWorkoutDetails() {
-      if (userWorkouts.length === 0) return; // Skip if no workouts
-      const workoutEvents = [];
-      for (const workout of userWorkouts) {
-        try {
-          const response = await fetch(`/api/workouts/${workout.id}`);
-          if (response.ok) {
-            const exerciseData = await response.json();
-            const firstMuscle = exerciseData[0].exercises[0].muscle;
-            const exerciseId = exerciseData[0].exercises[0].exercise_id; // This is my exercise id that I need
-            workoutEvents.push({
-              id: workout.id,
-              title: "Workout",
-              start: new Date(new Date(workout.date).setHours(9, 0, 0, 0)),
-              end: new Date(new Date(workout.date).setHours(9, 0, 0, 0)),
-              muscle: firstMuscle,
-              exerciseId: exerciseId, // Add exerciseId to the event object
-            });
-          } else {
-            console.error(
-              "Failed to fetch workout details:",
-              response.statusText
-            );
-          }
-        } catch (err) {
-          console.error("Error fetching workout details:", err);
-        }
-      }
-      setCalendarEvents(workoutEvents);
-      // console.log("All workout events set:", workoutEvents); // muscle is still undefined.
-    }
-    fetchWorkoutDetails();
-  }, [userWorkouts]);
+  // useEffect(() => {
+  //   async function fetchWorkoutDetails() {
+  //     if (userWorkouts.length === 0) return; // Skip if no workouts
+  //     const workoutEvents = [];
+  //     for (const workout of userWorkouts) {
+  //       try {
+  //         const response = await fetch(`/api/workouts/${workout.id}`);
+  //         if (response.ok) {
+  //           const exerciseData = await response.json();
+  //           const firstMuscle = exerciseData[0].exercises[0].muscle;
+  //           const exerciseId = exerciseData[0].exercises[0].exercise_id; // This is my exercise id that I need
+  //           workoutEvents.push({
+  //             id: workout.id,
+  //             title: "Workout",
+  //             start: new Date(new Date(workout.date).setHours(9, 0, 0, 0)),
+  //             end: new Date(new Date(workout.date).setHours(9, 0, 0, 0)),
+  //             muscle: firstMuscle,
+  //             exerciseId: exerciseId, // Add exerciseId to the event object
+  //           });
+  //         } else {
+  //           console.error(
+  //             "Failed to fetch workout details:",
+  //             response.statusText
+  //           );
+  //         }
+  //       } catch (err) {
+  //         console.error("Error fetching workout details:", err);
+  //       }
+  //     }
+  //     setCalendarEvents(workoutEvents);
+  //     // console.log("All workout events set:", workoutEvents); // muscle is still undefined.
+  //   }
+  //   fetchWorkoutDetails();
+  // }, [userWorkouts]);
   // Filter events for the current month.
   // Gives you back an array of the events that are planned for the month!
   const handleMonthChange = (viewInfo) => {
@@ -135,6 +129,7 @@ export default function Calendar({ userWorkouts }) {
       )
     );
   };
+
   return (
     <div className="container-fluid">
       <br />
@@ -167,10 +162,7 @@ export default function Calendar({ userWorkouts }) {
         </div>
         <div className="row justify-content-center">
           <div className="col-md-10 mt-4">
-            <Sidebar
-              events={monthEvents}
-              setCalendarEvents={setCalendarEvents}
-            />
+            <Sidebar events={monthEvents} onDelete={onDelete} />
           </div>
         </div>
       </div>

@@ -41,7 +41,7 @@ router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
       if (!workouts[workout_id]) {
         workouts[workout_id] = {
           user_id: row.user_id,
-          workout_id: row.workout_id,
+          id: row.workout_id,
           date: row.date,
           sender_id: row.sender_id,
           username: row.username,

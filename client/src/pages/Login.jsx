@@ -2,8 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../contexts/authContext";
 
-
-
 export default function login() {
   const auth = useAuth();
   const [username, setUsername] = useState("");
@@ -21,8 +19,10 @@ export default function login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     const data = { username, password };
+    console.log(username);
+    console.log(password);
     try {
-      const response = await fetch("api/auth/login", {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -73,5 +73,3 @@ export default function login() {
     </div>
   );
 }
-
-
