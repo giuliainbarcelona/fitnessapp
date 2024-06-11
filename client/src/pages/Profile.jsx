@@ -24,29 +24,31 @@ export default function Profile() {
     }
   };
   useEffect(() => {
-    async function fetchAllWorkouts() {
-      try {
-        const response = await fetch("/api/workouts", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Fetched all workouts:", data);
-          setUserWorkouts(data.userWorkouts);
-          setSentWorkouts(data.sentWorkouts);
-        } else {
-          console.error("Failed to fetch workouts:", response.statusText);
-        }
-      } catch (err) {
-        console.error("Error fetching workouts:", err);
-      }
-    }
     fetchAllWorkouts();
   }, []);
+
+  async function fetchAllWorkouts() {
+    try {
+      const response = await fetch("/api/workouts", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Fetched all workouts:", data);
+        setUserWorkouts(data.userWorkouts);
+        setSentWorkouts(data.sentWorkouts);
+      } else {
+        console.error("Failed to fetch workouts:", response.statusText);
+      }
+    } catch (err) {
+      console.error("Error fetching workouts:", err);
+    }
+  }
+
   useEffect(() => {
     //fetch user data and sent workouts when the component mounts
     fetchUserData();
@@ -89,6 +91,11 @@ export default function Profile() {
       </div>
     );
   };
+
+  function onDelete() {
+    fetchAllWorkouts();
+  }
+
   return (
     <>
       {renderProfileModal()}
@@ -118,7 +125,7 @@ export default function Profile() {
         <Routes>
           <Route path="/Calendar" element={<Calendar />} />
         </Routes>
-        <Calendar userWorkouts={userWorkouts} />
+        <Calendar userWorkouts={userWorkouts} onDelete={onDelete} />
       </div>
       <h3 className="text-start">Workouts sent to you by friends:</h3>
       <ul>
