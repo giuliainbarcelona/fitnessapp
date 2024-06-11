@@ -6,6 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -191,7 +192,8 @@ export default function Workout() {
                 <>
                   <p>Your workout has been saved.</p>
                   <p>
-                    You can see your full calendar <a href="/Calendar">here</a>.
+                    You can see your full calendar{" "}
+                    <Link to="/Profile">here</Link>.
                   </p>
                 </>
               )}

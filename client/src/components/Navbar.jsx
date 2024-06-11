@@ -32,22 +32,6 @@ export default function Navbar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              {/* Only show Login and Register links if the user is not logged in */}
-              {!auth.isLoggedIn && (
-                <>
-                  <li className="nav-item">
-                    <Link to="/Login" className="nav-link">
-                      Login
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/Register" className="nav-link">
-                      Register
-                    </Link>
-                  </li>
-                </>
-              )}
-              {/* Only show Profile and Logout links if the user is logged in */}
               {auth.isLoggedIn && (
                 <>
                   <li className="nav-item">
@@ -70,6 +54,20 @@ export default function Navbar() {
                 </>
               )}
             </ul>
+            {!auth.isLoggedIn && (
+              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <Link to="/Login" className="nav-link">
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/Register" className="nav-link">
+                    Register
+                  </Link>
+                </li>
+              </ul>
+            )}
           </div>
         </div>
       </nav>
