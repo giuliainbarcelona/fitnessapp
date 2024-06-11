@@ -39,6 +39,7 @@ export default function Calendar({ userWorkouts, onDelete }) {
     });
   }, [calendarEvents, curMonth, curYear]);
   // console.log("These is my events", calendarEvents);
+
   // Fetches all workouts data from the backend on component mount.
 
   // Fetch workout details by ID
