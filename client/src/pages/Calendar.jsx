@@ -7,14 +7,12 @@ import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import Sidebar from "../pages/Sidebar";
-
 export default function Calendar({ userWorkouts }) {
   // const [userWorkouts, setUserWorkouts] = useState([]);
   const [sentWorkouts, setSentWorkouts] = useState([]);
   const [calendarEvents, setCalendarEvents] = useState([]); // Stores formatted event data
   const [curYear, setCurYear] = useState(null); // Year for filtering events
   const [curMonth, setCurMonth] = useState(null); // Month for filtering events
-
   const monthEvents = useMemo(() => {
     return calendarEvents.filter((event) => {
       return (
@@ -36,7 +34,6 @@ export default function Calendar({ userWorkouts }) {
             authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
-
         if (response.ok) {
           const data = await response.json();
           // console.log("Fetched all workouts:", data);
@@ -48,7 +45,6 @@ export default function Calendar({ userWorkouts }) {
         console.error("Error fetching workouts:", err);
       }
     }
-
     fetchAllWorkouts();
   }, []);
 
@@ -57,7 +53,6 @@ export default function Calendar({ userWorkouts }) {
   useEffect(() => {
     async function fetchWorkoutDetails() {
       if (userWorkouts.length === 0) return; // Skip if no workouts
-
       const workoutEvents = [];
       for (const workout of userWorkouts) {
         try {
@@ -66,7 +61,6 @@ export default function Calendar({ userWorkouts }) {
             const exerciseData = await response.json();
             const firstMuscle = exerciseData[0].exercises[0].muscle;
             const exerciseId = exerciseData[0].exercises[0].exercise_id; // This is my exercise id that I need
-
             workoutEvents.push({
               id: workout.id,
               title: "Workout",
@@ -88,17 +82,14 @@ export default function Calendar({ userWorkouts }) {
       setCalendarEvents(workoutEvents);
       // console.log("All workout events set:", workoutEvents); // muscle is still undefined.
     }
-
     fetchWorkoutDetails();
   }, [userWorkouts]);
-
   // Filter events for the current month.
   // Gives you back an array of the events that are planned for the month!
   const handleMonthChange = (viewInfo) => {
     setCurYear(viewInfo.view.currentStart.getFullYear());
     setCurMonth(viewInfo.view.currentStart.getMonth());
   };
-
   const updateEvent = async (updatedEvent) => {
     const formattedDate = new Date(updatedEvent.start)
       .toISOString()
@@ -123,17 +114,14 @@ export default function Calendar({ userWorkouts }) {
       console.error("Error updating event:", err);
     }
   };
-
   // Handles the event change (drag and drop) and updates the state and serve
   const handleEventChange = (changeInfo) => {
     const start = new Date(changeInfo.event.start);
     start.setHours(9, 0, 0, 0);
-
     const end = changeInfo.event.end ? new Date(changeInfo.event.end) : null;
     if (end) {
       end.setHours(9, 0, 0, 0);
     }
-
     const updatedEvent = {
       ...changeInfo.event.extendedProps,
       id: changeInfo.event.id,
@@ -147,7 +135,6 @@ export default function Calendar({ userWorkouts }) {
       )
     );
   };
-
   return (
     <div className="container-fluid">
       <br />
@@ -178,7 +165,6 @@ export default function Calendar({ userWorkouts }) {
             datesSet={handleMonthChange}
           />
         </div>
-
         <div className="row justify-content-center">
           <div className="col-md-10 mt-4">
             <Sidebar

@@ -23,7 +23,6 @@ export default function Profile() {
       console.error("Error fetching user data:", err);
     }
   };
-
   useEffect(() => {
     async function fetchAllWorkouts() {
       try {
@@ -34,7 +33,6 @@ export default function Profile() {
             authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
-
         if (response.ok) {
           const data = await response.json();
           console.log("Fetched all workouts:", data);
@@ -47,7 +45,6 @@ export default function Profile() {
         console.error("Error fetching workouts:", err);
       }
     }
-
     fetchAllWorkouts();
   }, []);
 
@@ -56,7 +53,6 @@ export default function Profile() {
     fetchUserData();
     // fetchSentWorkouts();
   }, []);
-
   const renderProfileModal = () => {
     return (
       <div
@@ -94,7 +90,6 @@ export default function Profile() {
       </div>
     );
   };
-
   return (
     <>
       {renderProfileModal()}
@@ -117,7 +112,7 @@ export default function Profile() {
           to="/Buildyourworkout"
           className="btn btn-primary exercise-btn-profile"
         >
-          Exercise now 💪🏽
+          Exercise now 💪
         </Link>
       </div>
       <div>
