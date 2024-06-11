@@ -11,18 +11,42 @@ let group;
   group = d3.group;
 })();
 
-// Get all workouts for the logged-in user
 router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
   try {
     const user_id = req.user_id; // comes from the guard
-    const calendarSelection = `SELECT * FROM workouts WHERE user_id = ${user_id}`; // Gets all the WO linked to the logged user.
-    const result = await db(calendarSelection);
-    res.status(200).send(result.data);
+    //gets all workouts associated with logged-in user
+    const workoutSelection = `SELECT * FROM workouts WHERE user_id = ${user_id}`; // Gets all the WO linked to the logged user.
+    const result = await db(workoutSelection);
+    const allWorkouts = result.data;
+    console.log(allWorkouts);
+    //separate workous saved (created) by the user // workouts sent by others
+    const userWorkouts = allWorkouts.filter(
+      (workout) => workout.user_id === user_id
+    );
+    const sentWorkouts = allWorkouts.filter(
+      (workout) => workout.sender_id !== null
+    );
+    res.status(200).send({
+      userWorkouts, //workouts saved by the user
+      sentWorkouts, //workouts sent by other users, to the user
+    });
   } catch (err) {
-    console.error("Error in the calendar:", err);
+    console.error("Error fetching workouts:", err);
     res.status(500).send({ message: err.message });
   }
 });
+
+// router.get("/copyofgiuliasendpoint", userShouldBeLoggedIn, async function (req, res, next) {
+//   try {
+//     const user_id = req.user_id; // comes from the guard
+//     const calendarSelection = `SELECT * FROM workouts WHERE user_id = ${user_id}`; // Gets all the WO linked to the logged user.
+//     const result = await db(calendarSelection);
+//     res.status(200).send(result.data);
+//   } catch (err) {
+//     console.error("Error in the calendar:", err);
+//     res.status(500).send({ message: err.message });
+//   }
+// });
 
 router.get("/:workout_id", async function (req, res, next) {
   try {
@@ -145,10 +169,11 @@ router.post(
       const workoutQuery = `SELECT * FROM workouts WHERE id = ${workout_id}`;
       const workoutResult = await db(workoutQuery);
       console.log("Workout Query Result:", workoutResult);
-      if (workoutResult.length === 0) {
+      if (workoutResult.data.length === 0) {
         return res.status(404).send({ message: "workout does not exist" });
       }
       const workout = workoutResult.data[0];
+      console.log(workout);
       //making sure the workout exists
       const workoutDate = new Date(workout.date);
       const year = workoutDate.getFullYear();
@@ -157,7 +182,7 @@ router.post(
       const formattedDate = `${year}-${month}-${day}`;
 
       //create new workout for target user(to be sent)
-      const newWorkoutQuery = `INSERT INTO workouts (user_id, date) VALUES (${target_user_id}, '${formattedDate}'); SELECT LAST_INSERT_ID();`;
+      const newWorkoutQuery = `INSERT INTO workouts (user_id, date, sender_id) VALUES (${target_user_id}, '${formattedDate}', '${user_id}'); SELECT LAST_INSERT_ID();`;
       const newWorkoutResult = await db(newWorkoutQuery);
       console.log(newWorkoutResult);
       const newWorkoutId = newWorkoutResult.data[0].insertId;
