@@ -2,7 +2,7 @@ import React from "react";
 import { formatDate } from "@fullcalendar/core";
 import { Link } from "react-router-dom";
 
-function Sidebar({ events, setCalendarEvents }) {
+function Sidebar({ events, onDelete }) {
   function handleDelete(eventId) {
     fetch(`/api/workouts/${eventId}`, {
       method: "DELETE",
@@ -14,9 +14,7 @@ function Sidebar({ events, setCalendarEvents }) {
       .then((response) => {
         if (response.ok) {
           console.log("Workout deleted successfully!");
-          setCalendarEvents((prevEvents) =>
-            prevEvents.filter((event) => event.id !== eventId)
-          );
+          onDelete();
         } else {
           console.error("Failed to delete workout:", response.statusText);
         }
@@ -48,7 +46,7 @@ function Sidebar({ events, setCalendarEvents }) {
                     className="delete-btn"
                     onClick={() => handleDelete(event.id)}
                   >
-                    ❌
+                    ❌{event.id}
                   </button>
                   <button className="exercise-btn">
                     <Link to={`/Exercises/${event.exerciseId}`}>🏋🏼‍♀️</Link>
