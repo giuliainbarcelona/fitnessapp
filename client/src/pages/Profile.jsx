@@ -47,6 +47,7 @@ export default function Profile() {
     }
     fetchAllWorkouts();
   }, []);
+
   useEffect(() => {
     //fetch user data and sent workouts when the component mounts
     fetchUserData();
