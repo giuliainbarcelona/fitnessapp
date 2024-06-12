@@ -52,9 +52,13 @@ export default function login() {
     <div className="login-page">
       <div className="login-content">
         <h1 className="page-title">Login</h1>
+        <br />
         <form onSubmit={handleLogin}>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username" className="label-login">
+            Username:
+          </label>
           <input
+            className="input-login"
             type="text"
             id="username"
             value={username}
@@ -62,8 +66,11 @@ export default function login() {
           />
           <br />
           <br />
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password" className="label-login">
+            Password:
+          </label>
           <input
+            className="input-login"
             type="password"
             id="password"
             value={password}

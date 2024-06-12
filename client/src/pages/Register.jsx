@@ -96,50 +96,63 @@ export default function Register() {
   };
 
   return (
-    <div>
-      <h1 className="page-title">Register</h1>
-      <br />
-      <form onSubmit={handleRegister}>
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-        {errors.username && <span className="error">{errors.username}</span>}
+    <div className="register-page">
+      <div className="register-content">
+        <h1 className="page-title">Register</h1>
         <br />
-        <br />
-        <label htmlFor="email">Email:</label>
+        <form onSubmit={handleRegister}>
+          <label htmlFor="username" className="label-register">
+            Username:
+          </label>
+          <input
+            className="input-register"
+            type="text"
+            id="username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+          {errors.username && <span className="error">{errors.username}</span>}
+          <br />
+          <br />
+          <label htmlFor="email" className="label-register">
+            Email:
+          </label>
 
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={handleEmailChange}
-        />
-        {errors.email && <span className="error">{errors.email}</span>}
-        <br />
-        <br />
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        {errors.password && <span className="error">{errors.password}</span>}
-        <br />
-        <br />
-        <button
-          type="submit"
-          className="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#profileModal"
-        >
-          Register
-        </button>
-      </form>
+          <input
+            className="input-register input-register-email"
+            type="email"
+            id="email"
+            value={email}
+            onChange={handleEmailChange}
+          />
+          {errors.email && <span className="error">{errors.email}</span>}
+          <br />
+          <br />
+          <label htmlFor="password" className="label-register">
+            Password:
+          </label>
+          <input
+            className="input-register"
+            type="password"
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          {errors.password && (
+            <span className="error-register">{errors.password}</span>
+          )}
+          <br />
+          <br />
+          <button
+            type="submit"
+            className="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#profileModal"
+          >
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
