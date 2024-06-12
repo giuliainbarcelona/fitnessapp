@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "ldrs/ring";
 
 function App() {
   return (

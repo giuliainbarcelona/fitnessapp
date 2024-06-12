@@ -7,6 +7,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { cardio } from "ldrs";
+cardio.register();
+
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const apiurl = "https://api.api-ninjas.com/v1/exercises";
@@ -17,6 +21,8 @@ export default function Workout() {
   const [selectedDate, setSelectedDate] = useState();
   const [workoutSaved, setWorkoutSaved] = useState(false);
   const [sentWorkouts, setSentWorkouts] = useState([]);
+  const [loadingExercise, setLoadingExercise] = useState(false);
+  const [loadingEquipment, setLoadingEquipment] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,6 +35,8 @@ export default function Workout() {
       if (muscle && difficulty && type) {
         // Fetch saved workouts
         try {
+          setLoadingExercise(true);
+          setLoadingEquipment(true);
           const response = await fetch(
             `${apiurl}?muscle=${muscle}&difficulty=${difficulty}&type=${type}`,
             {
@@ -41,6 +49,8 @@ export default function Workout() {
           const exercisesData = await response.json();
           setExercises(exercisesData.slice(0, 5)); // Limits the amount of workouts that will render
           console.log(exercisesData); // This is an array of objects!
+          setLoadingExercise(false);
+          setLoadingEquipment(false);
         } catch (err) {
           console.error("Error fetching saved workouts:", err);
         }
@@ -164,26 +174,40 @@ export default function Workout() {
 
       <div className="row">
         <div className="col-sm-6 mb-3 mb-sm-4">
-          <div className="card exercise-card">
-            <div className="card-body">
-              <h5 className="card-title">Exercise Name</h5>
-              {exercises.map((workout, index) => (
-                <p key={index} className="card-text">
-                  {workout.name}
-                </p>
-              ))}
+          <div className="card exercise-card" style={{ minHeight: "300px" }}>
+            <div className="card-body text-center d-flex align-items-center justify-content-center fixed height">
+              {loadingExercise && (
+                <l-cardio size="50" stroke="4" speed="2" color="black" />
+              )}
+              {!loadingExercise && (
+                <div>
+                  <h5 className="card-title">Exercise Name</h5>
+                  {exercises.map((workout, index) => (
+                    <p key={index} className="card-text">
+                      {workout.name}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <div className="col-sm-6 mb-3 mb-sm-4">
-          <div className="card equipments-card">
-            <div className="card-body">
-              <h5 className="card-title"> Equipments Needed</h5>
-              {exercises.map((workout, index) => (
-                <p key={index} className="card-text">
-                  {workout.equipment}
-                </p>
-              ))}
+        <div className="col-sm-6">
+          <div className="card equipments-card" style={{ minHeight: "300px" }}>
+            <div className="card-body text-center d-flex align-items-center justify-content-center fixed height">
+              {loadingEquipment && (
+                <l-cardio size="50" stroke="4" speed="2" color="black" />
+              )}
+              {!loadingEquipment && (
+                <div>
+                  <h5 className="card-title"> Equipment Needed</h5>
+                  {exercises.map((workout, index) => (
+                    <p key={index} className="card-text">
+                      {workout.equipment}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

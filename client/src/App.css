@@ -97,6 +97,7 @@
   width: 200px;
   list-style-type: none;
   padding: 0;
+  text-align: left;
 }
 
 .dropdown li {

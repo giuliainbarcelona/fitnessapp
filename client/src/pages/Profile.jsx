@@ -106,33 +106,34 @@ export default function Profile() {
           profile
         </h1>
         <br />
-        <button
-          type="button"
-          className="btn btn-primary profile-btn-profile"
-          data-bs-toggle="modal"
-          data-bs-target="#profileModal"
-        >
-          View Profile Details 📝
-        </button>
-        <Link to="/SentWorkouts" className="btn btn-primary">
-          Workouts Sent By Friends 👯‍♂️
-        </Link>
-        <Link
-          to="/Buildyourworkout"
-          className="btn btn-primary exercise-btn-profile"
-        >
-          Exercise now 💪
-        </Link>
+        <div className="profile-buttons">
+          <button
+            type="button"
+            className="btn btn-primary me-2"
+            data-bs-toggle="modal"
+            data-bs-target="#profileModal"
+          >
+            View Profile 📝
+          </button>
+          <Link to="/SentWorkouts" className="btn btn-primary me-2">
+            Workouts Sent By Friends 👯‍♂️
+          </Link>
+          <Link
+            to="/Buildyourworkout"
+            className="btn btn-primary exercise-btn-profile"
+          >
+            Exercise now 💪
+          </Link>
+        </div>
       </div>
+      <br/>
+      <br/>
       <div>
         <Routes>
           <Route path="/Calendar" element={<Calendar />} />
         </Routes>
         <Calendar userWorkouts={userWorkouts} onDelete={onDelete} />
       </div>
-      
-      
-     
     </>
   );
 }
