@@ -73,46 +73,6 @@ router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
   }
 });
 
-// router.get("/gobackifnotworking", userShouldBeLoggedIn, async function (req, res, next) {
-//   try {
-//     const user_id = req.user_id; // comes from the guard
-//     //gets all workouts associated with logged-in user
-//     const workoutSelection = `SELECT workouts.*, users.username FROM workouts LEFT JOIN users ON users.id = workouts.sender_id WHERE user_id = ${user_id}`; // Gets all the WO linked to the logged user.
-//     const result = await db(workoutSelection);
-//     const allWorkouts = result.data;
-//     console.log(allWorkouts);
-
-//     // for every workout, select all its exercises and embedn them inside of the workout object
-
-//     //separate workous saved (created) by the user // workouts sent by others
-//     const userWorkouts = allWorkouts.filter(
-//       (workout) => workout.sender_id === null
-//     );
-//     const sentWorkouts = allWorkouts.filter(
-//       (workout) => workout.sender_id !== null
-//     );
-//     res.status(200).send({
-//       userWorkouts, //workouts saved by the user
-//       sentWorkouts, //workouts sent by other users, to the user
-//     });
-//   } catch (err) {
-//     console.error("Error fetching workouts:", err);
-//     res.status(500).send({ message: err.message });
-//   }
-// });
-
-// router.get("/copyofgiuliasendpoint", userShouldBeLoggedIn, async function (req, res, next) {
-//   try {
-//     const user_id = req.user_id; // comes from the guard
-//     const calendarSelection = `SELECT * FROM workouts WHERE user_id = ${user_id}`; // Gets all the WO linked to the logged user.
-//     const result = await db(calendarSelection);
-//     res.status(200).send(result.data);
-//   } catch (err) {
-//     console.error("Error in the calendar:", err);
-//     res.status(500).send({ message: err.message });
-//   }
-// });
-
 router.get("/:workout_id", async function (req, res, next) {
   try {
     const workout_id = req.params.workout_id;

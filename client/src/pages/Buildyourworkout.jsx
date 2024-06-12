@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
 
 export default function BuildYourWorkout() {
   const [inputCriteria, setInputCriteria] = useState({
@@ -62,8 +61,20 @@ export default function BuildYourWorkout() {
 
   return (
     <>
-      <h2>🏋🏻‍♀️ I am your workout builder 🏋🏼</h2>
+      <h2 className="page-title">
+        <img src="/icon.svg" alt="Logo" style={{ height: "40px" }} /> I am your
+        workout builder{" "}
+        <img src="/icon.svg" alt="Logo" style={{ height: "40px" }} />
+      </h2>
+      <br />
+      <p>
+        You need to choose which muscle group you want to train, <br /> for
+        which difficulty level and which type of your workout you enojy the
+        most.
+      </p>
+      <br />
       <h4>Make your selection and I will render your workout</h4>
+      <br />
       <form onSubmit={handleSubmit}>
         <select
           name="muscle"
@@ -103,9 +114,14 @@ export default function BuildYourWorkout() {
         </select>
         <br />
         <br />
-        <Button type="submit" variant="contained" color="primary">
+        <button
+          type="submit"
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#profileModal"
+        >
           Submit
-        </Button>
+        </button>
       </form>
     </>
   );

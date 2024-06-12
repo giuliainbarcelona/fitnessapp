@@ -49,27 +49,38 @@ export default function login() {
   };
 
   return (
-    <div>
-      <h1>login</h1>
-      <form onSubmit={handleLogin}>
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-        <br />
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <br />
-        <button type="submit">Login</button>
-      </form>
+    <div className="login-page">
+      <div className="login-content">
+        <h1 className="page-title">Login</h1>
+        <form onSubmit={handleLogin}>
+          <label htmlFor="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+          <br />
+          <br />
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <br />
+          <br />
+          <button
+            type="submit"
+            className="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#profileModal"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

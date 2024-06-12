@@ -46,7 +46,7 @@ function Sidebar({ events, onDelete }) {
                     className="delete-btn"
                     onClick={() => handleDelete(event.id)}
                   >
-                    ❌{event.id}
+                    ❌
                   </button>
                   <button className="exercise-btn">
                     <Link to={`/Exercises/${event.exerciseId}`}>🏋🏼‍♀️</Link>

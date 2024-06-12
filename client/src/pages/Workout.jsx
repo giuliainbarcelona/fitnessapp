@@ -6,6 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -132,14 +133,14 @@ export default function Workout() {
 
   return (
     <div className="container">
-      <h3>Your Workout Plan</h3>
+      <h3 className="page-title-less">Your Workout Plan</h3>
       <br />
 
       <div className="row">
         <div className="col-sm-6 mb-3 mb-sm-4">
-          <div className="card">
+          <div className="card exercise-card">
             <div className="card-body">
-              <h5 className="card-title">Workout Names</h5>
+              <h5 className="card-title">Exercise Name</h5>
               {exercises.map((workout, index) => (
                 <p key={index} className="card-text">
                   {workout.name}
@@ -149,7 +150,7 @@ export default function Workout() {
           </div>
         </div>
         <div className="col-sm-6">
-          <div className="card">
+          <div className="card equipments-card">
             <div className="card-body">
               <h5 className="card-title"> Equipments Needed</h5>
               {exercises.map((workout, index) => (
@@ -160,15 +161,15 @@ export default function Workout() {
             </div>
           </div>
         </div>
-        <h3>Choose your next step</h3>
+        <h4 className="title-next-step">Choose your next step</h4>
         <br />
         <div className="col-sm-6">
           <br />
-          <div className="card">
+          <div className="card datepicker-card">
             <div className="card-body">
               {!workoutSaved ? (
                 <>
-                  <p>Choose your workout day</p>
+                  <p>Save it for later 🗓️</p>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DatePicker"]}>
                       <DatePicker
@@ -179,19 +180,21 @@ export default function Workout() {
                     </DemoContainer>
                   </LocalizationProvider>
                   <br />
-                  <Button
-                    variant="contained"
-                    color="primary"
+                  <button
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#profileModal"
                     onClick={handleSave}
                   >
                     Save
-                  </Button>
+                  </button>
                 </>
               ) : (
                 <>
                   <p>Your workout has been saved.</p>
                   <p>
-                    You can see your full calendar <a href="/Calendar">here</a>.
+                    You can see your full calendar{" "}
+                    <Link to="/Profile">here</Link>.
                   </p>
                 </>
               )}
@@ -201,15 +204,16 @@ export default function Workout() {
         <br />
         <div className="col-sm-6">
           <br />
-          <div className="card">
+          <div className="card exercis-btn-card">
             <div className="card-body">
-              <Button
-                variant="contained"
-                color="primary"
+              <button
+                className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#profileModal"
                 onClick={handleExercise}
               >
-                Exercise Now
-              </Button>
+                Exercise Now 💪🏽
+              </button>
             </div>
           </div>
         </div>
