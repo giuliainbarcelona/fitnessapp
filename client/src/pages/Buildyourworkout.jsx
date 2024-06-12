@@ -1,6 +1,6 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import allInputsMustExist from "../guards/allInputsMustExist";
 
 export default function BuildYourWorkout() {
   const [inputCriteria, setInputCriteria] = useState({
@@ -55,6 +55,12 @@ export default function BuildYourWorkout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!allInputsMustExist(inputCriteria)) {
+      alert("Please fill out all inputs.");
+      return;
+    }
+
     const params = new URLSearchParams(inputCriteria).toString();
     navigate(`/Workout?${params}`);
   };
@@ -69,7 +75,7 @@ export default function BuildYourWorkout() {
       <br />
       <p>
         You need to choose which muscle group you want to train, <br /> for
-        which difficulty level and which type of your workout you enojy the
+        which difficulty level and which type of your workout you enjoy the
         most.
       </p>
       <br />

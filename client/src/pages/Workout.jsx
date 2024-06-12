@@ -7,7 +7,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-// import NextStepSelection from "../components/NextStepSelection";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -16,8 +15,8 @@ const apiurl = "https://api.api-ninjas.com/v1/exercises";
 export default function Workout() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [exercises, setExercises] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(); // if it does not work do null
-  const [workoutSaved, setWorkoutSaved] = useState(false); // New state to render the WO
+  const [selectedDate, setSelectedDate] = useState();
+  const [workoutSaved, setWorkoutSaved] = useState(false);
   const [sentWorkouts, setSentWorkouts] = useState([]);
 
   const navigate = useNavigate();
@@ -177,7 +176,7 @@ export default function Workout() {
             </div>
           </div>
         </div>
-        <div className="col-sm-6">
+        <div className="col-sm-6 mb-3 mb-sm-4">
           <div className="card equipments-card">
             <div className="card-body">
               <h5 className="card-title"> Equipments Needed</h5>
@@ -191,9 +190,9 @@ export default function Workout() {
         </div>
         <h4 className="title-next-step">Choose your next step</h4>
         <br />
-        <div className="col-sm-6">
+        <div className="col-sm-6 mb-3 mb-sm-4">
           <br />
-          <div className="card datepicker-card">
+          <div className="card datepicker-card" style={{ height: "100%" }}>
             <div className="card-body">
               {!workoutSaved ? (
                 <>
@@ -230,9 +229,9 @@ export default function Workout() {
           </div>
         </div>
         <br />
-        <div className="col-sm-6">
+        <div className="col-sm-6 mb-3 mb-sm-4">
           <br />
-          <div className="card exercis-btn-card">
+          <div className="card exercise-btn-card" style={{ height: "100%" }}>
             <div className="card-body">
               <button
                 className="btn btn-primary"
