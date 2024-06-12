@@ -30,30 +30,7 @@ export default function SentWorkouts() {
     console.log(sentWorkouts);
   }, []);
 
-  const handleViewWorkout = async (workoutId) => {
-    try {
-      const response = await fetch(`/api/workouts`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response.ok) {
-        const workout = await response.json();
-        if (workout && workout.exercises && workout.exercises.length > 0) {
-          const { muscle, type, difficulty } = workout.exercises[0];
-          navigate(
-            `/Workout?muscle=${muscle}&type=${type}&difficulty=${difficulty}`
-          );
-        } else {
-          console.error("Workout details not found or incomplete");
-        }
-      } else {
-        console.error("Failed to fetch workout details:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error fetching workout details:", error);
-    }
-  };
+  const handleViewWorkout = async (workout) => {};
 
   return (
     <div>
@@ -78,7 +55,7 @@ export default function SentWorkouts() {
                 transition: "background-color 0.3s",
               }}
               onClick={() => {
-                handleViewWorkout(workout.id);
+                handleViewWorkout(workout);
               }}
             >
               View Workout🙈

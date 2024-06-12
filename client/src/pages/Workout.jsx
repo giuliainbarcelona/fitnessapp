@@ -73,60 +73,6 @@ export default function Workout() {
     fetchWorkouts();
   }, [searchParams]);
 
-  // useEffect(() => {
-  //   async function getSavedWorkout() {
-  //     try {
-  //       const muscle = searchParams.get("muscle");
-  //       const difficulty = searchParams.get("difficulty");
-  //       const type = searchParams.get("type");
-
-  //       const response = await fetch(
-  //         `${apiurl}?muscle=${muscle}&difficulty=${difficulty}&type=${type}`,
-  //         {
-  //           headers: {
-  //             "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
-  //           },
-  //         }
-  //       );
-
-  //       const exercises = await response.json();
-  //       setExercises(exercises.slice(0, 5)); // Limits the amout of WOs that will render
-  //       console.log(exercises); // This is an array of objects!
-  //       console.log(exercises.length); // Gets you back the number of workouts
-  //     } catch (err) {
-  //       console.log("Error message here", err);
-  //     }
-  //   }
-  //   getSavedWorkout();
-  // }, [searchParams]);
-
-  //CHAR IS MAKING THIS TO CONDITIONALLY BE RENDERED IF THE WORKOUT WAS SENT BY ANOTHER USER LOL GOOD LUCK
-  // useEffect(() => {
-  //   async function fetchSentWorkouts() {
-  //     try {
-  //       const response = await fetch("/api/workouts", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           authorization: "Bearer " + localStorage.getItem("token"),
-  //         },
-  //       });
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         console.log("Fetched SENT workouts:", data);
-  //         setSentWorkouts(data.sentWorkouts);
-  //       } else {
-  //         console.error(
-  //           "Failed to fetch any sent workouts:",
-  //           response.statusText
-  //         );
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching sent workouts", err);
-  //     }
-  //   }
-  //   fetchSentWorkouts();
-  // }, []);
 
   const handleDateSelection = (newValue) => {
     setSelectedDate(newValue);
