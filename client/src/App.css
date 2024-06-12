@@ -108,3 +108,25 @@
   background-color: #f0f0f0;
 
 }
+
+.workout-summary-box {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.workout-summary-box h2 {
+  color: #333;
+}
+
+.workout-summary-box p,
+.workout-summary-box ul {
+  margin-bottom: 10px;
+}
+
+.workout-summary-box ul li {
+  margin-bottom: 5px;
+}
