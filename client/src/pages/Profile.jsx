@@ -112,8 +112,11 @@ export default function Profile() {
           data-bs-toggle="modal"
           data-bs-target="#profileModal"
         >
-          View Profile Details
+          View Profile Details 📝
         </button>
+        <Link to="/SentWorkouts" className="btn btn-primary">
+          Workouts Sent By Friends 👯‍♂️
+        </Link>
         <Link
           to="/Buildyourworkout"
           className="btn btn-primary exercise-btn-profile"
@@ -136,6 +139,7 @@ export default function Profile() {
           </li>
         ))}
       </ul>
+     
     </>
   );
 }

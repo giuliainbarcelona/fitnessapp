@@ -25,7 +25,12 @@ router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
         workouts.sender_id,
         users.username,
         exercises.id AS exercise_id,
-        exercises.muscle
+        exercises.muscle,
+        exercises.instructions,
+        exercises.difficulty,
+        exercises.equipment, 
+        exercises.name,
+        exercises.type
       FROM workouts
       LEFT JOIN users ON users.id = workouts.sender_id
       LEFT JOIN exercises ON workouts.id = exercises.workout_id
@@ -52,6 +57,11 @@ router.get("/", userShouldBeLoggedIn, async function (req, res, next) {
         workouts[workout_id].exercises.push({
           exercise_id: row.exercise_id,
           muscle: row.muscle,
+          instructions: row.instructions,
+          difficulty: row.difficulty,
+          equipment: row.equipment,
+          name: row.name,
+          type: row.type,
         });
       }
     });
