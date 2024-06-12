@@ -19,8 +19,7 @@ export default function login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     const data = { username, password };
-    console.log(username);
-    console.log(password);
+
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -28,18 +27,12 @@ export default function login() {
         body: JSON.stringify(data),
       });
       const responseJson = await response.json();
-      console.log(responseJson);
 
-      if (
-        responseJson &&
-        responseJson.message &&
-        responseJson.message.includes("successful")
-      ) {
-        console.log("You did it!");
+      if (response.ok) {
         localStorage.setItem("token", responseJson.token);
-        auth.signIn(responseJson);
+        // Pass the username to signIn function
+        auth.signIn({ username: responseJson.username });
         navigate("/buildyourworkout", { state: { token: responseJson.token } });
-        // signIn();
       } else {
         console.error("Login error:", responseJson.message);
       }
