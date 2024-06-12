@@ -7,7 +7,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const apiurl = "https://api.api-ninjas.com/v1/exercises";
@@ -34,7 +33,7 @@ export default function Workout() {
             `${apiurl}?muscle=${muscle}&difficulty=${difficulty}&type=${type}`,
             {
               headers: {
-                "X-Api-Key": "TAV8D89aex3FxVlNTvqVtA==DPoPSnNYBCrqU9ZY",
+                "X-Api-Key": import.meta.env.VITE_RAPIDID_API_KEY,
               },
             }
           );
