@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+// import NextStepSelection from "../components/NextStepSelection";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -73,7 +74,6 @@ export default function Workout() {
 
     fetchWorkouts();
   }, [searchParams]);
-
 
   const handleDateSelection = (newValue) => {
     setSelectedDate(newValue);

@@ -314,3 +314,29 @@ button:focus-visible {
 .exercis-btn-card {
   background-color: lightsalmon;
 }
+
+.workout-summary-box {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: absolute; /* Set position absolute */
+  top: 50%; /* Set top position to center vertically */
+  left: 150px; /* Adjust left position to align with the button */
+  transform: translateY(-50%); /* Center vertically */
+  z-index: 1; /* Ensure the box appears above other elements */
+}
+
+.workout-summary-box h2 {
+  color: #333;
+}
+
+.workout-summary-box p,
+.workout-summary-box ul {
+  margin-bottom: 10px;
+}
+
+.workout-summary-box ul li {
+  margin-bottom: 5px;
+}

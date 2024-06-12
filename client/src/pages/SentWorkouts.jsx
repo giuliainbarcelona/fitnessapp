@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import NextStepSelection from "../components/NextStepSelection";
 
 export default function SentWorkouts() {
   const [sentWorkouts, setSentWorkouts] = useState([]);
+  const [selectedWorkout, setSelectedWorkout] = useState(null);
+  const colorOptions = [
+    "lightblue",
+    "lightskyblue",
+    "lightsteelblue",
+    "lightsalmon",
+  ];
   const navigate = useNavigate();
 
   const fetchSentWorkouts = async () => {
@@ -30,7 +38,14 @@ export default function SentWorkouts() {
     console.log(sentWorkouts);
   }, []);
 
-  const handleViewWorkout = async (workout) => {};
+  const handleViewWorkout = (workout) => {
+    setSelectedWorkout(workout);
+    console.log(workout);
+  };
+
+  const getRandomColor = () => {
+    return colorOptions[Math.floor(Math.random() * colorOptions.length)];
+  };
 
   return (
     <div>
@@ -46,23 +61,49 @@ export default function SentWorkouts() {
             {workout.username} <br />
             <span style={{ fontWeight: "bold" }}>Muscle:</span>{" "}
             {workout.exercises[0].muscle} <br />
-            <button
-              type="button"
-              className="btn btn-outline-info btn-sm"
-              style={{
-                marginTop: "5px",
-                borderRadius: "5px",
-                transition: "background-color 0.3s",
-              }}
-              onClick={() => {
-                handleViewWorkout(workout);
-              }}
-            >
-              View Workout🙈
-            </button>
+            <div>
+              <button
+                type="button"
+                className="btn btn-outline-info btn-sm"
+                style={{
+                  marginTop: "5px",
+                  borderRadius: "5px",
+                  transition: "background-color 0.3s",
+                }}
+                onClick={() => {
+                  handleViewWorkout(workout);
+                }}
+              >
+                View Workout🙈
+              </button>
+            </div>
           </li>
         ))}
       </ul>
+
+      {selectedWorkout &&
+        selectedWorkout.exercises &&
+        selectedWorkout.exercises.length > 0 && (
+          <div
+            className="workout-summary-box"
+            style={{ backgroundColor: getRandomColor() }}
+          >
+            <h2>Here's your workout summary</h2>
+
+            <h3>Exercises</h3>
+            <ul>
+              {selectedWorkout.exercises.map((exercise) => (
+                <div>
+                  <li key={exercise.exercise_id}>
+                    <strong>{exercise.name}</strong> - {exercise.muscle} (
+                    {exercise.difficulty})
+                  </li>
+                </div>
+              ))}
+            </ul>
+            <NextStepSelection selectedWorkout={selectedWorkout} />
+          </div>
+        )}
     </div>
   );
 }
