@@ -255,6 +255,30 @@ button:focus-visible {
   padding: 20px;
 }
 
+.workoutfriends-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.workoutfriends-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/workoutfriends.jpeg") no-repeat center center/cover;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.workoutfriends-content {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
 .login-page {
   position: relative;
   width: 100%;
@@ -393,8 +417,79 @@ button:focus-visible {
 .profile-buttons a {
   margin: 0 10px; /* Adjust margin as needed */
   background-color: #2eb8a2; /* Set the background color */
+  border: 1px solid black !important;
+}
+
+.profile-buttons button:hover,
+.profile-buttons a:hover {
+  background-color: #04705f; /* Change background color on hover */
 }
 
 .btn {
   background-color: #09ad93;
+  border: 1px solid black !important;
+}
+
+.btn:hover {
+  background-color: #36ac8b;
+  border: 1px solid black !important;
+}
+.btn:active {
+  background-color: #36ac8b !important;
+  border: 1px solid black !important;
+}
+
+.fc-header-toolbar {
+  background-color: white;
+  color: #04705f;
+}
+
+/* Customize the FullCalendar navigation buttons */
+.fc-prev-button,
+.fc-next-button,
+.fc-today-button {
+  background-color: #04705f !important;
+  color: white !important;
+  border: 1px solid black !important;
+}
+
+.fc-dayGridMonth-button,
+.fc-timeGridWeek-button,
+.fc-timeGridDay-button {
+  background-color: #04705f !important;
+  color: white !important;
+  border: 1px solid black !important;
+}
+
+.fc-dayGridMonth-button:hover,
+.fc-timeGridWeek-button:hover,
+.fc-timeGridDay-button:hover {
+  background-color: #36ac8b !important; /* lighter color */
+}
+
+div.fc-dayGridMonth-view table tbody tr td.fc-day,
+div.fc-dayGridMonth-view table thead tr th.fc-day-header {
+  color: #04705f !important;
+}
+
+.exercise-container {
+  width: 100% !important;
+}
+
+.exercise-instructions {
+  width: 100% !important;
+  height: 200px !important; /* Or any desired height */
+  overflow: auto !important; /* Adjust overflow property as needed */
+}
+
+.exercise-instructions p {
+  width: 100% !important; /* Make the paragraph stretch to fill the available width */
+}
+
+.bg-custom {
+  background-color: #04705f;
+}
+
+.bg-faded-blue {
+  background-color: rgba(4, 112, 95, 0.4) !important; 
 }

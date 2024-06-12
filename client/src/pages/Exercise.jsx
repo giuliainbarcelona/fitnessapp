@@ -139,7 +139,9 @@ const Exercise = () => {
         <h4 className="text-start">Muscle: {exercise.current?.muscle}</h4>
         <h4 className="text-start">Equipment: {exercise.current?.equipment}</h4>
         <div className="border p-3 bg-faded-blue text-dark-grey">
+          <div className="exercise-instructions">
           <p>Instructions: {exercise.current?.instructions}</p>
+          </div>
         </div>
         <br />
 
@@ -148,21 +150,23 @@ const Exercise = () => {
         </p>
         <div className="progress">
           <div
-            className="progress-bar progress-bar-striped bg-info"
+            className="progress-bar progress-bar-striped bg-custom"
             style={{ width: `${progress}%` }}
             aria-valuenow={progress}
             aria-valuemin="0"
             aria-valuemax="100"
           ></div>
         </div>
+        <br/>
         {currentExerciseIndex > 0 && (
           <button
-            className="btn btn-secondary"
+            className="btn btn-secondary me-5"
             onClick={handlePreviousExercise}
           >
             Previous Exercise
           </button>
         )}
+        
         <button
           className="btn btn-primary"
           onClick={() => handleNextExercise()}
