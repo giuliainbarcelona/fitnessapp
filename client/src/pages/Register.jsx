@@ -97,7 +97,8 @@ export default function Register() {
 
   return (
     <div>
-      <h1>register</h1>
+      <h1 className="page-title">Register</h1>
+      <br />
       <form onSubmit={handleRegister}>
         <label htmlFor="username">Username:</label>
         <input
@@ -108,7 +109,9 @@ export default function Register() {
         />
         {errors.username && <span className="error">{errors.username}</span>}
         <br />
+        <br />
         <label htmlFor="email">Email:</label>
+
         <input
           type="email"
           id="email"
@@ -116,6 +119,7 @@ export default function Register() {
           onChange={handleEmailChange}
         />
         {errors.email && <span className="error">{errors.email}</span>}
+        <br />
         <br />
         <label htmlFor="password">Password:</label>
         <input
@@ -126,7 +130,15 @@ export default function Register() {
         />
         {errors.password && <span className="error">{errors.password}</span>}
         <br />
-        <button  type="submit">Register</button>
+        <br />
+        <button
+          type="submit"
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#profileModal"
+        >
+          Register
+        </button>
       </form>
     </div>
   );

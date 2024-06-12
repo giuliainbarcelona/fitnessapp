@@ -24,7 +24,7 @@ function App() {
         </div>
         <div>
           <Routes>
-            <Route path="/Homepage" element={<Homepage />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/Profile" element={<Profile />} />
             <Route path="/Buildyourworkout" element={<Buildyourworkout />} />
             <Route path="/Calendar" element={<Calendar />} />
