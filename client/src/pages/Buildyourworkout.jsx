@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import allInputsMustExist from "../guards/allInputsMustExist";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function BuildYourWorkout() {
   const [inputCriteria, setInputCriteria] = useState({
