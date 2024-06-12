@@ -165,6 +165,24 @@ button:focus-visible {
   background-color: #4db0a0; /* Set the background color */
 }
 
+.container-bwo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-buildyourworkout {
+  color: #fff;
+  background-color: #55a0d9;
+  width: 500px;
+}
+
+.card-makeselection {
+  color: #fff;
+  background-color: #55a0d9;
+  width: 500px;
+}
+
 .list-group-item {
   display: flex;
   justify-content: space-between;
@@ -180,9 +198,9 @@ button:focus-visible {
 }
 
 .page-title {
-  margin-top: 100px;
+  margin-top: 80px;
   z-index: 99 !important;
-  font-size: 5em;
+  font-size: 4em;
   text-align: center;
   width: 100%;
   display: flex;

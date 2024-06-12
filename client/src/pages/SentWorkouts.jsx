@@ -51,13 +51,14 @@ export default function SentWorkouts() {
     <div className="workoutfriends-page">
       <div className="workoutfriends-content">
         <div className="container">
-          <h1>Here, you have a list of workouts from your friends!</h1>
+          <h1 className="page-title-less">Here, you have a list of workouts from your friends!</h1>
+<br/>
           <div className="row">
             {/* Left column for sent workouts */}
             <div className="col-md-6">
               <div className="row">
                 {sentWorkouts.map((workout) => (
-                  <div key={workout.id} className="col-md-6 mb-3">
+                  <div key={workout.id} className="col-md-6 mb-3" style={{ height: "100%" }}>
                     <div className="card">
                       <div className="card-header">
                         Workout from {workout.username}
@@ -88,7 +89,6 @@ export default function SentWorkouts() {
                 ))}
               </div>
             </div>
-
             {/* Right column for workout summary */}
             <div className="col-md-6">
               {selectedWorkout &&

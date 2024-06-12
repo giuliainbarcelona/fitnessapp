@@ -14,7 +14,6 @@ const Exercise = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
-
   useEffect(() => {
     const fetchExercise = async () => {
       try {
@@ -35,8 +34,6 @@ const Exercise = () => {
     };
     fetchExercise();
   }, [id]);
-
-  
 
   if (!exercise.current) {
     return <div>Loading...</div>;
@@ -128,13 +125,16 @@ const Exercise = () => {
 
   return (
     <div className="container">
-      {/* Exercise details */}
-      {/* next exercise id: {nextExerciseId} */}
       <div className="exercise-details">
-        <h1>Here is your exercise!</h1>
+        <h1 className="page-title-less">
+          <img src="/icon.svg" alt="Logo" style={{ height: "40px" }} /> Here is
+          your exercise!{" "}
+          <img src="/icon.svg" alt="Logo" style={{ height: "40px" }} />
+        </h1>
+        <br />
         <h3>Today's Date: {today}</h3>
-
-        <h2 className="text-start">Name: {exercise.current?.name}</h2>
+        <br />
+        <h3 className="text-start">Name: {exercise.current?.name}</h3>
         <h4 className="text-start">Type: {exercise.current?.type}</h4>
         <h4 className="text-start">Muscle: {exercise.current?.muscle}</h4>
         <h4 className="text-start">Equipment: {exercise.current?.equipment}</h4>

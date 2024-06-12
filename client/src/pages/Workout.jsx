@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useParams } from "react-router-dom";
-import Button from "@mui/material/Button";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { cardio } from "ldrs";
 cardio.register();
-
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -226,6 +225,15 @@ export default function Workout() {
                         label="Basic date picker"
                         className="datepicker"
                         onChange={handleDateSelection}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                  <br />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["TimePicker"]}>
+                      <TimePicker
+                        className="datepicker"
+                        label="Basic time picker"
                       />
                     </DemoContainer>
                   </LocalizationProvider>
