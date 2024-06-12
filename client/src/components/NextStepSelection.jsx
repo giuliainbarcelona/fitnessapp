@@ -73,57 +73,56 @@ const NextStepSelection = ({ selectedWorkout }) => {
     <div>
       <h4 className="title-next-step">Choose your next step</h4>
       <br />
-      <div className="col-sm-6">
-        <br />
-        <div className="card datepicker-card">
-          <div className="card-body">
-            {!workoutSaved ? (
-              <>
-                <p>Save it for later 🗓️</p>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DatePicker"]}>
-                    <DatePicker
-                      label="Basic date picker"
-                      className="datepicker"
-                      onChange={handleDateSelection}
-                    />
-                  </DemoContainer>
-                </LocalizationProvider>
-                <br />
-                <button
-                  className="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#profileModal"
-                  onClick={handleSave}
-                >
-                  Save
-                </button>
-              </>
-            ) : (
-              <>
-                <p>Your workout has been saved.</p>
-                <p>
-                  You can see your full calendar <Link to="/Profile">here</Link>
-                  .
-                </p>
-              </>
-            )}
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="card datepicker-card" style={{ height: "100%" }}>
+            <div className="card-body">
+              {!workoutSaved ? (
+                <>
+                  <p>Save it for later 🗓️</p>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        label="Basic date picker"
+                        className="datepicker"
+                        onChange={handleDateSelection}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                  <br />
+                  <button
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#profileModal"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p>Your workout has been saved.</p>
+                  <p>
+                    You can see your full calendar{" "}
+                    <Link to="/Profile">here</Link>.
+                  </p>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <br />
-      <div className="col-sm-6">
-        <br />
-        <div className="card exercis-btn-card">
-          <div className="card-body">
-            <button
-              className="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#profileModal"
-              onClick={handleExercise}
-            >
-              Exercise Now 💪🏽
-            </button>
+        <div className="col-sm-6">
+          <div className="card exercis-btn-card" style={{ height: "100%" }}>
+            <div className="card-body">
+              <button
+                className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#profileModal"
+                onClick={handleExercise}
+              >
+                Exercise Now 💪🏽
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
+import { cardio } from "ldrs";
 
 const Exercise = () => {
   const { id } = useParams();
@@ -12,6 +13,7 @@ const Exercise = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+
 
   useEffect(() => {
     const fetchExercise = async () => {
@@ -33,6 +35,8 @@ const Exercise = () => {
     };
     fetchExercise();
   }, [id]);
+
+  
 
   if (!exercise.current) {
     return <div>Loading...</div>;
