@@ -153,6 +153,11 @@ button:focus-visible {
   margin-bottom: 20px;
   margin-right: 15px;
   margin-left: 15px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
 }
 
 .card-header {
