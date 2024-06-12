@@ -67,6 +67,7 @@ export default function Profile() {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="profileModalLabel">
+                <img src="/icon.svg" alt="Logo" style={{ height: "40px" }} />{" "}
                 Your Profile
               </h5>
               <button
@@ -101,7 +102,7 @@ export default function Profile() {
       {renderProfileModal()}
       <div>
         <br />
-        <h1>
+        <h1 className="page-title-less">
           Hi {userData ? userData.username : ""}, welcome to your beautiful
           profile
         </h1>
@@ -126,8 +127,8 @@ export default function Profile() {
           </Link>
         </div>
       </div>
-      <br/>
-      <br/>
+      <br />
+      <br />
       <div>
         <Routes>
           <Route path="/Calendar" element={<Calendar />} />
