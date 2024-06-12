@@ -87,7 +87,7 @@ const Exercise = () => {
   };
 
   const handleUserSelect = async (user) => {
-    console.log("User selected:", user);
+    console.log("User selected:", user); // debugging: this gets console logged.
     setSelectedUser(user);
     setSearchQuery(user.username);
     setSearchResults([]);
@@ -117,7 +117,7 @@ const Exercise = () => {
       const result = await response.json();
       alert("Workout sent successfully!");
     } catch (err) {
-      console.error("Error sending workout");
+      console.error("Error sending workout", err);
       alert("failed to send workout");
     }
   };

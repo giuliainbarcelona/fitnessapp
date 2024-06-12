@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/authContext";
 export default function Navbar() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const { signOut } = auth;
+  const { signOut, currentUser } = auth;
 
   const handleSignOut = () => {
     signOut();
@@ -18,6 +18,7 @@ export default function Navbar() {
         <a className="navbar-brand" href="#">
           <img src="/icon.svg" alt="Logo" style={{ height: "40px" }} />
         </a>
+
         <button
           className="navbar-toggler"
           type="button"
@@ -33,6 +34,7 @@ export default function Navbar() {
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             {auth.isLoggedIn ? (
               <>
+                <li className="nav-item">Hello, {currentUser.username}: </li>
                 <li className="nav-item">
                   <Link to="/Profile" className="nav-link">
                     Profile

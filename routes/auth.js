@@ -39,9 +39,14 @@ router.post("/login", async (req, res) => {
 
       if (!correctPassword) throw new Error("Incorrect password");
 
-      //only if all previoius verifications passed, we can CREATE THE TOKEN
-      var token = jwt.sign({ user_id }, supersecret);
-      res.send({ message: "Login successful, here is your token", token });
+      // Assuming the username is stored in the user object fetched from the database
+      const tokenPayload = { user_id, username: user.username };
+
+      // Create the token with user_id and username as payload
+      var token = jwt.sign(tokenPayload, supersecret);
+
+      // Include the username in the response
+      res.send({ message: "Login successful", username: user.username, token });
     } else {
       throw new Error("User does not exist");
     }

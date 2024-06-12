@@ -233,7 +233,7 @@ router.post(
       res.status(200).send({ message: "Workout duplicated successfully, yay" });
     } catch (err) {
       console.error("Error with duplication process:", err);
-      res.status(500).send({ message: err.message });
+      res.status(500).send({ message: "Failed to duplicate workout" });
     }
   }
 );
