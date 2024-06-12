@@ -49,13 +49,20 @@ export default function SentWorkouts() {
 
   return (
     <div className="container">
-      <h1>Here, you have a list of workouts from your friends!</h1>
+      <h1 className="page-title-less">
+        Here, you have a list of workouts from your friends!
+      </h1>
+      <br />
       <div className="row">
         {/* Left column for sent workouts */}
         <div className="col-md-6">
           <div className="row">
             {sentWorkouts.map((workout) => (
-              <div key={workout.id} className="col-md-6 mb-3">
+              <div
+                key={workout.id}
+                className="col-md-6 mb-3"
+                style={{ height: "100%" }}
+              >
                 <div className="card">
                   <div className="card-header">
                     Workout from {workout.username}
@@ -94,17 +101,17 @@ export default function SentWorkouts() {
             selectedWorkout.exercises.length > 0 && (
               <div className="workout-summary-box">
                 <h2>Here's your workout summary</h2>
-                <br/>
+                <br />
                 <div className="text-start">
-                <ul>
-                  {selectedWorkout.exercises.map((exercise) => (
-                    <li key={exercise.exercise_id}>
-                      <strong>{exercise.name}</strong> - {exercise.muscle} (
-                      {exercise.difficulty})
-                    </li>
-                  ))}
-                  <br/>
-                </ul>
+                  <ul>
+                    {selectedWorkout.exercises.map((exercise) => (
+                      <li key={exercise.exercise_id}>
+                        <strong>{exercise.name}</strong> - {exercise.muscle} (
+                        {exercise.difficulty})
+                      </li>
+                    ))}
+                    <br />
+                  </ul>
                 </div>
                 <NextStepSelection selectedWorkout={selectedWorkout} />
               </div>
