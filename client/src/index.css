@@ -342,8 +342,12 @@ button:focus-visible {
 .datepicker-card {
   background-color: lightsteelblue;
 }
-.exercis-btn-card {
-  background-color: lightsalmon;
+.exercise-btn-card {
+  background-color: lightseagreen;
+}
+
+.datepicker {
+  background-color: white;
 }
 
 .workout-summary-box {
