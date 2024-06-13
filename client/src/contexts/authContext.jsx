@@ -2,7 +2,6 @@ import { createContext, useState, useContext } from "react";
 import { useEffect } from "react";
 
 const AuthContext = createContext();
-
 const AuthProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [currentUser, setCurrentUser] = useState(() => {
@@ -16,7 +15,6 @@ const AuthProvider = (props) => {
     setCurrentUser(user);
     localStorage.setItem("currentUser", JSON.stringify(user));
   };
-
   const signOut = () => {
     setIsLoggedIn(false);
     setCurrentUser({});
@@ -43,7 +41,5 @@ const AuthProvider = (props) => {
     />
   );
 };
-
 const useAuth = () => useContext(AuthContext);
-
 export { AuthProvider, useAuth, AuthContext };

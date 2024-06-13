@@ -82,6 +82,7 @@ export default function Profile() {
                 <div>
                   <p>Username: {userData.username}</p>
                   <p>Email: {userData.email}</p>
+                  <p>Picture: {userData.email}</p>
                 </div>
               ) : (
                 <p>Loading user data...</p>

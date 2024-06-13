@@ -14,7 +14,7 @@ export default function Register() {
   });
   const auth = useAuth();
   const [selectedFile, setSelectedFile] = useState(null);
-  const [image, setImage] = useState([]);
+  const [previewImage, setPreviewImage] = useState(null);
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
@@ -73,24 +73,22 @@ export default function Register() {
     }
   };
 
-  // On file select (from the pop up)
   const onFileChange = (event) => {
-    // Update the state
-    console.log(event);
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    setSelectedFile(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImage(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
-  // On file upload (click the upload button)
   const onFileUpload = async () => {
-    // Create an object of formData
     const formData = new FormData();
-
-    // Update the formData object
     formData.append("imagefile", selectedFile, selectedFile.name);
 
     try {
-      // Request made to the backend api
-      // Send formData object
       const res = await axios.post("/api/auth/register", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -98,7 +96,6 @@ export default function Register() {
       });
 
       console.log(res);
-      getImage();
     } catch (err) {
       console.log(err);
     }
@@ -112,7 +109,6 @@ export default function Register() {
       return;
     }
 
-    // Create FormData object
     const formData = new FormData();
     formData.append("imagefile", selectedFile);
     formData.append("username", username);
@@ -120,21 +116,25 @@ export default function Register() {
     formData.append("password", password);
 
     try {
-      // Send POST request to backend with FormData
       const response = await axios.post("/api/auth/register", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Set content type header for FormData
+          "Content-Type": "multipart/form-data",
         },
       });
 
       console.log("Response JSON:", response.data);
       if (response.data.message === "Register successful") {
-        
-        handleLogin(); // If registration successful, proceed to login
+        handleLogin();
       }
     } catch (err) {
       console.error("Registration error:", err);
     }
+  };
+
+  const handleCombinedActions = async (e) => {
+    e.preventDefault();
+    await onFileUpload();
+    handleRegister(e);
   };
 
   return (
@@ -200,12 +200,26 @@ export default function Register() {
           </div>
           <div className="col-md-6">
             <div className="card">
-              <div className="card-body">
-                <h3>Select file to upload:</h3>
-                <input type="file" onChange={onFileChange} />
-                <button type="button" onClick={onFileUpload}>
-                  Upload
-                </button>
+              <div className="card-body" style={{ textAlign: "center" }}>
+                <h3>Select profile picture:</h3>
+                <div className="card-select-profile-pic-container">
+                  {previewImage ? (
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      style={{ maxWidth: "100%", maxHeight: "100%" }}
+                    />
+                  ) : (
+                    <label className="custom-file-upload">
+                      <input
+                        type="file"
+                        className="input-select-profile-pic btn"
+                        onChange={onFileChange}
+                      />
+                      Choose your picture
+                    </label>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -216,10 +230,14 @@ export default function Register() {
             <button
               type="submit"
               className="btn btn-primary btn-block"
-              onClick={handleRegister}
+              onClick={handleCombinedActions}
             >
               Register
             </button>
+            <br />
+            <br />
+            <br />
+            <br />
           </div>
         </div>
       </div>

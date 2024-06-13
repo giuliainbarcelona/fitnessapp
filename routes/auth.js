@@ -105,6 +105,3 @@ router.get("/profile", userShouldBeLoggedIn, async (req, res) => {
 });
 
 module.exports = router;
-
-//token for "username": "testing"
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3MTczNjEwNjB9.zVXRTxUJi2DD3YglpzklJD0_C6DF1B3yWw5wblNEV4I
