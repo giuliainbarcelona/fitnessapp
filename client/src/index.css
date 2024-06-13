@@ -496,13 +496,13 @@ div.fc-dayGridMonth-view table thead tr th.fc-day-header {
 
 .exercise-instructions {
   width: 100% !important;
-  height: 200px !important; /* Or any desired height */
+  height: 200px !important; 
   overflow: auto !important; /* Adjust overflow property as needed */
 }
 
 .exercise-instructions p {
   width: 100% !important; /* Make the paragraph stretch to fill the available width */
-}
+} 
 
 .bg-custom {
   background-color: #04705f;
