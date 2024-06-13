@@ -18,6 +18,7 @@ export default function Profile() {
         },
       });
       const data = await response.json();
+      console.log("User Data:", data.user);
       setUserData(data.user);
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -54,6 +55,7 @@ export default function Profile() {
     fetchUserData();
     // fetchSentWorkouts();
   }, []);
+
   const renderProfileModal = () => {
     return (
       <div
@@ -82,7 +84,14 @@ export default function Profile() {
                 <div>
                   <p>Username: {userData.username}</p>
                   <p>Email: {userData.email}</p>
-                  <p>Picture: {userData.email}</p>
+                  Profile Image:
+                  {userData.image && (
+                    <img
+                      src={`/img/${userData.image}`}
+                      alt="Profile Image"
+                      style={{ maxWidth: "90%", maxHeight: "90%" }}
+                    />
+                  )}
                 </div>
               ) : (
                 <p>Loading user data...</p>

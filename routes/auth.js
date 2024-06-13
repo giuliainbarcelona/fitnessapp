@@ -94,7 +94,7 @@ router.post("/login", async (req, res) => {
 router.get("/profile", userShouldBeLoggedIn, async (req, res) => {
   try {
     const results = await db(
-      `SELECT username, email FROM users WHERE id=${req.user_id}`
+      `SELECT username, email, image FROM users WHERE id=${req.user_id}`
     );
     const user = results.data[0];
     if (!user) throw new Error("User not found");
