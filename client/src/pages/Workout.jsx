@@ -99,17 +99,6 @@ export default function Workout() {
       alert("Please select a date and a time.");
       return;
     }
-    // const formattedDate = `${selectedDate.$y}-${String(
-    //   selectedDate.$M + 1
-    // ).padStart(2, "0")}-${String(selectedDate.$D).padStart(2, "0")}`;
-
-    // const formattedDate = selectedDate.format("YYYY-MM-DD");
-    // const formattedTime = selectedTime.format("HH:mm:ss.SSSZ");
-    // console.log(1111, formattedDate, 22222, selectedTime, 33333, formattedTime);
-    // const formattedTime = `${String(selectedTime.hour()).padStart(
-    //   2,
-    //   "0"
-    // )}:${String(selectedTime.minute()).padStart(2, "0")}`;
     const data = {
       date: `${selectedDate.format("YYYY-MM-DD")}T${selectedTime.format(
         "HH:mm:ss.SSS"
