@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
+import axios from "axios";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -12,7 +13,8 @@ export default function Register() {
     password: "",
   });
   const auth = useAuth();
-  const [isRegistered, setIsRegistered] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [image, setImage] = useState([]);
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
@@ -71,6 +73,37 @@ export default function Register() {
     }
   };
 
+  // On file select (from the pop up)
+  const onFileChange = (event) => {
+    // Update the state
+    console.log(event);
+    setSelectedFile(event.target.files[0]);
+  };
+
+  // On file upload (click the upload button)
+  const onFileUpload = async () => {
+    // Create an object of formData
+    const formData = new FormData();
+
+    // Update the formData object
+    formData.append("imagefile", selectedFile, selectedFile.name);
+
+    try {
+      // Request made to the backend api
+      // Send formData object
+      const res = await axios.post("/api/auth/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(res);
+      getImage();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -78,17 +111,26 @@ export default function Register() {
     if (errors.username || errors.email || errors.password) {
       return;
     }
-    const data = { username, email, password };
+
+    // Create FormData object
+    const formData = new FormData();
+    formData.append("imagefile", selectedFile);
+    formData.append("username", username);
+    formData.append("email", email);
+    formData.append("password", password);
+
     try {
-      const response = await fetch("api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
+      // Send POST request to backend with FormData
+      const response = await axios.post("/api/auth/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set content type header for FormData
+        },
       });
-      const responseJson = await response.json();
-      console.log("Response JSON:", responseJson);
-      if (responseJson.message === "Register successful") {
-        handleLogin();
+
+      console.log("Response JSON:", response.data);
+      if (response.data.message === "Register successful") {
+        
+        handleLogin(); // If registration successful, proceed to login
       }
     } catch (err) {
       console.error("Registration error:", err);
@@ -100,58 +142,86 @@ export default function Register() {
       <div className="register-content">
         <h1 className="page-title">Register</h1>
         <br />
-        <form onSubmit={handleRegister}>
-          <label htmlFor="username" className="label-register">
-            Username:
-          </label>
-          <input
-            className="input-register"
-            type="text"
-            id="username"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-          {errors.username && <span className="error">{errors.username}</span>}
-          <br />
-          <br />
-          <label htmlFor="email" className="label-register">
-            Email:
-          </label>
-
-          <input
-            className="input-register input-register-email"
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-          />
-          {errors.email && <span className="error">{errors.email}</span>}
-          <br />
-          <br />
-          <label htmlFor="password" className="label-register">
-            Password:
-          </label>
-          <input
-            className="input-register"
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          {errors.password && (
-            <span className="error-register">{errors.password}</span>
-          )}
-          <br />
-          <br />
-          <button
-            type="submit"
-            className="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#profileModal"
-          >
-            Register
-          </button>
-        </form>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <form onSubmit={handleRegister} className="register-form">
+                  <div className="form-group">
+                    <label htmlFor="username" className="label-register">
+                      Username:
+                    </label>
+                    <input
+                      className="input-register"
+                      type="text"
+                      id="username"
+                      value={username}
+                      onChange={handleUsernameChange}
+                    />
+                    {errors.username && (
+                      <span className="error">{errors.username}</span>
+                    )}
+                    <br />
+                    <br />
+                    <label htmlFor="email" className="label-register">
+                      Email:
+                    </label>
+                    <input
+                      className="input-register input-register-email"
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={handleEmailChange}
+                    />
+                    {errors.email && (
+                      <span className="error">{errors.email}</span>
+                    )}
+                    <br />
+                    <br />
+                    <label htmlFor="password" className="label-register">
+                      Password:
+                    </label>
+                    <input
+                      className="input-register"
+                      type="password"
+                      id="password"
+                      value={password}
+                      onChange={handlePasswordChange}
+                    />
+                    {errors.password && (
+                      <span className="error-register">{errors.password}</span>
+                    )}
+                    <br />
+                    <br />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <h3>Select file to upload:</h3>
+                <input type="file" onChange={onFileChange} />
+                <button type="button" onClick={onFileUpload}>
+                  Upload
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="row justify-content-center">
+          <div className="col-md-4">
+            <button
+              type="submit"
+              className="btn btn-primary btn-block"
+              onClick={handleRegister}
+            >
+              Register
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

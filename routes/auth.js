@@ -1,26 +1,59 @@
-var express = require("express");
-var router = express.Router();
-var jwt = require("jsonwebtoken");
-var db = require("../model/helper");
+const express = require("express");
+const router = express.Router();
+const jwt = require("jsonwebtoken");
+const db = require("../model/helper");
 require("dotenv").config();
 var bcrypt = require("bcrypt");
 const saltRounds = 10;
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 const supersecret = process.env.SUPER_SECRET;
+const mime = require("mime-types");
+const { v4: uuidv4 } = require("uuid");
+const fs = require("fs/promises");
+const path = require("path");
+const multer = require("multer");
+const upload = multer({ dest: "public/img/" });
 
-router.post("/register", async (req, res) => {
+const getImages = async (req, res) => {
+  try {
+    const results = await db("SELECT * FROM users;");
+    res.send(results.data);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+router.get("/", getImages);
+
+router.post("/register", upload.single("imagefile"), async (req, res) => {
   const { username, password, email } = req.body;
+  console.log(req.body);
+
+  const imagefile = req.file;
+
+  // check the extension of the file
+  const extension = mime.extension(imagefile.mimetype);
+
+  // create a new random name for the file
+  const filename = uuidv4() + "." + extension;
+
+  // grab the filepath for the temporary file
+  const tmp_path = imagefile.path;
+
+  // construct the new path for the final file
+  const target_path = path.join(__dirname, "../public/img/") + filename;
 
   try {
+    await fs.rename(tmp_path, target_path);
     const hash = await bcrypt.hash(password, saltRounds);
 
     await db(
-      `INSERT INTO users (username, password, email) VALUES ("${username}", "${hash}", "${email}")`
+      `INSERT INTO users (username, password, email, image) VALUES ("${username}", "${hash}", "${email}", "${filename}")`
     );
 
     res.send({ message: "Register successful" });
   } catch (err) {
-    res.status(400).send({ message: err.message });
+    res.status(400).send({ message: `${err.message}, testing` });
   }
 });
 
