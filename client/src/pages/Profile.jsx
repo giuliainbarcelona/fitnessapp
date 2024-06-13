@@ -8,8 +8,6 @@ export default function Profile() {
   const [userWorkouts, setUserWorkouts] = useState([]);
   const [sentWorkouts, setSentWorkouts] = useState([]);
 
-  console.log("This is my userData", userData);
-
   // Fetching user data from the backend
   const fetchUserData = async () => {
     try {
@@ -57,6 +55,7 @@ export default function Profile() {
     fetchUserData();
     // fetchSentWorkouts();
   }, []);
+
   const renderProfileModal = () => {
     return (
       <div
@@ -90,7 +89,7 @@ export default function Profile() {
                     <img
                       src={`/img/${userData.image}`}
                       alt="Profile Image"
-                      style={{ maxWidth: "100%", maxHeight: "100%" }}
+                      style={{ maxWidth: "90%", maxHeight: "90%" }}
                     />
                   )}
                 </div>
