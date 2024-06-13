@@ -116,7 +116,7 @@ router.put(
     try {
       const workout_id = req.params.workout_id; // same as above
       const { date } = req.body; // Extract the updated date from the request body
-      const exercisesByWorkoutUpdate = `UPDATE workouts SET date = '${date}' WHERE id = ${workout_id}`;
+      const exercisesByWorkoutUpdate = `UPDATE workouts SET date = '${date}', sender_id = null WHERE id = ${workout_id}`;
       await db(exercisesByWorkoutUpdate); // Update the workout date in the database
       res.status(200).send({ message: "Workout updated successfully" });
     } catch (err) {
@@ -135,7 +135,12 @@ router.delete(
     try {
       const workout_id = req.params.workout_id;
       const user_id = req.user_id;
-      await db(`DELETE FROM exercises WHERE workout_id = ${workout_id}`);
+      const exercises = await db(
+        `SELECT * FROM exercises WHERE workout_id = ${workout_id}`
+      );
+      if (exercises.data.length) {
+        await db(`DELETE FROM exercises WHERE workout_id = ${workout_id}`);
+      }
       await db(`
         DELETE FROM workouts WHERE id = ${workout_id}
       `);

@@ -96,7 +96,7 @@ export default function Workout() {
     // Handle save logic here: saving the selected date to state to pass it to the calendar
     e.preventDefault();
     if (!selectedDate) {
-      alert("Please select a date and a time.");
+      alert("Please select a date and time.");
       return;
     }
     const data = {

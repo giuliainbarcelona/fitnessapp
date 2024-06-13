@@ -140,7 +140,7 @@ const Exercise = () => {
         <h4 className="text-start">Equipment: {exercise.current?.equipment}</h4>
         <div className="border p-3 bg-faded-blue text-dark-grey">
           <div className="exercise-instructions">
-          <p>Instructions: {exercise.current?.instructions}</p>
+            <p>Instructions: {exercise.current?.instructions}</p>
           </div>
         </div>
         <br />
@@ -157,7 +157,7 @@ const Exercise = () => {
             aria-valuemax="100"
           ></div>
         </div>
-        <br/>
+        <br />
         {currentExerciseIndex > 0 && (
           <button
             className="btn btn-secondary me-5"
@@ -166,7 +166,7 @@ const Exercise = () => {
             Previous Exercise
           </button>
         )}
-        
+
         <button
           className="btn btn-primary"
           onClick={() => handleNextExercise()}
