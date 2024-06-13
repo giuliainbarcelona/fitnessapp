@@ -8,6 +8,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { cardio } from "ldrs";
+import dayjs from "dayjs";
 cardio.register();
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -18,6 +19,7 @@ export default function Workout() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [exercises, setExercises] = useState([]);
   const [selectedDate, setSelectedDate] = useState();
+  const [selectedTime, setSelectedTime] = useState();
   const [workoutSaved, setWorkoutSaved] = useState(false);
   const [sentWorkouts, setSentWorkouts] = useState([]);
   const [loadingExercise, setLoadingExercise] = useState(false);
@@ -86,23 +88,36 @@ export default function Workout() {
     setSelectedDate(newValue);
   };
 
+  const handleTimeSelection = (newValue) => {
+    setSelectedTime(newValue);
+  };
+
   const handleSave = async (e) => {
     // Handle save logic here: saving the selected date to state to pass it to the calendar
     e.preventDefault();
     if (!selectedDate) {
-      alert("Please select a date.");
+      alert("Please select a date and a time.");
       return;
     }
-    const formattedDate = `${selectedDate.$y}-${String(
-      selectedDate.$M + 1
-    ).padStart(2, "0")}-${String(selectedDate.$D).padStart(2, "0")}`;
+    // const formattedDate = `${selectedDate.$y}-${String(
+    //   selectedDate.$M + 1
+    // ).padStart(2, "0")}-${String(selectedDate.$D).padStart(2, "0")}`;
 
+    // const formattedDate = selectedDate.format("YYYY-MM-DD");
+    // const formattedTime = selectedTime.format("HH:mm:ss.SSSZ");
+    // console.log(1111, formattedDate, 22222, selectedTime, 33333, formattedTime);
+    // const formattedTime = `${String(selectedTime.hour()).padStart(
+    //   2,
+    //   "0"
+    // )}:${String(selectedTime.minute()).padStart(2, "0")}`;
     const data = {
-      date: formattedDate,
+      date: `${selectedDate.format("YYYY-MM-DD")}T${selectedTime.format(
+        "HH:mm:ss.SSS"
+      )}`,
+      // time: formattedTime,
       exercises: exercises,
     };
-    console.log("This is your formatted date from the WO page", formattedDate);
-
+    console.log(656565, data);
     try {
       const response = await fetch("/api/workouts", {
         method: "POST",
@@ -220,22 +235,19 @@ export default function Workout() {
                 <>
                   <p>Save it for later 🗓️</p>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["DatePicker"]}>
-                      <DatePicker
-                        label="Basic date picker"
-                        className="datepicker"
-                        onChange={handleDateSelection}
-                      />
-                    </DemoContainer>
+                    <DatePicker
+                      label="Basic date picker"
+                      className="datepicker"
+                      onChange={handleDateSelection}
+                    />
                   </LocalizationProvider>
                   <br />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["TimePicker"]}>
-                      <TimePicker
-                        className="datepicker"
-                        label="Basic time picker"
-                      />
-                    </DemoContainer>
+                    <TimePicker
+                      label="Basic time picker"
+                      className="datepicker"
+                      onChange={handleTimeSelection}
+                    />
                   </LocalizationProvider>
                   <br />
                   <button
