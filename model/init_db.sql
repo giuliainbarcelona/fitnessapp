@@ -14,7 +14,7 @@ CREATE TABLE `users`(
 CREATE TABLE `workouts`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT UNSIGNED NOT NULL,
-    `date` DATE NOT NULL,
+    `date` DATETIME NOT NULL,
     `sender_id` INT UNSIGNED DEFAULT NULL,
     FOREIGN KEY(`user_id`) REFERENCES `users`(`id`),
     FOREIGN KEY (`sender_id`) REFERENCES `users`(`id`)

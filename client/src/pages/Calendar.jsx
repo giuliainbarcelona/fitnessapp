@@ -7,6 +7,7 @@ import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import Sidebar from "../pages/Sidebar";
+import dayjs from "dayjs";
 
 export default function Calendar({ userWorkouts, onDelete }) {
   const [curYear, setCurYear] = useState(null);
@@ -16,7 +17,12 @@ export default function Calendar({ userWorkouts, onDelete }) {
     if (!userWorkouts) return [];
     return userWorkouts.map((workout) => {
       const start = new Date(workout.date);
-      start.setHours(9, 0, 0, 0); // Set start time to 9 AM
+      console.log(999999, start, 33333333, workout.date);
+      const date = new Date(workout.date);
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      console.log(11111, hours, 77777, minutes);
+      start.setHours(hours + 2, minutes, 0, 0); // Set start time to 9 AM
       const muscleName =
         workout.exercises.length > 0 ? workout.exercises[0].muscle : "Null";
       const exerciseId =
