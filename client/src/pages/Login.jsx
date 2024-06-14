@@ -31,7 +31,7 @@ export default function login() {
       if (response.ok) {
         localStorage.setItem("token", responseJson.token);
         // Pass the username to signIn function
-        auth.signIn({ username: responseJson.username });
+        auth.signIn(responseJson);
         navigate("/buildyourworkout", { state: { token: responseJson.token } });
       } else {
         console.error("Login error:", responseJson.message);

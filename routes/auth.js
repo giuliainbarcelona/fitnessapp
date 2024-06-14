@@ -79,7 +79,12 @@ router.post("/login", async (req, res) => {
       var token = jwt.sign(tokenPayload, supersecret);
 
       // Include the username in the response
-      res.send({ message: "Login successful", username: user.username, token });
+      res.send({
+        message: "Login successful",
+        username: user.username,
+        token,
+        image: user.image,
+      });
     } else {
       throw new Error("User does not exist");
     }

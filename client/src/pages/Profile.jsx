@@ -84,7 +84,7 @@ export default function Profile() {
                 <div>
                   <p>Username: {userData.username}</p>
                   <p>Email: {userData.email}</p>
-                  Profile Image:
+                  Profile Picture:
                   {userData.image && (
                     <img
                       src={`/img/${userData.image}`}
@@ -124,7 +124,7 @@ export default function Profile() {
             data-bs-toggle="modal"
             data-bs-target="#profileModal"
           >
-            View Profile 📝
+            Profile Details 📝
           </button>
           <Link to="/SentWorkouts" className="btn btn-primary me-2">
             Workouts Sent By Friends 👯‍♂️
