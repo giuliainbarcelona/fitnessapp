@@ -1,5 +1,4 @@
-import { createContext, useState, useContext } from "react";
-import { useEffect } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 const AuthContext = createContext();
 const AuthProvider = (props) => {

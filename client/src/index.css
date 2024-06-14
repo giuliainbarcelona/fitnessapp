@@ -544,3 +544,7 @@ div.fc-dayGridMonth-view table thead tr th.fc-day-header {
   color: white;
   border-radius: px;
 }
+
+.profile-pic-nav:hover {
+  transform: scale(1.55);
+}

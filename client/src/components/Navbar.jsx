@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
+import Avatar from "@mui/material/Avatar";
+import Stack from "@mui/material/Stack";
 
 export default function Navbar() {
   const auth = useAuth();
@@ -14,11 +16,21 @@ export default function Navbar() {
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      {console.log("This is c", currentUser)}
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
           <img src="/icon.svg" alt="Logo" style={{ height: "40px" }} />
         </a>
-
+        {auth.isLoggedIn ? (
+          <Stack direction="row" spacing={2}>
+            <Avatar
+              alt="Profile Pic"
+              className="navbar-brand profile-pic-nav"
+              src={`/img/${currentUser.image}`}
+              sx={{ width: 56, height: 56 }}
+            />
+          </Stack>
+        ) : null}
         <button
           className="navbar-toggler"
           type="button"
