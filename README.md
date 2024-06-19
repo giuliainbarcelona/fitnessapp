@@ -149,7 +149,7 @@ Frontend runs on http://localhost:5173/, and backend runs on http://localhost:40
 
 ## Database Schema
 
-![Database Schema Diagram](./images/databaseschema.png)
+![Database Schema Diagram](../fs35-team-A/client/images/databaseschema.png)
 
 ### Relationships
 
