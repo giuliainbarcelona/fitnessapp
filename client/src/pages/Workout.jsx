@@ -48,8 +48,8 @@ export default function Workout() {
           );
 
           const exercisesData = await response.json();
+          console.log("This is my exercise data", exercisesData); // This is an array of objects!
           setExercises(exercisesData.slice(0, 5)); // Limits the amount of workouts that will render
-          console.log(exercisesData); // This is an array of objects!
           setLoadingExercise(false);
           setLoadingEquipment(false);
         } catch (err) {

@@ -16,7 +16,6 @@ export default function Navbar() {
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      {console.log("This is c", currentUser)}
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
           <img src="/icon.svg" alt="Logo" style={{ height: "40px" }} />

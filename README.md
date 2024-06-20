@@ -6,7 +6,7 @@ By Chardae Schnabel and Giulia Cellerino
 
 - [Introduction](#introduction)
 - [Motivation](#motivation)
-- [Features & Views](#features--views)
+- [Features & Pages](#features--views)
 - [Tools Used](#tools-used)
 - [Getting Started](#getting-started)
 - [Database Schema](#database-schema)
@@ -31,24 +31,25 @@ This fitness app focuses on building confidence and inspiring users of all level
 
 This app is made up of the following pages:
 
-- **Homepage:** Provides an overview of the app, featuring essential information and navigation options.
+- **Homepage:** Provides an overview of the value proposition of the fitness app. This is the only page that the user can access without being registered. It includes options for both login and registration.
+
 - **Login:** Allows users to authenticate and access their accounts securely.
 
-- **Buildyourownworkout:** Enables users to customize their workout routines based on preferences and goals.
+- **Register:** Allows users to register their accounts securely. To validate the registration process, the user must provide a username, email, password, and profile image.
 
-- **Calendar:** Displays scheduled workouts and fitness events, helping users plan and track their activities.
+- **Build Your Own Workout:** Enables users to customize their workout routines based on preferences for muscle group, difficulty, and workout type. This information is fetched from the API.
 
-- **Exercise:** Offers detailed information and instructions for various exercises and workout routines.
+- **Workout:** Presents exercises tailored to user preferences. The user can choose to "Exercise Now" or save the workout for later.
 
-- **Profile:** Allows users to manage their personal information, track progress, and customize settings.
+- **Exercise:** This page appears when the user decides to "Exercise Now" on the previous page. It offers detailed information regarding the equipment and instructions for the exercises. A progress bar shows the user's progress throughout their workout. Users can also share the workout with a friend (another registered user on the platform).
 
-- **Register:** Provides a registration form for new users to create accounts and join the app.
+- **Calendar:** Displays scheduled workout events, helping users plan their activities. Events can be rescheduled based on both date and time.
 
-- **Sentworkouts:** Shows a history of sent or scheduled workout plans, facilitating organization and planning.
+- **Profile:** Allows users to view their personal details, view the calendar, delete a saved workout, decide to train for a specific workout, and view workouts sent by friends.
 
-- **Sidebar:** Provides quick access to navigation options and additional features throughout the app.
+- **Sent Workouts:** Shows a history of sent workout plans, facilitating organization and planning.
 
-- **Workout:** Presents structured workout routines and exercises tailored to user preferences.
+- **Sidebar:** Provides quick access to saved workouts.
 
 ## Tools Used
 
@@ -225,12 +226,50 @@ These queries provide insights into how data is structured and retrieved within 
 
 ### API Route
 
-- Enpoints description
-- We can create a PDF file and link it
+We used [Ninja API](https://api-ninjas.com/api/exercises) to fetch the workouts.
 
-### Guards
+- URI: `/api/workouts`
+- HTTP Method: `GET`
+- Description: Fetches workouts based on muscle group, difficulty, and type.
+- Request Object:
+  ```json
+  {
+    "headers": {
+      "Content-Type": "application/json",
+      "authorization": "Bearer <token>"
+    }
+  }
+  ```
+- Request Object: it is an array of objects. Inside each object there is the following:
+
+```json
+[
+  {
+    "difficulty": "string",
+    "equipment": "string",
+    "instructions": "string",
+    "muscle": "string",
+    "name": "string",
+    "type": "string"
+  }
+]
+```
 
 ## Future Features
+
+There are plenty of ideas to make this app bigger and better, here below a snippet:
+
+- Timer Option: Implement a timer feature to track the duration of each exercise.
+
+- Advanced Workout Analytics: Implement advanced analytics to provide users with insights into their workout performance over time, including duration, frequency, muscle group.
+
+- Advanced Workout Analytics: Implement advanced analytics to provide users with insights into their workout performance over time, including duration, frequency, muscle group.
+
+- Enhanced Customization Options: Allow users to further customize their workout plans though filters for workout search (e.g., specific equipment, workout duration).
+
+- Gamification: Add gamification elements to make workouts more engaging and fun, such as achievements and badges for reaching milestones, daily and weekly challenges to keep users motivated.
+
+- Accessibility Enhancements: Make the app more accessible to users with disabilities. Implementing voice control navigation options.
 
 ### Instructions to contribute
 
