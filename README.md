@@ -197,7 +197,33 @@ These relationships ensure that each workout is linked to a specific user and ca
 
 ### Example Queries
 
-## API Route
+The following SQL queries demonstrate how to interact with the database:
+
+1. This query retrieves all workout sessions associated with a specific user, identified by their user_id.
+
+```sql
+ SELECT * FROM workouts WHERE user_id = 'specific_user_id';
+```
+
+2. This query retrieves all exercises included in a specific workout session, identified by its workout_id
+
+```sql
+ SELECT * FROM exercises WHERE workout_id = 'specific_workout_id';
+```
+
+3. This query retrieves all workout sessions created by a specific user, identified by their sender_id.
+
+```sql
+SELECT * FROM workouts WHERE sender_id = 'specific_user_id';
+```
+
+These queries provide insights into how data is structured and retrieved within the database, facilitating understanding of the relationships between users, workouts, and exercises.
+
+## Routes
+
+### End Points
+
+### API Route
 
 - Enpoints description
 - We can create a PDF file and link it
@@ -206,7 +232,32 @@ These relationships ensure that each workout is linked to a specific user and ca
 
 ## Future Features
 
-### Instructions to add future features
+### Instructions to contribute
+
+To contribute to this project, follow these steps:
+
+1. **Fork the Project**: Click on the "Fork" button at the top right corner of the repository page on GitHub. This creates a copy of the project under your GitHub account.
+
+2. **Create your Feature Branch**: Switch to your terminal or command prompt and create a new branch for your feature using the following command:
+
+   ```bash
+   git checkout -b feature/YourName
+   ```
+
+3. **Commit Your Changes**: Make your changes to the project code, then stage and commit the changes using the following commands:
+
+   ```bash
+   git add .
+   git commit -m 'add descriptive name for your feature'
+   ```
+
+4. **Push to the Branch**: Push your local changes to your forked repository on GitHub:
+
+   ```bash
+   git push origin feature/YourName
+   ```
+
+5. **Open Pull Request**: Go to the GitHub repository page of the original project. GitHub should display a prompt to create a pull request from your recently pushed branch. Follow the prompts to compare changes, write a pull request description, and submit it.
 
 ## Contact
 
