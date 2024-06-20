@@ -85,6 +85,12 @@ Before you begin, ensure you have the following installed on your local machine:
 
 ### Installation
 
+0. Clone the repository on your local machine and open it.
+
+```javascript
+git clone "githublink"
+```
+
 1. You need to create two (2) .env files.
 
 - This .env goes in the client folder, as it contains the API Key accessible in the frontend
@@ -151,7 +157,43 @@ Frontend runs on http://localhost:5173/, and backend runs on http://localhost:40
 
 ![Database Schema Diagram](../fs35-team-A/client/images/databaseschema.png)
 
+The database consists of three main tables: `users`, `workouts`, and `exercises`. Below is a summary of their purpose and relationships:
+
+1. **Users Table**
+
+   - **Purpose:** Stores user information.
+
+2. **Workouts Table**
+
+   - **Purpose:** Stores workout sessions, linked to the users who perform and send them.
+
+3. **Exercises Table**
+
+   - **Purpose:** Stores exercises associated with specific workouts.
+
 ### Relationships
+
+1. **Users to Workouts (1:N)**
+
+   - **Relationship:** One user can have multiple workouts.
+   - **Details:** The `user_id` column in the `workouts` table references the `id` column in the `users` table.
+
+2. **Users to Workouts (1:N) via `sender_id`**
+
+   - **Relationship:** One user can send or create multiple workouts.
+   - **Details:** The `sender_id` column in the `workouts` table references the `id` column in the `users` table.
+
+3. **Workouts to Exercises (1:N)**
+   - **Relationship:** One workout can have multiple exercises.
+   - **Details:** The `workout_id` column in the `exercises` table references the `id` column in the `workouts` table.
+
+### Summary of Relationships
+
+- **Users to Workouts (user_id):** One user (`users.id`) can have many workouts (`workouts.user_id`).
+- **Users to Workouts (sender_id):** One user (`users.id`) can send many workouts (`workouts.sender_id`).
+- **Workouts to Exercises:** One workout (`workouts.id`) can include many exercises (`exercises.workout_id`).
+
+These relationships ensure that each workout is linked to a specific user and can include multiple exercises, and they allow tracking of both the user performing the workout and the user who created it.
 
 ### Example Queries
 
@@ -159,6 +201,8 @@ Frontend runs on http://localhost:5173/, and backend runs on http://localhost:40
 
 - Enpoints description
 - We can create a PDF file and link it
+
+### Guards
 
 ## Future Features
 
@@ -171,6 +215,6 @@ Frontend runs on http://localhost:5173/, and backend runs on http://localhost:40
 
 ## Acknowledgements
 
-- TA Pia Prozesky
-- TA Zoe Laventhol
-- Teacher Germinal Camps
+- TA [Pia Prozesky](https://www.linkedin.com/in/pia-prozesky)
+- TA [Zoe Laventhol](https://www.linkedin.com/in/zoe-laventhol)
+- Teacher [Germinal Camps](https://es.linkedin.com/in/germinal-camps)
