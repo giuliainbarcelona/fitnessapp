@@ -1,16 +1,21 @@
-# Char & Giulia Fitness App
+<p style="text-align: center; height: 50px;">
+  <img src="./client/public/icon.svg" alt="icon" style="height: 40px;" />
+</p>
 
-By Chardae Schnabel and Giulia Cellerino
+<h1 style="text-align: center;">Char & Giulia Fitness App</h1>
+
+<p style="text-align: center;">By Chardae Schnabel and Giulia Cellerino</p>
 
 ## Table of Contents
 
 - [Introduction](#introduction)
 - [Motivation](#motivation)
-- [Features & Views](#features--views)
+- [Features & Pages](#features--views)
 - [Tools Used](#tools-used)
 - [Getting Started](#getting-started)
+- [Demo Video](#demo-video)
 - [Database Schema](#database-schema)
-- [API Route](#api-route)
+- [Routes](#routes)
 - [Future Features](#future-features)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
@@ -31,24 +36,25 @@ This fitness app focuses on building confidence and inspiring users of all level
 
 This app is made up of the following pages:
 
-- **Homepage:** Provides an overview of the app, featuring essential information and navigation options.
+- **Homepage:** Provides an overview of the value proposition of the fitness app. This is the only page that the user can access without being registered. It includes options for both login and registration.
+
 - **Login:** Allows users to authenticate and access their accounts securely.
 
-- **Buildyourownworkout:** Enables users to customize their workout routines based on preferences and goals.
+- **Register:** Allows users to register their accounts securely. To validate the registration process, the user must provide a username, email, password, and profile image.
 
-- **Calendar:** Displays scheduled workouts and fitness events, helping users plan and track their activities.
+- **Build Your Own Workout:** Enables users to customize their workout routines based on preferences for muscle group, difficulty, and workout type. This information is fetched from the API.
 
-- **Exercise:** Offers detailed information and instructions for various exercises and workout routines.
+- **Workout:** Presents exercises tailored to user preferences. The user can choose to "Exercise Now" or save the workout for later.
 
-- **Profile:** Allows users to manage their personal information, track progress, and customize settings.
+- **Exercise:** This page appears when the user decides to "Exercise Now" on the previous page. It offers detailed information regarding the equipment and instructions for the exercises. A progress bar shows the user's progress throughout their workout. Users can also share the workout with a friend (another registered user on the platform).
 
-- **Register:** Provides a registration form for new users to create accounts and join the app.
+- **Calendar:** Displays scheduled workout events, helping users plan their activities. Events can be rescheduled based on both date and time.
 
-- **Sentworkouts:** Shows a history of sent or scheduled workout plans, facilitating organization and planning.
+- **Profile:** Allows users to view their personal details, view the calendar, delete a saved workout, decide to train for a specific workout, and view workouts sent by friends.
 
-- **Sidebar:** Provides quick access to navigation options and additional features throughout the app.
+- **Sent Workouts:** Shows a history of sent workout plans, facilitating organization and planning.
 
-- **Workout:** Presents structured workout routines and exercises tailored to user preferences.
+- **Sidebar:** Provides quick access to saved workouts.
 
 ## Tools Used
 
@@ -153,9 +159,20 @@ npm run dev
 
 Frontend runs on http://localhost:5173/, and backend runs on http://localhost:4000.
 
+## Demo Video
+
+<video width="640" height="360" controls>
+  <source src="./client/images/fitnessapprecording.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## Database Schema
 
-![Database Schema Diagram](../fs35-team-A/client/images/databaseschema.png)
+<div style="display: flex; justify-content: center;">
+  <img src="../fs35-team-A/client/images/databaseschema.png" alt="Database Schema Diagram" style="width: 500px; height: auto;" />
+</div>
+
+<br/>
 
 The database consists of three main tables: `users`, `workouts`, and `exercises`. Below is a summary of their purpose and relationships:
 
@@ -221,43 +238,60 @@ These queries provide insights into how data is structured and retrieved within 
 
 ## Routes
 
+In this section, we outline the various routes available in our application. These routes facilitate communication between the client and server, enabling functionalities such as fetching workout data, user registration, and more. Below, we provide detailed descriptions of each endpoint, including the necessary HTTP methods, request structures, and expected responses.
+
 ### End Points
+
+https://docs.google.com/document/d/1VD0Nsywif69Nr0MCx-je22KXIx5FMICRA2M1A-4CoNg/edit
 
 ### API Route
 
-- Enpoints description
-- We can create a PDF file and link it
+We used [Ninja API](https://api-ninjas.com/api/exercises) to fetch the workouts.
 
-### Guards
+- URI: `/api/workouts`
+- HTTP Method: `GET`
+- Description: Fetches workouts based on muscle group, difficulty, and type.
+- Request Object:
+
+```json
+{
+  "headers": {
+    "Content-Type": "application/json",
+    "authorization": "Bearer <token>"
+  }
+}
+```
+
+- Request Object: it is an array of objects. Inside each object there is the following:
+
+```json
+[
+  {
+    "difficulty": "string",
+    "equipment": "string",
+    "instructions": "string",
+    "muscle": "string",
+    "name": "string",
+    "type": "string"
+  }
+]
+```
 
 ## Future Features
 
-### Instructions to contribute
+There are plenty of ideas to make this app bigger and better, here below a snippet:
 
-To contribute to this project, follow these steps:
+- Timer Option: Implement a timer feature to track the duration of each exercise.
 
-1. **Fork the Project**: Click on the "Fork" button at the top right corner of the repository page on GitHub. This creates a copy of the project under your GitHub account.
+- Advanced Workout Analytics: Implement advanced analytics to provide users with insights into their workout performance over time, including duration, frequency, muscle group.
 
-2. **Create your Feature Branch**: Switch to your terminal or command prompt and create a new branch for your feature using the following command:
+- Advanced Workout Analytics: Implement advanced analytics to provide users with insights into their workout performance over time, including duration, frequency, muscle group.
 
-   ```bash
-   git checkout -b feature/YourName
-   ```
+- Enhanced Customization Options: Allow users to further customize their workout plans though filters for workout search (e.g., specific equipment, workout duration).
 
-3. **Commit Your Changes**: Make your changes to the project code, then stage and commit the changes using the following commands:
+- Gamification: Add gamification elements to make workouts more engaging and fun, such as achievements and badges for reaching milestones, daily and weekly challenges to keep users motivated.
 
-   ```bash
-   git add .
-   git commit -m 'add descriptive name for your feature'
-   ```
-
-4. **Push to the Branch**: Push your local changes to your forked repository on GitHub:
-
-   ```bash
-   git push origin feature/YourName
-   ```
-
-5. **Open Pull Request**: Go to the GitHub repository page of the original project. GitHub should display a prompt to create a pull request from your recently pushed branch. Follow the prompts to compare changes, write a pull request description, and submit it.
+- Accessibility Enhancements: Make the app more accessible to users with disabilities. Implementing voice control navigation options.
 
 ## Contact
 
@@ -266,6 +300,6 @@ To contribute to this project, follow these steps:
 
 ## Acknowledgements
 
-- TA [Pia Prozesky](https://www.linkedin.com/in/pia-prozesky)
-- TA [Zoe Laventhol](https://www.linkedin.com/in/zoe-laventhol)
 - Teacher [Germinal Camps](https://es.linkedin.com/in/germinal-camps)
+- TA [Zoe Laventhol](https://www.linkedin.com/in/zoe-laventhol)
+- TA [Pia Prozesky](https://www.linkedin.com/in/pia-prozesky)

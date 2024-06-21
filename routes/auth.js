@@ -27,8 +27,6 @@ router.get("/", getImages);
 
 router.post("/register", upload.single("imagefile"), async (req, res) => {
   const { username, password, email } = req.body;
-  console.log(req.body);
-
   const imagefile = req.file;
 
   // check the extension of the file
