@@ -1,6 +1,10 @@
-# Char & Giulia Fitness App
+<p style="text-align: center; height: 50px;">
+  <img src="./client/public/icon.svg" alt="icon" style="height: 40px;" />
+</p>
 
-By Chardae Schnabel and Giulia Cellerino
+<h1 style="text-align: center;">Char & Giulia Fitness App</h1>
+
+<p style="text-align: center;">By Chardae Schnabel and Giulia Cellerino</p>
 
 ## Table of Contents
 
@@ -9,8 +13,9 @@ By Chardae Schnabel and Giulia Cellerino
 - [Features & Pages](#features--views)
 - [Tools Used](#tools-used)
 - [Getting Started](#getting-started)
+- [Demo Video](#demo-video)
 - [Database Schema](#database-schema)
-- [API Route](#api-route)
+- [Routes](#routes)
 - [Future Features](#future-features)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
@@ -154,9 +159,20 @@ npm run dev
 
 Frontend runs on http://localhost:5173/, and backend runs on http://localhost:4000.
 
+## Demo Video
+
+<video width="640" height="360" controls>
+  <source src="./client/images/fitnessapprecording.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## Database Schema
 
-![Database Schema Diagram](../fs35-team-A/client/images/databaseschema.png)
+<div style="display: flex; justify-content: center;">
+  <img src="../fs35-team-A/client/images/databaseschema.png" alt="Database Schema Diagram" style="width: 500px; height: auto;" />
+</div>
+
+<br/>
 
 The database consists of three main tables: `users`, `workouts`, and `exercises`. Below is a summary of their purpose and relationships:
 
@@ -222,7 +238,11 @@ These queries provide insights into how data is structured and retrieved within 
 
 ## Routes
 
+In this section, we outline the various routes available in our application. These routes facilitate communication between the client and server, enabling functionalities such as fetching workout data, user registration, and more. Below, we provide detailed descriptions of each endpoint, including the necessary HTTP methods, request structures, and expected responses.
+
 ### End Points
+
+https://docs.google.com/document/d/1VD0Nsywif69Nr0MCx-je22KXIx5FMICRA2M1A-4CoNg/edit
 
 ### API Route
 
@@ -232,14 +252,16 @@ We used [Ninja API](https://api-ninjas.com/api/exercises) to fetch the workouts.
 - HTTP Method: `GET`
 - Description: Fetches workouts based on muscle group, difficulty, and type.
 - Request Object:
-  ```json
-  {
-    "headers": {
-      "Content-Type": "application/json",
-      "authorization": "Bearer <token>"
-    }
+
+```json
+{
+  "headers": {
+    "Content-Type": "application/json",
+    "authorization": "Bearer <token>"
   }
-  ```
+}
+```
+
 - Request Object: it is an array of objects. Inside each object there is the following:
 
 ```json
@@ -271,33 +293,6 @@ There are plenty of ideas to make this app bigger and better, here below a snipp
 
 - Accessibility Enhancements: Make the app more accessible to users with disabilities. Implementing voice control navigation options.
 
-### Instructions to contribute
-
-To contribute to this project, follow these steps:
-
-1. **Fork the Project**: Click on the "Fork" button at the top right corner of the repository page on GitHub. This creates a copy of the project under your GitHub account.
-
-2. **Create your Feature Branch**: Switch to your terminal or command prompt and create a new branch for your feature using the following command:
-
-   ```bash
-   git checkout -b feature/YourName
-   ```
-
-3. **Commit Your Changes**: Make your changes to the project code, then stage and commit the changes using the following commands:
-
-   ```bash
-   git add .
-   git commit -m 'add descriptive name for your feature'
-   ```
-
-4. **Push to the Branch**: Push your local changes to your forked repository on GitHub:
-
-   ```bash
-   git push origin feature/YourName
-   ```
-
-5. **Open Pull Request**: Go to the GitHub repository page of the original project. GitHub should display a prompt to create a pull request from your recently pushed branch. Follow the prompts to compare changes, write a pull request description, and submit it.
-
 ## Contact
 
 - Giulia Cellerino - giulia.cellerino@icloud.com
@@ -305,6 +300,6 @@ To contribute to this project, follow these steps:
 
 ## Acknowledgements
 
-- TA [Pia Prozesky](https://www.linkedin.com/in/pia-prozesky)
-- TA [Zoe Laventhol](https://www.linkedin.com/in/zoe-laventhol)
 - Teacher [Germinal Camps](https://es.linkedin.com/in/germinal-camps)
+- TA [Zoe Laventhol](https://www.linkedin.com/in/zoe-laventhol)
+- TA [Pia Prozesky](https://www.linkedin.com/in/pia-prozesky)
