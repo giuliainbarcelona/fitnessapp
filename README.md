@@ -173,6 +173,7 @@ Frontend runs on http://localhost:5173/, and backend runs on http://localhost:40
 </div>
 
 <br/>
+<br/>
 
 The database consists of three main tables: `users`, `workouts`, and `exercises`. Below is a summary of their purpose and relationships:
 
