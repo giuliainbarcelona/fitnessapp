@@ -169,7 +169,7 @@ Frontend runs on http://localhost:5173/, and backend runs on http://localhost:40
 ## Database Schema
 
 <div style="display: flex; justify-content: center;">
-  <img src="../fs35-team-A/client/images/databaseschema.png" alt="Database Schema Diagram" style="width: 500px; height: auto;" />
+  <img src="./client/images/databaseschema.png" alt="Database Schema Diagram" style="width: 500px; height: auto;" />
 </div>
 
 <br/>
