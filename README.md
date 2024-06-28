@@ -161,10 +161,9 @@ Frontend runs on http://localhost:5173/, and backend runs on http://localhost:40
 
 ## Demo Video
 
-<video width="640" height="360" controls>
-  <source src="./client/images/fitnessapprecordingcompressed.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Demo](https://img.youtube.com/vi/DK7YGrpFATw/0.jpg)](https://www.youtube.com/watch?v=DK7YGrpFATw)
+
+Watch the video on [YouTube](https://www.youtube.com/watch?v=DK7YGrpFATw).
 
 ## Database Schema
 
