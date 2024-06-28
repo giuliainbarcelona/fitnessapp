@@ -163,8 +163,6 @@ Frontend runs on http://localhost:5173/, and backend runs on http://localhost:40
 
 [![Demo](https://img.youtube.com/vi/DK7YGrpFATw/0.jpg)](https://www.youtube.com/watch?v=DK7YGrpFATw)
 
-Watch the video on [YouTube](https://www.youtube.com/watch?v=DK7YGrpFATw).
-
 ## Database Schema
 
 <div style="display: flex; justify-content: center;">
