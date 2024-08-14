@@ -55,11 +55,6 @@ module.exports = async function db(query, type) {
         // } else if (result[0].constructor.name == "OkPacket") {
         //   results.data.push(result[0]);
         // }
-        // if (result[0].constructor.name == "RowDataPacket") {
-        //   result.forEach((row) => results.data.push(row));
-        // } else if (result[0].constructor.name == "OkPacket") {
-        //   results.data.push(result[0]);
-        // }
 
         con.end();
         resolve(results);
