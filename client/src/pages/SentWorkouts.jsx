@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import NextStepSelection from "../components/NextStepSelection";
 
 export default function SentWorkouts() {
@@ -11,8 +10,9 @@ export default function SentWorkouts() {
     "lightsteelblue",
     "lightsalmon",
   ];
-  const navigate = useNavigate();
 
+  // Connected to the backend router.get(“/”);
+  // Retrives all the sent workouts
   const fetchSentWorkouts = async () => {
     try {
       const response = await fetch("/api/workouts", {
@@ -35,12 +35,10 @@ export default function SentWorkouts() {
 
   useEffect(() => {
     fetchSentWorkouts();
-    console.log(sentWorkouts);
   }, []);
 
   const handleViewWorkout = (workout) => {
     setSelectedWorkout(workout);
-    console.log(workout);
   };
 
   const getRandomColor = () => {
@@ -51,14 +49,20 @@ export default function SentWorkouts() {
     <div className="workoutfriends-page">
       <div className="workoutfriends-content">
         <div className="container">
-          <h1 className="page-title-less">Here, you have a list of workouts from your friends!</h1>
-<br/>
+          <h1 className="page-title-less">
+            Here, you have a list of workouts from your friends!
+          </h1>
+          <br />
           <div className="row">
             {/* Left column for sent workouts */}
             <div className="col-md-6">
               <div className="row">
                 {sentWorkouts.map((workout) => (
-                  <div key={workout.id} className="col-md-6 mb-3" style={{ height: "100%" }}>
+                  <div
+                    key={workout.id}
+                    className="col-md-6 mb-3"
+                    style={{ height: "100%" }}
+                  >
                     <div className="card">
                       <div className="card-header">
                         Workout from {workout.username}

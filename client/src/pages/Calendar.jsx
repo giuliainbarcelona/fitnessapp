@@ -7,7 +7,6 @@ import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import Sidebar from "../pages/Sidebar";
-import dayjs from "dayjs";
 
 export default function Calendar({ userWorkouts, onDelete }) {
   const [curYear, setCurYear] = useState(null);
@@ -51,6 +50,8 @@ export default function Calendar({ userWorkouts, onDelete }) {
     setCurMonth(viewInfo.view.currentStart.getMonth());
   };
 
+  // Connected to the backend: router.put(“/:workout_id”);
+  // Updates the workout with the new date.
   const updateEvent = async (updatedEvent) => {
     const formattedDate = new Date(updatedEvent.start)
       .toISOString()

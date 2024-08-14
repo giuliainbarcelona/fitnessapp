@@ -1,10 +1,10 @@
 require("dotenv").config();
-const mysql = require("mysql");
+const mysql = require("mysql2");
 
-module.exports = async function db(query) {
+module.exports = async function db(query, type) {
   const results = {
     data: [],
-    error: null
+    error: null,
   };
   let promise = await new Promise((resolve, reject) => {
     const DB_HOST = process.env.DB_HOST;
@@ -17,14 +17,14 @@ module.exports = async function db(query) {
       user: DB_USER || "root",
       password: DB_PASS,
       database: DB_NAME || "fitnessapp",
-      multipleStatements: true
+      multipleStatements: true,
     });
 
-    con.connect(function(err) {
+    con.connect(function (err) {
       if (err) throw err;
       console.log("Connected!");
 
-      con.query(query, function(err, result) {
+      con.query(query, function (err, result) {
         if (err) {
           results.error = err;
           console.log(err);
@@ -41,18 +41,25 @@ module.exports = async function db(query) {
             con.end();
             return;
           }
-
-          // push the result (which should be an OkPacket) to data
-          // germinal - removed next line because it returns an array in an array when empty set
-          // results.data.push(result);
-        } else if (result[0].constructor.name == "RowDataPacket") {
-          // push each row (RowDataPacket) to data
-          result.forEach(row => results.data.push(row));
-        } else if (result[0].constructor.name == "OkPacket") {
-          // push the first item in result list to data (this accounts for situations
-          // such as when the query ends with SELECT LAST_INSERT_ID() and returns an insertId)
+        } else if (type === "login") {
           results.data.push(result[0]);
+        } else if (type === "insert") {
+          results.data.push({ insertId: result[1][0]["LAST_INSERT_ID()"] });
+        } else {
+          console.log("TEST", result);
+          result.forEach((row) => results.data.push(row));
         }
+
+        // if (result[0].constructor.name == "RowDataPacket") {
+        //   result.forEach((row) => results.data.push(row));
+        // } else if (result[0].constructor.name == "OkPacket") {
+        //   results.data.push(result[0]);
+        // }
+        // if (result[0].constructor.name == "RowDataPacket") {
+        //   result.forEach((row) => results.data.push(row));
+        // } else if (result[0].constructor.name == "OkPacket") {
+        //   results.data.push(result[0]);
+        // }
 
         con.end();
         resolve(results);

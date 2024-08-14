@@ -13,7 +13,6 @@ function Sidebar({ events, onDelete }) {
     })
       .then((response) => {
         if (response.ok) {
-          console.log("Workout deleted successfully!");
           onDelete();
         } else {
           console.error("Failed to delete workout:", response.statusText);

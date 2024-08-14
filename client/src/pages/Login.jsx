@@ -27,14 +27,13 @@ export default function login() {
         body: JSON.stringify(data),
       });
       const responseJson = await response.json();
-
       if (response.ok) {
         localStorage.setItem("token", responseJson.token);
         // Pass the username to signIn function
         auth.signIn(responseJson);
         navigate("/buildyourworkout", { state: { token: responseJson.token } });
       } else {
-        console.error("Login error:", responseJson.message);
+        console.error("Login error:111", responseJson.message);
       }
     } catch (err) {
       console.error("Login error:", err);

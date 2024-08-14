@@ -9,7 +9,6 @@ const AuthProvider = (props) => {
   });
 
   const signIn = (user) => {
-    console.log("LOGIN");
     setIsLoggedIn(true);
     setCurrentUser(user);
     localStorage.setItem("currentUser", JSON.stringify(user));

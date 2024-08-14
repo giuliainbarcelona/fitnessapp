@@ -14,7 +14,7 @@ const path = require("path");
 const multer = require("multer");
 const upload = multer({ dest: "public/img/" });
 
-const getImages = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
     const results = await db("SELECT * FROM users;");
     res.send(results.data);
@@ -23,21 +23,17 @@ const getImages = async (req, res) => {
   }
 };
 
-router.get("/", getImages);
+router.get("/", getUsers);
 
 router.post("/register", upload.single("imagefile"), async (req, res) => {
   const { username, password, email } = req.body;
   const imagefile = req.file;
-
   // check the extension of the file
   const extension = mime.extension(imagefile.mimetype);
-
   // create a new random name for the file
   const filename = uuidv4() + "." + extension;
-
   // grab the filepath for the temporary file
   const tmp_path = imagefile.path;
-
   // construct the new path for the final file
   const target_path = path.join(__dirname, "../public/img/") + filename;
 
@@ -57,10 +53,10 @@ router.post("/register", upload.single("imagefile"), async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
-
   try {
     const results = await db(
-      `SELECT * FROM users WHERE username = "${username}"`
+      `SELECT * FROM users WHERE username = "${username}"`,
+      "login"
     );
     const user = results.data[0];
     if (user) {
@@ -92,8 +88,6 @@ router.post("/login", async (req, res) => {
 });
 
 //Middleware to verify token and get user_id
-
-//only for demo purposes (NOT NECESSARY FOR CODE)
 router.get("/profile", userShouldBeLoggedIn, async (req, res) => {
   try {
     const results = await db(

@@ -20,7 +20,7 @@ export default function Register() {
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
     if (e.target.value === "") {
-      setErrors({ ...errors, username: "Soz, username required" });
+      setErrors({ ...errors, username: "Username required" });
     } else {
       setErrors({ ...errors, username: "" });
     }
@@ -29,7 +29,7 @@ export default function Register() {
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     if (e.target.value === "") {
-      setErrors({ ...errors, email: "Soz, email is required" });
+      setErrors({ ...errors, email: "Email is required" });
     } else {
       setErrors({ ...errors, email: "" });
     }
@@ -38,7 +38,7 @@ export default function Register() {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     if (e.target.value === "") {
-      setErrors({ ...errors, password: "Soz, password required" });
+      setErrors({ ...errors, password: "Password required" });
     } else {
       setErrors({ ...errors, password: "" });
     }
@@ -53,14 +53,12 @@ export default function Register() {
         body: JSON.stringify(data),
       });
       const responseJson = await response.json();
-      console.log(responseJson);
 
       if (
         responseJson &&
         responseJson.message &&
         responseJson.message.includes("successful")
       ) {
-        console.log("You did it!");
         localStorage.setItem("token", responseJson.token);
         auth.signIn(responseJson);
         navigate("/buildyourworkout", { state: { token: responseJson.token } });
@@ -97,14 +95,12 @@ export default function Register() {
 
       console.log(res);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    console.log("Submit form clicked!");
     if (errors.username || errors.email || errors.password) {
       return;
     }
@@ -122,7 +118,6 @@ export default function Register() {
         },
       });
 
-      console.log("Response JSON:", response.data);
       if (response.data.message === "Register successful") {
         handleLogin();
       }

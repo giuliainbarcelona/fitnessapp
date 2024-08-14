@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
-import { cardio } from "ldrs";
 
 const Exercise = () => {
   const { id } = useParams();
@@ -27,7 +26,6 @@ const Exercise = () => {
         }
         const result = await response.json();
         setExercise(result);
-        console.log("Exercise:", result);
       } catch (err) {
         console.error("Error fetching exercise:", err);
       }
@@ -77,6 +75,8 @@ const Exercise = () => {
     }
   };
 
+  // Connected to the backend router.get(“/search”);
+  // Search for users by username.
   const performSearch = async (query) => {
     try {
       const response = await fetch(`/api/users/search?q=${query}`);
@@ -88,12 +88,15 @@ const Exercise = () => {
   };
 
   const handleUserSelect = async (user) => {
-    console.log("User selected:", user); // debugging: this gets console logged.
     setSelectedUser(user);
     setSearchQuery(user.username);
     setSearchResults([]);
   };
 
+  // Connected to the backend router.post(“/duplicate”);
+  // Duplicate an existing workout and send it to another user.
+  // Creates a new workout for the target user with the same date as the original workout.
+  // Duplicates all exercises associated with the original workout and links them to the new workout.
   const handleSendWorkout = async () => {
     if (!selectedUser) {
       alert("Please select user to send workout to");

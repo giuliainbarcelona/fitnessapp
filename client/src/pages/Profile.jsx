@@ -8,7 +8,8 @@ export default function Profile() {
   const [userWorkouts, setUserWorkouts] = useState([]);
   const [sentWorkouts, setSentWorkouts] = useState([]);
 
-  // Fetching user data from the backend
+  // Connected to router.get(“/profile");
+  // it gets all the user information based on the user_id
   const fetchUserData = async () => {
     try {
       const response = await fetch("/api/auth/profile", {
@@ -18,7 +19,6 @@ export default function Profile() {
         },
       });
       const data = await response.json();
-      console.log("User Data:", data.user);
       setUserData(data.user);
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -28,6 +28,9 @@ export default function Profile() {
     fetchAllWorkouts();
   }, []);
 
+  // Connected to the backend router.get(“/”);
+  // Retrieve all workouts and their exercises for the logged-in user.
+  // Including the sent workouts
   async function fetchAllWorkouts() {
     try {
       const response = await fetch("/api/workouts", {
@@ -39,7 +42,6 @@ export default function Profile() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("Fetched all workouts:", data);
         setUserWorkouts(data.userWorkouts);
         setSentWorkouts(data.sentWorkouts);
       } else {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useParams } from "react-router-dom";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { useSearchParams } from "react-router-dom";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -8,7 +7,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { cardio } from "ldrs";
-import dayjs from "dayjs";
+
 cardio.register();
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -48,15 +47,15 @@ export default function Workout() {
           );
 
           const exercisesData = await response.json();
-          console.log("This is my exercise data", exercisesData); // This is an array of objects!
-          setExercises(exercisesData.slice(0, 5)); // Limits the amount of workouts that will render
+          setExercises(exercisesData.slice(0, 5)); // Limits the amount of workouts
           setLoadingExercise(false);
           setLoadingEquipment(false);
         } catch (err) {
           console.error("Error fetching saved workouts:", err);
         }
       } else {
-        // Fetch sent workouts
+        // Connected to the backend router.get(“/”);
+        // Retrives all the sent workouts
         try {
           const response = await fetch("/api/workouts", {
             method: "GET",
@@ -67,7 +66,6 @@ export default function Workout() {
           });
           if (response.ok) {
             const data = await response.json();
-            console.log("Fetched SENT workouts:", data);
             setSentWorkouts(data.sentWorkouts);
           } else {
             console.error(
@@ -103,10 +101,10 @@ export default function Workout() {
       date: `${selectedDate.format("YYYY-MM-DD")}T${selectedTime.format(
         "HH:mm:ss.SSS"
       )}`,
-      // time: formattedTime,
       exercises: exercises,
     };
-    console.log(656565, data);
+    // Connected to the backend: router.post(“/”);
+    // Created the workout and saves it for later
     try {
       const response = await fetch("/api/workouts", {
         method: "POST",
@@ -121,10 +119,7 @@ export default function Workout() {
         throw new Error("Network response was not ok");
       }
       const result = await response.json();
-      console.log("Success;", result);
-      // alert("Your workout has been saved");
       setWorkoutSaved(true);
-      // navigate(`/Calendar`);
     } catch (error) {
       console.error("Error saving workout:", error);
     }
@@ -134,10 +129,12 @@ export default function Workout() {
     e.preventDefault();
 
     const data = {
-      date: "2024-06-06",
+      date: "2024-08-14",
       exercises: exercises,
     };
 
+    // Connected to the backend: router.post(“/”);
+    // Created the workout and saves it for later and starts the exercise
     try {
       const response = await fetch("/api/workouts", {
         method: "POST",
@@ -152,7 +149,7 @@ export default function Workout() {
         throw new Error("Network response was not ok");
       }
       const result = await response.json();
-      console.log("Success;", result);
+
       const id = result.exercises[0].id;
       navigate(`/Exercises/${result.exercises[0].id}`, {
         state: { workout: result },

@@ -17,11 +17,11 @@ router.get("/:id", async function (req, res, next) {
     //extract exercise data from the result
     const exercise = exerciseInfo.data[0];
     //fetch exercise information for the exercise
+
     const allExercises = await db(
       //fetch exercise information based on workoutid
       `SELECT * FROM exercises WHERE workout_id = ${exercise.workout_id}`
     );
-
     const responseData = {
       current: exercise,
       exercises: allExercises.data,

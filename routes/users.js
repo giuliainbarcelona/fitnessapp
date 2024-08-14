@@ -4,7 +4,7 @@ const db = require("../model/helper");
 const userShouldExist = require("../guards/userShouldExist");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 
-/* GET users listing. */
+/* Testing. */
 router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
@@ -19,7 +19,6 @@ router.get("/search", async function (req, res, next) {
         .json({ message: "Query paramater is required 'q'" });
     }
     const searchQuery = `SELECT id, username FROM users WHERE username LIKE '%${q}%'`;
-    console.log("Generated SQL Query:", searchQuery);
     const result = await db(searchQuery);
     res.status(200).json(result.data);
   } catch (error) {
@@ -31,7 +30,6 @@ router.get("/search", async function (req, res, next) {
 router.get("/:user_id", userShouldExist, async function (req, res, next) {
   try {
     const userId = req.params.user_id;
-    //returns user information with a specific user id
     const userQuery = `SELECT * FROM users WHERE id = ${userId}`;
     const result = await db(userQuery);
     if (result.data.length) {

@@ -25,7 +25,6 @@ const NextStepSelection = ({ selectedWorkout }) => {
   const handleSave = async (e) => {
     // Handle save logic here: saving the selected date to state to pass it to the calendar
     e.preventDefault();
-    console.log(exercises);
     if (!selectedDate) {
       alert("Please select a date and time.");
       return;
@@ -39,7 +38,6 @@ const NextStepSelection = ({ selectedWorkout }) => {
         "HH:mm:ss.SSS"
       )}`,
     };
-    console.log("Data to be send:", data);
     try {
       const response = await fetch(`/api/workouts/${selectedWorkout.id}`, {
         method: "PUT",
@@ -54,10 +52,8 @@ const NextStepSelection = ({ selectedWorkout }) => {
         throw new Error("Network response was not ok");
       }
       const result = await response.json();
-      console.log("Success;", result);
       // alert("Your workout has been saved");
       setWorkoutSaved(true);
-      // navigate(`/Calendar`);
     } catch (error) {
       console.error("Error saving workout:", error);
     }
@@ -65,7 +61,6 @@ const NextStepSelection = ({ selectedWorkout }) => {
 
   const handleExercise = () => {
     try {
-      console.log(selectedWorkout);
       const id = selectedWorkout.exercises[0].exercise_id;
 
       navigate(`/Exercises/${id}`, {
@@ -147,43 +142,3 @@ const NextStepSelection = ({ selectedWorkout }) => {
 };
 
 export default NextStepSelection;
-
-// const handleSave = async (e) => {
-//   // Handle save logic here: saving the selected date to state to pass it to the calendar
-//   e.preventDefault();
-//   if (!selectedDate) {
-//     alert("Please select a date and time.");
-//     return;
-//   }
-//   const formattedDate = `${selectedDate.$y}-${String(
-//     selectedDate.$M + 1
-//   ).padStart(2, "0")}-${String(selectedDate.$D).padStart(2, "0")}`;
-
-//   const data = {
-//     date: formattedDate,
-//     exercises: exercises,
-//   };
-//   console.log("This is your formatted date from the WO page", formattedDate);
-
-//   try {
-//     const response = await fetch("/api/workouts", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         authorization: "Bearer " + localStorage.getItem("token"),
-//       },
-//       body: JSON.stringify(data),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error("Network response was not ok");
-//     }
-//     const result = await response.json();
-//     console.log("Success;", result);
-//     // alert("Your workout has been saved");
-//     setWorkoutSaved(true);
-//     // navigate(`/Calendar`);
-//   } catch (error) {
-//     console.error("Error saving workout:", error);
-//   }
-// };
